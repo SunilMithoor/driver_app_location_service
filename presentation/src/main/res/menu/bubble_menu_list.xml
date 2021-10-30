@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/home"
+        android:checked="true"
+        android:color="@color/home"
+        android:icon="@drawable/ic_dashboard"
+        android:title="@string/home" />
+
+    <item
+        android:id="@+id/earnings"
+        android:color="@color/logger"
+        android:icon="@drawable/ic_trending_up"
+        android:title="@string/earnings" />
+
+    <item
+        android:id="@+id/account"
+        android:color="@color/documents"
+        android:icon="@drawable/ic_account_circle"
+        android:title="@string/account" />
+
+
+</menu>

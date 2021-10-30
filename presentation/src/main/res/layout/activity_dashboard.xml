@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.dashboard.DashboardActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:elevation="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@id/toolBar"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            app:contentInsetStart="@dimen/padding_medium"
+            app:theme="@style/AppTheme.Toolbar"
+            android:background="@color/colorWhite">
+
+            <com.github.angads25.toggle.widget.LabeledSwitch
+                android:id="@+id/switch4"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:layout_gravity="center"
+                app:on="false"
+                app:textOn="ON Duty"
+                app:textOff="OFF Duty"
+                app:colorOn="@color/colorAppPrimary"
+                app:colorOff="@color/colorWhite"
+                app:colorBorder="@color/colorGreyDark"/>
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@id/containerHostFragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:defaultNavHost="false"
+        app:layout_constraintBottom_toTopOf="@id/bubbleTabBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/appBarLayout"
+        app:navGraph="@navigation/nav_dashboard" />
+
+    <io.ak1.BubbleTabBar
+        android:id="@+id/bubbleTabBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFF"
+        android:elevation="16dp"
+        android:padding="7dp"
+        app:bubbletab_custom_font="@font/open_sans_condensed_medium"
+        app:bubbletab_disabled_icon_color="@color/colorPrimaryDark"
+        app:bubbletab_horizontal_padding="20dp"
+        app:bubbletab_icon_padding="5sp"
+        app:bubbletab_icon_size="24dp"
+        app:bubbletab_menuResource="@menu/bubble_menu_list"
+        app:bubbletab_tab_corner_radius="25dp"
+        app:bubbletab_title_size="16sp"
+        app:bubbletab_vertical_padding="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+

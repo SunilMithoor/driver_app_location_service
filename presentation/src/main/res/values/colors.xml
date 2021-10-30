@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="colorPrimary">#39b54a</color>
+    <color name="colorPrimaryDark">#00841b</color>
+<!--    <color name="colorAccent">#72e879</color>-->
+    <color name="colorAccent">#58a75a</color>
+    <color name="colorAccentLight">#828E9C</color>
+    <color name="colorText">#2F4859</color>
+    <color name="colorTextWhite">#FFFFFF</color>
+    <color name="colorTabBg">#FFFFFF</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorViewBg">#F6F6F6</color>
+    <color name="colorSalmon">#FF9E80</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorRepeat">#5A6C7B</color>
+    <color name="colorLightBlue">#ABDCFF</color>
+    <color name="colorRed">#CC0000</color>
+    <color name="colorGrey40">#666666</color>
+    <color name="colorYellow">#FEF400</color>
+    <color name="colorDivider">#1A000000</color>
+    <color name="colorRvBg">#E9E9E9</color>
+    <color name="colorGreen">#61DB99</color>
+    <color name="colorLoaderBg">#2D7086</color>
+    <color name="colorPink">#FF748E</color>
+    <color name="background">#F5F6F7</color>
+    <color name="tempText">#FF2A2A2A</color>
+    <color name="cityText">#FF556799</color>
+
+    <color name="galleryBg">#212121</color>
+    <!--    <color name="appColorPrimary">#39b54a</color>-->
+
+    <color name="colorWhiteLight">#f8f8f8</color>
+    <color name="colorGreyLighter">#dccfea</color>
+    <color name="colorGreyLight">#d2d2d2</color>
+    <color name="colorGreyMedium">#a4a5a4</color>
+    <color name="colorGreyDark">#575757</color>
+
+    <color name="colorAppPrimary">#39b54a</color>
+    <color name="colorAppPrimaryDark">#00841b</color>
+<!--    <color name="colorAppPrimaryLight">#72e879</color>-->
+    <color name="colorAppPrimaryLight">#58a75a</color>
+
+
+</resources>

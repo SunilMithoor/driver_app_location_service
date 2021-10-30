@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--App Bar -->
+    <item name="appBarLayout" type="id" />
+
+    <!--Constraint layout -->
+    <item name="constraintLayout" type="id" />
+
+    <!--Tool Bar -->
+    <item name="toolBar" type="id" />
+
+    <!--Text View-->
+    <item name="tvName" type="id" />
+    <item name="tvEventTime" type="id" />
+    <item name="tvDescription" type="id" />
+    <item name="tvMessage" type="id" />
+
+    <!--Edit Text-->
+    <item name="etUsername" type="id" />
+    <item name="etPassword" type="id" />
+    <item name="etConfirmPassword" type="id" />
+
+    <!--Image View-->
+    <item name="ivImage" type="id" />
+
+    <!--View Pager 2-->
+    <item name="vpPermission" type="id" />
+
+    <!--Button-->
+    <item name="btnSubmit" type="id" />
+
+    <!--Recycler View-->
+    <item name="recyclerView" type="id" />
+
+    <!--Guideline-->
+    <item name="guideline1" type="id" />
+    <item name="guideline2" type="id" />
+    <item name="guideline3" type="id" />
+    <item name="guideline4" type="id" />
+    <item name="guideline5" type="id" />
+
+</resources>

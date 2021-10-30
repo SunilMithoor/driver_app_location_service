@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.app.ui.dashboard.DashboardFragment"
+        android:label="HomeFragment"
+        tools:layout="@layout/fragment_dashboard">
+
+        <action
+            android:id="@+id/navigateToEarningFragment"
+            app:destination="@id/earningFragment" />
+
+        <action
+            android:id="@+id/navigateToAccountFragment"
+            app:destination="@id/accountFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/earningFragment"
+        android:name="com.app.ui.earnings.EarningsFragment"
+        android:label="EarningsFragment"
+        tools:layout="@layout/fragment_earnings" />
+
+    <fragment
+        android:id="@+id/accountFragment"
+        android:name="com.app.ui.settings.AccountFragment"
+        android:label="AccountFragment"
+        tools:layout="@layout/fragment_account" />
+
+</navigation>

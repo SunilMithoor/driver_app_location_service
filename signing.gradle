@@ -1,0 +1,47 @@
+android {
+
+    def propsFile = file("../keystore.properties")
+
+    signingConfigs {
+        release {
+            if (propsFile.exists()) {
+                def props = new Properties()
+                props.load(new FileInputStream(propsFile))
+                storeFile file(props['releaseStoreFile'])
+                storePassword props['releaseStorePassword']
+                keyAlias props['releaseKeyAlias']
+                keyPassword props['releaseKeyPassword']
+            }
+        }
+        debug {
+            if (propsFile.exists()) {
+                def props = new Properties()
+                props.load(new FileInputStream(propsFile))
+                storeFile file(props['debugStoreFile'])
+                storePassword props['debugStorePassword']
+                keyAlias props['debugKeyAlias']
+                keyPassword props['debugKeyPassword']
+            }
+        }
+    }
+
+    buildTypes {
+        debug {
+            if (propsFile.exists()) {
+                productFlavors.stage.signingConfig signingConfigs.debug
+                productFlavors.preprod.signingConfig signingConfigs.debug
+                productFlavors.prod.signingConfig signingConfigs.debug
+            }
+        }
+
+        release {
+            if (propsFile.exists()) {
+                productFlavors.stage.signingConfig signingConfigs.debug
+                productFlavors.preprod.signingConfig signingConfigs.debug
+                productFlavors.prod.signingConfig signingConfigs.release
+            }
+        }
+    }
+}
+
+

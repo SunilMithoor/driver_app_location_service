@@ -1,0 +1,64 @@
+android {
+    def releaseNotes = project.tasks.create("generateNotes")
+    releaseNotes.description "Generates html reports in build repository"
+    def change = file("../changes.txt")
+    String changes = ""
+    change.eachLine { String line ->
+        changes += line
+        changes += "\n"
+    }
+
+    def releaseNote = file("../firebase/releasenotes.txt")
+    println releaseNote
+    //def copy1 = releaseNote.copy()
+    //println copy1
+
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            if (output.outputFile != null && output.outputFile.name.endsWith('.apk')) {
+                def releaseNotesTask = project.tasks.create("releaseNotes${variant.name.capitalize()}", Copy)
+                releaseNotesTask.from("firebase") {
+                    include "releasenotes.txt"
+                }
+                releaseNotesTask.into("build/outputs")
+
+                releaseNotesTask.filter { String line ->
+                    line.replaceAll("@@BUILD_VARIANT@@", "${variant.name}")
+                            .replaceAll("@@VERSION_NAME@@", rootProject.ext.versionName)
+                            .replaceAll("@@VERSION_CODE@@", "" + rootProject.ext.versionCode)
+                            .replaceAll("@@QA_BUILD_NUMBER@@", "" + rootProject.ext.buildNum)
+                            .replaceAll("@@GIT_BRANCH@@", getCurrentGitBranch())
+                            .replaceAll("@@CHANGES@@", changes)
+                            .replaceAll("@@RELEASE_NOTE_LINK@@", ""+rootProject.ext.releaseNoteLink)
+
+                }
+                releaseNotesTask.dependsOn variant.assemble
+                releaseNotes.dependsOn releaseNotesTask
+            }
+
+        }
+
+    }
+}
+
+
+task copyFiles{
+    def releaseNote = file("../firebase/releasenotes.txt")
+    copy{
+        from (releaseNote)
+        into '$buildDir/outputs'
+    }
+}
+
+def getCurrentGitBranch() {
+    def branch = "--NA--"
+    try {
+        def proc = "git rev-parse --abbrev-ref HEAD".execute()
+        proc.in.eachLine { line -> branch = line }
+        proc.err.eachLine { line -> println line }
+        proc.waitFor()
+    } catch (e) {
+        e.printStackTrace()
+    }
+    return branch
+}

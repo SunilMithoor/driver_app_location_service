@@ -1,0 +1,39 @@
+ {
+  "project_info": {
+    "project_number": "12609194830",
+    "project_id": "android-projects-96272",
+    "storage_bucket": "android-projects-96272.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:12609194830:android:3288410bfad291edd76c1f",
+        "android_client_info": {
+          "package_name": "com.app.sunil.driver.qa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "12609194830-72qn2chdoim63jbtijeea822uj2ukrfa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBIe8upfixe4i37jHWoRyfdBnCpRn7bKA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "12609194830-72qn2chdoim63jbtijeea822uj2ukrfa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

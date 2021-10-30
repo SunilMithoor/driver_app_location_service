@@ -1,0 +1,11 @@
+android {
+    sourceSets {
+        main {
+            java.srcDirs += 'src/main/kotlin'
+            /*** Layout folder ***/
+            file('src/main/res/layouts')
+                    .listFiles()
+                    .each { res.srcDirs += it.path }
+        }
+    }
+}
