@@ -1,3 +1,7 @@
 Build-1
-- Sign in
+- Splash 
+- Walkthrough
+- Permissions
+- Firebase Sign In
+- Firebase Sign up
 Build-2
