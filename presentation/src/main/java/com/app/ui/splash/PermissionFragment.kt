@@ -127,16 +127,16 @@ class PermissionFragment : BaseFragment(AppLayout.fragment_permission) {
     private fun setResult(r: PermissionResult, pos: Int) {
         when (r) {
             is PermissionResult.Granted -> {
-                Timber.d("{GRANTED-->$pos}")
+                Timber.d("GRANTED-->$pos")
                 context?.toast(AppString.permissions_granted)
                 moveNext(pos)
             }
             is PermissionResult.Denied.NeedsRationale -> {
-                Timber.d("{DENIED-->$pos}")
+                Timber.d("DENIED-->$pos")
                 moveNext(pos)
             }
             is PermissionResult.Denied.DeniedPermanently -> {
-                Timber.d("{DENIED PERM-->$pos}")
+                Timber.d("DENIED PERM-->$pos")
                 showPopUp(pos)
             }
             else -> {
@@ -188,5 +188,4 @@ class PermissionFragment : BaseFragment(AppLayout.fragment_permission) {
             }
         }
     }
-
 }

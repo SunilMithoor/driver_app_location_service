@@ -29,6 +29,7 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="sign_in">Sign In</string>
     <string name="sign_up">Sign Up</string>
+    <string name="reset_password">Reset Password</string>
     <string name="sign_in_here">Sign in here</string>
     <string name="grant_permission">Grant Permission</string>
     <string name="microphone">Microphone</string>
@@ -64,6 +65,13 @@
     <string name="phone_perm_message">The phone permission is needed to implement the feature pause recording on incoming call</string>
     <string name="location_perm_message">Location permission is needed to capture the latitude an longitude for the tracing</string>
     <string name="user_register_success">User registered successfully</string>
+    <string name="reset_password_message">We just need your registered Email Id to send you password reset instructions.</string>
+    <string name="reset_password_sent_message">We just sent a mail to your registered Email Id to reset your password.</string>
+    <string name="location_off_duty_msg">Note : Location services will not be tracked when OFF duty.</string>
+    <string name="location_on_duty_msg">Note : Location services will be tracked when ON duty.</string>
+    <string name="background_location_msg_alert">Kindly allow background location permission for tracking and tracing the vehicle and shipment purposes.This is used only when the driver is ON duty.!</string>
+    <string name="background_location_off">Background location capturing is turned off.</string>
+    <string name="background_location_on">Background location capturing is turned on.</string>
 
     <!--Disabled Messages -->
     <string name="microphone_disable_perm_message">Microphone permission is denied, Please go to settings to allow permission manually.</string>

@@ -106,6 +106,7 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
         }
     }
 
+
     fun showLoader() {
         window.setFlags(
             WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,

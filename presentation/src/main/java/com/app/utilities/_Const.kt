@@ -21,5 +21,8 @@ const val INACTIVE = "inActive"
 const val MAP_DEFAULT_PADDING = 100
 
 const val PERMISSION_REQUEST_CODE = 101
+const val APP_OVERLAY_REQUEST_CODE = 102
+const val REQUEST_CHECK_SETTINGS = 125
+const val REQUEST_ENABLE_GPS = 126
 
 

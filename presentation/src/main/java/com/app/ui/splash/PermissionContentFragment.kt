@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.app.BuildConfig
 import com.app.databinding.FragmentPermissionContentBinding
 import com.app.extension.AppDrawable
 import com.app.extension.AppLayout

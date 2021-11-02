@@ -173,6 +173,8 @@
 
     <style name="Widget.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="android:layout_margin">5dp</item>
+        <item name="boxStrokeColor">@color/colorOutlineBorder</item>
+        <item name="hintTextColor">@color/colorOutlineBorder</item>
     </style>
 
 

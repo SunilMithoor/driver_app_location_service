@@ -5,6 +5,7 @@
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
@@ -18,6 +19,13 @@
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
     <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" /> <!-- <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" /> -->
     <uses-feature android:name="android.hardware.location.gps" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+
+    <permission
+        android:name="com.app.sunil.driver.qa.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.app.sunil.driver.qa.permission.MAPS_RECEIVE" />
 
     <uses-permission
         android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
@@ -48,18 +56,16 @@
 
         <activity
             android:name="com.app.ui.sign_in.SignInActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true" />
 
         <activity
             android:name="com.app.ui.sign_up.SignUpActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true" />
 
         <activity
             android:name="com.app.ui.dashboard.DashboardActivity"
-            android:theme="@style/MyTheme"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/MyTheme">
 
         </activity>
 
@@ -83,6 +89,26 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${mapApiKey}" />
+
+<!--        <meta-data-->
+<!--            android:name="com.google.android.maps.v2.API_KEY"-->
+<!--            android:value="${mapApiKey}" />-->
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_notifications" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorAccentLight" />
 
 
     </application>

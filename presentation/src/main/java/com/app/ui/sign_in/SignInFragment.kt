@@ -58,6 +58,13 @@ class SignInFragment : BaseFragment(AppLayout.fragment_sign_in) {
             hideKeyboard()
             startActivity<SignUpActivity>()
         }
+
+        binding.forgotPassword.click {
+            hideKeyboard()
+            navController.navigate(
+                SignInFragmentDirections.navigateToForgotPasswordFragment(binding.etUsername.value)
+            )
+        }
     }
 
 
@@ -197,17 +204,19 @@ class SignInFragment : BaseFragment(AppLayout.fragment_sign_in) {
 
     private fun getFireBaseDeviceToken() {
         try {
-            FirebaseInstallations
-                .getInstance()
-                .getToken(false)
-                .addOnSuccessListener {
-                    Timber.d("Firebase Device token-->${it.token}")
-                    deviceToken = it.token
-                    userDataManager.deviceToken = deviceToken
-                }
-                .addOnFailureListener {
-                    binding.constraintLayout.snackBar(AppString.error_firebase_id)
-                }
+            if (fragmentActivity?.isNetworkAvailable() == true) {
+                FirebaseInstallations
+                    .getInstance()
+                    .getToken(false)
+                    .addOnSuccessListener {
+                        Timber.d("Firebase Device token-->${it.token}")
+                        deviceToken = it.token
+                        userDataManager.deviceToken = deviceToken
+                    }
+                    .addOnFailureListener {
+                        binding.constraintLayout.snackBar(AppString.error_firebase_id)
+                    }
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -215,17 +224,19 @@ class SignInFragment : BaseFragment(AppLayout.fragment_sign_in) {
 
     private fun getFireBaseMessagingToken() {
         try {
-            FirebaseMessaging
-                .getInstance()
-                .token
-                .addOnSuccessListener { s: String ->
-                    Timber.d("Firebase Message token-->$s")
-                    messageToken = s
-                    userDataManager.fireBaseToken = s
-                }
-                .addOnFailureListener {
-                    binding.constraintLayout.snackBar(AppString.error_firebase_token)
-                }
+            if (fragmentActivity?.isNetworkAvailable() == true) {
+                FirebaseMessaging
+                    .getInstance()
+                    .token
+                    .addOnSuccessListener { s: String ->
+                        Timber.d("Firebase Message token-->$s")
+                        messageToken = s
+                        userDataManager.fireBaseToken = s
+                    }
+                    .addOnFailureListener {
+                        binding.constraintLayout.snackBar(AppString.error_firebase_token)
+                    }
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         }

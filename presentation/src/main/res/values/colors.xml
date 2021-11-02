@@ -40,6 +40,7 @@
     <color name="colorAppPrimaryDark">#00841b</color>
 <!--    <color name="colorAppPrimaryLight">#72e879</color>-->
     <color name="colorAppPrimaryLight">#58a75a</color>
+    <color name="colorOutlineBorder">#29314b</color>
 
 
 </resources>

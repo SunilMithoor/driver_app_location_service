@@ -61,11 +61,17 @@ class UserPrefDataManager(private val userDataRepo: UserDataRepo) : UserDataRepo
         }
 
     override fun logOut() {
-        userDataRepo.logOut()
+        userDataRepo.isUserLoggedIn = false
+        userDataRepo.userId = null
+        userDataRepo.uId = null
+        userDataRepo.mobile = null
+        userDataRepo.email = null
+        userDataRepo.deviceToken = null
+        userDataRepo.fireBaseToken = null
     }
 
     override fun clearSharedPrefData(key: String) {
-        userDataRepo.logOut()
+        
     }
 
 }

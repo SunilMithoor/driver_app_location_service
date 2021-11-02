@@ -69,7 +69,7 @@ class AccountFragment : BaseFragment(AppLayout.fragment_account) {
 
                 }
                 is Logout -> {
-//                    userDataManager.logOut()
+                    userDataManager.logOut()
                     startActivity<SignInActivity>()
                     requireActivity().finishAffinity()
                 }

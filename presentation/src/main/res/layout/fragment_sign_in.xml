@@ -79,7 +79,6 @@
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_email"
                 android:drawablePadding="3dp"
-                android:background="@color/colorWhite"
                 android:hint="@string/email_id"
                 android:inputType="text"
                 android:maxLength="25"
@@ -99,7 +98,6 @@
                 android:id="@id/etPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorWhite"
                 android:hint="@string/password"
                 android:drawableStart="@drawable/ic_lock"
                 android:drawablePadding="3dp"
@@ -113,6 +111,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             style="@style/Widget.TextView.Medium.SemiBold"
+            android:id="@+id/forgot_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"

@@ -8,6 +8,23 @@
         android:id="@+id/navSignIn"
         android:name="com.app.ui.sign_in.SignInFragment"
         android:label="SignInFragment"
-        tools:layout="@layout/fragment_sign_in" />
+        tools:layout="@layout/fragment_sign_in">
+
+        <action
+            android:id="@+id/navigateToForgotPasswordFragment"
+            app:destination="@+id/forgotPasswordFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/forgotPasswordFragment"
+        android:name="com.app.ui.sign_in.ForgotPasswordFragment"
+        android:label="ForgotPasswordFragment"
+        tools:layout="@layout/fragment_forgot_password">
+
+        <argument
+            android:name="data"
+            android:defaultValue="" />
+    </fragment>
 
 </navigation>
