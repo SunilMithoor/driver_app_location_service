@@ -10,6 +10,7 @@ interface UserDataRepo {
     var deviceToken: String?
     var fireBaseToken: String?
     var isUserLoggedIn: Boolean
+    var isDuty: Boolean
     fun logOut()
     fun clearSharedPrefData(key: String)
 }

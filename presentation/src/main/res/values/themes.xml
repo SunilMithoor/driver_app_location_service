@@ -295,5 +295,43 @@
         <item name="android:textColorSecondary">@color/colorWhite</item>
     </style>
 
+    <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="Toolbar.TitleText.Color">
+        <item name="android:textColor">@color/colorWhite</item>
+    </style>
+
+    <style name="Base_Toolbar_Style">
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:theme">@style/Base_ToolbarTheme</item>
+<!--        <item name="titleMarginStart">@dimen/margin_large</item>-->
+        <item name="titleTextAppearance">@style/CustomTitleTextAppearance</item>
+        <item name="subtitleTextAppearance">@style/CustomSubTitleTextAppearance</item>
+    </style>
+
+    <style name="Base_ToolbarTheme">
+        <!-- Color used for the title of the Toolbar - as long as not overridden -->
+        <item name="android:textColorPrimary">@color/colorWhite</item>
+        <!-- Used to color back button and three dots -->
+        <item name="android:textColorSecondary">@color/colorGreyMedium</item>
+    </style>
+
+    <style name="CustomTitleTextAppearance" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:fontFamily">@font/open_sans_condensed_medium</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="CustomSubTitleTextAppearance" parent="TextAppearance.Widget.AppCompat.Toolbar.Subtitle">
+        <item name="android:fontFamily">@font/open_sans_condensed_light</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+
 
 </resources>

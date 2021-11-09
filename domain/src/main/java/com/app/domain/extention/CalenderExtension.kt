@@ -2,6 +2,7 @@
 
 package com.app.domain.extention
 
+import android.location.Location
 import android.net.ParseException
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -207,3 +208,4 @@ fun Date.toString(
 ): String {
     return formatDate(format, locale, timeZone).format(this)
 }
+

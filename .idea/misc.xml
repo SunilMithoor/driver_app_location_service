@@ -45,6 +45,7 @@
         <entry key="..\:/Gitlab Projects/Github/app/presentation/src/main/res/drawable/ic_account_circle.xml" value="0.2703125" />
         <entry key="..\:/Gitlab Projects/Github/app/presentation/src/main/res/drawable/ic_back.xml" value="0.2703125" />
         <entry key="..\:/Gitlab Projects/Github/app/presentation/src/main/res/drawable/ic_btn_bg.xml" value="0.2703125" />
+        <entry key="..\:/Gitlab Projects/Github/app/presentation/src/main/res/drawable/ic_chevron_left_black.xml" value="0.2703125" />
         <entry key="..\:/Gitlab Projects/Github/app/presentation/src/main/res/drawable/ic_dashboard.xml" value="0.2703125" />
         <entry key="..\:/Gitlab Projects/Github/app/presentation/src/main/res/drawable/ic_email.xml" value="0.2703125" />
         <entry key="..\:/Gitlab Projects/Github/app/presentation/src/main/res/drawable/ic_keyboard_voice_arge.xml" value="0.2703125" />
@@ -53,6 +54,8 @@
         <entry key="..\:/Gitlab Projects/Github/app/presentation/src/main/res/drawable/ic_notifications.xml" value="0.2703125" />
         <entry key="..\:/Gitlab Projects/Github/app/presentation/src/main/res/drawable/ic_pager_default.xml" value="0.2703125" />
         <entry key="..\:/Gitlab Projects/Github/app/presentation/src/main/res/drawable/ic_pager_selected.xml" value="0.2703125" />
+        <entry key="..\:/Gitlab Projects/Github/app/presentation/src/main/res/drawable/ic_person_off.xml" value="0.2703125" />
+        <entry key="..\:/Gitlab Projects/Github/app/presentation/src/main/res/drawable/ic_person_on.xml" value="0.2703125" />
         <entry key="..\:/Gitlab Projects/Github/app/presentation/src/main/res/drawable/ic_phone_iphone_large.xml" value="0.2703125" />
         <entry key="..\:/Gitlab Projects/Github/app/presentation/src/main/res/drawable/ic_photo_camera_large.xml" value="0.2703125" />
         <entry key="..\:/Gitlab Projects/Github/app/presentation/src/main/res/drawable/ic_place_large.xml" value="0.2703125" />
@@ -61,6 +64,13 @@
         <entry key="..\:/Gitlab Projects/Github/app/presentation/src/main/res/drawable/ic_storage_large.xml" value="0.2703125" />
         <entry key="..\:/Gitlab Projects/Github/app/presentation/src/main/res/drawable/ic_trending_up.xml" value="0.2703125" />
         <entry key="..\:/Gitlab Projects/Github/app/presentation/src/main/res/drawable/ic_vpn_key.xml" value="0.2703125" />
+        <entry key="..\:/Gitlab Projects/Github/app/presentation/src/main/res/drawable/switch_thumb_false.xml" value="0.2703125" />
+        <entry key="..\:/Gitlab Projects/Github/app/presentation/src/main/res/drawable/switch_thumb_true.xml" value="0.2703125" />
+        <entry key="..\:/Gitlab Projects/Github/app/presentation/src/main/res/drawable/thumb.xml" value="0.2703125" />
+        <entry key="..\:/Gitlab Projects/Github/app/presentation/src/main/res/drawable/track.xml" value="0.2703125" />
+        <entry key="..\:/Gitlab Projects/Github/app/presentation/src/main/res/drawable/track_off.xml" value="0.2703125" />
+        <entry key="..\:/Gitlab Projects/Github/app/presentation/src/main/res/drawable/track_on.xml" value="0.2703125" />
+        <entry key="..\:/Gitlab Projects/Github/app/presentation/src/main/res/drawable/track_size.xml" value="0.2703125" />
         <entry key="..\:/Gitlab Projects/Github/app/presentation/src/main/res/layout/accounts_item.xml" value="0.25416666666666665" />
         <entry key="..\:/Gitlab Projects/Github/app/presentation/src/main/res/layout/activity_base.xml" value="0.12360688956433637" />
         <entry key="..\:/Gitlab Projects/Github/app/presentation/src/main/res/layout/activity_dashboard.xml" value="0.25416666666666665" />
@@ -69,7 +79,7 @@
         <entry key="..\:/Gitlab Projects/Github/app/presentation/src/main/res/layout/activity_sign_up.xml" value="0.25416666666666665" />
         <entry key="..\:/Gitlab Projects/Github/app/presentation/src/main/res/layout/activity_splash.xml" value="0.25416666666666665" />
         <entry key="..\:/Gitlab Projects/Github/app/presentation/src/main/res/layout/fragment_account.xml" value="0.25416666666666665" />
-        <entry key="..\:/Gitlab Projects/Github/app/presentation/src/main/res/layout/fragment_dashboard.xml" value="0.12360688956433637" />
+        <entry key="..\:/Gitlab Projects/Github/app/presentation/src/main/res/layout/fragment_dashboard.xml" value="0.264" />
         <entry key="..\:/Gitlab Projects/Github/app/presentation/src/main/res/layout/fragment_earnings.xml" value="0.25416666666666665" />
         <entry key="..\:/Gitlab Projects/Github/app/presentation/src/main/res/layout/fragment_forgot_password.xml" value="0.25364583333333335" />
         <entry key="..\:/Gitlab Projects/Github/app/presentation/src/main/res/layout/fragment_permission.xml" value="0.13858695652173914" />

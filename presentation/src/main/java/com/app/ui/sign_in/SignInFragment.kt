@@ -85,19 +85,19 @@ class SignInFragment : BaseFragment(AppLayout.fragment_sign_in) {
         val password = binding.etPassword.value
         when {
             username.isEmpty() -> {
-                binding.btnSubmit.snackBar(R.string.error_email_empty)
+                binding.btnSubmit.snackBar(AppString.error_email_empty)
                 binding.etUsername.requestFocus()
             }
             !username.isEmail() -> {
-                binding.btnSubmit.snackBar(R.string.error_invalid_email_id)
+                binding.btnSubmit.snackBar(AppString.error_invalid_email_id)
                 binding.etUsername.requestFocus()
             }
             password.isEmpty() -> {
-                binding.btnSubmit.snackBar(R.string.error_password_empty)
+                binding.btnSubmit.snackBar(AppString.error_password_empty)
                 binding.etPassword.requestFocus()
             }
             password.length < 6 -> {
-                binding.btnSubmit.snackBar(R.string.error_password_length)
+                binding.btnSubmit.snackBar(AppString.error_password_length)
                 binding.etPassword.requestFocus()
             }
             else -> {
@@ -117,6 +117,7 @@ class SignInFragment : BaseFragment(AppLayout.fragment_sign_in) {
                         userDataManager.email = task.result.user?.email
                         userDataManager.uId = task.result.user?.uid
                         userDataManager.isUserLoggedIn = true
+                        userDataManager.isDuty = true
                         startActivity<DashboardActivity>()
                         finish()
                     } else {
@@ -131,7 +132,7 @@ class SignInFragment : BaseFragment(AppLayout.fragment_sign_in) {
                     fragmentActivity?.hideLoader()
                 }
         } else {
-            binding.btnSubmit.snackBar(R.string.error_internet)
+            binding.btnSubmit.snackBar(AppString.error_internet)
         }
     }
 

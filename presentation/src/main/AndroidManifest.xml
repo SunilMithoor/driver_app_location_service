@@ -92,11 +92,11 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="${mapApiKey}" />
+            android:value="${maps_api_key}" />
 
 <!--        <meta-data-->
 <!--            android:name="com.google.android.maps.v2.API_KEY"-->
-<!--            android:value="${mapApiKey}" />-->
+<!--            android:value="${maps_api_key}" />-->
 
         <meta-data
             android:name="com.google.android.gms.version"

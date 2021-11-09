@@ -27,6 +27,12 @@ class UserDataRepoImpl(private val sharedPreferences: SharedPreferences, private
             sharedPreferences["isUserLoggedIn"] = value
         }
 
+    override var isDuty: Boolean
+        get() = sharedPreferences["isDuty", false]
+        set(value) {
+            sharedPreferences["isDuty"] = value
+        }
+
 
     override var userId: Int?
         get() = sharedPreferences["userId", 0]

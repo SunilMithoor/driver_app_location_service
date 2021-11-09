@@ -44,7 +44,7 @@ fun setGoogleMap(googleMap: GoogleMap): GoogleMap {
     googleMap.uiSettings.isTiltGesturesEnabled = true
     googleMap.uiSettings.isRotateGesturesEnabled = true
     googleMap.uiSettings.isScrollGesturesEnabled = true
-    googleMap.uiSettings.isZoomControlsEnabled = true
+    googleMap.uiSettings.isZoomControlsEnabled = false
     googleMap.uiSettings.isZoomGesturesEnabled = true
     return googleMap
 }

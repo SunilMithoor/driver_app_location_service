@@ -19,6 +19,7 @@ import android.widget.TextView
 import androidx.annotation.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.*
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -102,7 +103,6 @@ fun View.hideKeyboard(): Boolean {
     } catch (ignored: RuntimeException) {
         false
     }
-
 }
 
 /**
@@ -626,7 +626,7 @@ fun RecyclerView.addDivider(drawable: Drawable?, orientation: Int) {
 
 fun AppCompatActivity.initBackToolbar(toolbar: Toolbar) {
     setSupportActionBar(toolbar)
-    supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
+    supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_chevron_left_black)
     supportActionBar?.setDisplayHomeAsUpEnabled(true)
 }
 
@@ -657,6 +657,10 @@ fun hideToolbar(toolbar: Toolbar) {
 
 fun showToolbar(toolbar: Toolbar) {
     toolbar?.visibility = View.VISIBLE
+}
+
+fun setToolbarTitle(toolbar: Toolbar, data: String) {
+    toolbar?.title = data
 }
 
 /******* ViewPager *******/

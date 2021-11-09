@@ -3,6 +3,8 @@ package com.app.ui.dashboard
 import android.os.Bundle
 import com.app.R
 import com.app.databinding.ActivityDashboardBinding
+import com.app.extension.hideSupportActionBar
+import com.app.extension.initBackToolbar
 import com.app.extension.viewBinding
 import com.app.ui.base.BaseAppCompatActivity
 import com.app.vm.dashboard.DashboardVM
@@ -22,7 +24,17 @@ class DashboardActivity : BaseAppCompatActivity() {
     }
 
     private fun initialize() {
+        initToolBar()
         initBubbleTabBar()
+    }
+
+    private fun initToolBar() {
+        initBackToolbar(binding.toolBar)
+        binding.toolBar.setNavigationOnClickListener {
+            onSupportNavigateUp()
+            binding.bubbleTabBar.setSelected(0)
+            hideSupportActionBar()
+        }
     }
 
 

@@ -159,31 +159,31 @@ class PermissionFragment : BaseFragment(AppLayout.fragment_permission) {
         var msg = ""
         when (pos) {
             0 -> {
-                msg = getString(AppString.microphone_disable_perm_message)
+                msg = resString(AppString.microphone_disable_perm_message)
             }
             1 -> {
-                msg = getString(AppString.camera_disable_perm_message)
+                msg = resString(AppString.camera_disable_perm_message)
             }
             2 -> {
-                msg = getString(AppString.storage_disable_perm_message)
+                msg = resString(AppString.storage_disable_perm_message)
             }
             3 -> {
-                msg = getString(AppString.phone_disable_perm_message)
+                msg = resString(AppString.phone_disable_perm_message)
             }
             4 -> {
-                msg = getString(AppString.location_disable_perm_message)
+                msg = resString(AppString.location_disable_perm_message)
             }
         }
         context?.alert(R.style.Dialog_Alert) {
             setCancelable(false)
-            setTitle(getString(AppString.permissions_required))
+            setTitle(AppString.permissions_required)
             setMessage(msg)
-            setPositiveButton(getString(AppString.settings)) { _, _ ->
+            setPositiveButton(AppString.settings) { _, _ ->
                 val intent = context.createAppSettingsIntent()
 //                startActivityForResult(intent, PERMISSION_REQUEST_CODE)
                 startActivity(intent)
             }
-            setNegativeButton(getString(AppString.label_cancel)) { _, _ ->
+            setNegativeButton(AppString.label_cancel) { _, _ ->
                 moveNext(pos)
             }
         }

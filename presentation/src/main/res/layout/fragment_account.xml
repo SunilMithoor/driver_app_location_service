@@ -6,7 +6,21 @@
     android:layout_height="match_parent"
     android:background="#E9E9E9">
 
+<!--    <com.google.android.material.appbar.AppBarLayout-->
+<!--        android:id="@id/appBarLayout"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent">-->
 
+<!--        <androidx.appcompat.widget.Toolbar-->
+<!--            android:id="@+id/toolBar"-->
+<!--            style="@style/Base_Toolbar_Style"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"/>-->
+
+<!--    </com.google.android.material.appbar.AppBarLayout>-->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@id/recyclerView"
@@ -16,7 +30,6 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:itemCount="3"
         tools:listitem="@layout/accounts_item" />
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

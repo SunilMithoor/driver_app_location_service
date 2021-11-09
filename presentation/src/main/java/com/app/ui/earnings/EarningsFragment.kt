@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.app.databinding.FragmentDashboardBinding
+import androidx.activity.addCallback
 import com.app.databinding.FragmentEarningsBinding
-import com.app.extension.AppLayout
+import com.app.extension.*
 import com.app.ui.base.BaseFragment
 import com.app.vm.dashboard.DashboardVM
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -19,7 +19,12 @@ class EarningsFragment : BaseFragment(AppLayout.fragment_earnings) {
     private val dashboardVM by viewModel<DashboardVM>()
 
     override fun onCreate(view: View) {
-
+        activityCompat.showSupportActionBar()
+        activityCompat.setSupportActionBarTitle(AppString.earnings)
+        val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
+            onSupportNavigateUp()
+        }
+        callback.isEnabled = true
     }
 
     override fun onCreateView(

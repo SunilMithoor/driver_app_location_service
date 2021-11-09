@@ -22,6 +22,7 @@ android {
 
     buildFeatures {
         viewBinding true
+        compose = true
     }
 
     compileSdkVersion 31
@@ -53,6 +54,10 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.0.5"
+    }
+
     packagingOptions {
         exclude 'META-INF/license.txt'
         exclude 'META-INF/notice.txt'
@@ -63,10 +68,6 @@ android {
         jvmTarget = '1.8'
     }
 
-    // Enable ViewBinding
-    buildFeatures {
-        viewBinding true
-    }
 }
 
 dependencies {

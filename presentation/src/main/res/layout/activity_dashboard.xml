@@ -19,22 +19,8 @@
             android:id="@id/toolBar"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
-            app:contentInsetStart="@dimen/padding_medium"
-            app:theme="@style/AppTheme.Toolbar"
-            android:background="@color/colorWhite">
-
-            <com.github.angads25.toggle.widget.LabeledSwitch
-                android:id="@+id/switch4"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:layout_gravity="center"
-                app:on="false"
-                app:textOn="ON Duty"
-                app:textOff="OFF Duty"
-                app:colorOn="@color/colorAppPrimary"
-                app:colorOff="@color/colorWhite"
-                app:colorBorder="@color/colorGreyDark"/>
+            style="@style/Base_Toolbar_Style"
+            android:background="@color/colorPrimaryDark">
 
         </androidx.appcompat.widget.Toolbar>
 

@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:12609194830:android:3288410bfad291edd76c1f",
+        "mobilesdk_app_id": "1:12609194830:android:9e282050e0094b32d76c1f",
         "android_client_info": {
-          "package_name": "com.app.sunil.driver.qa"
+          "package_name": "com.sunil.app.driver.qa"
         }
       },
       "oauth_client": [

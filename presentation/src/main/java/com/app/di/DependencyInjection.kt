@@ -10,18 +10,25 @@ import androidx.lifecycle.MutableLiveData
 import coil.ImageLoaderBuilder
 import coil.util.Logger
 import com.app.BuildConfig
+import com.app.data.datasource.db.AppDatabase
 import com.app.data.datasource.remote.RetrofitManager
 import com.app.data.datasource.remote.SighInApi
+import com.app.data.repository.LocationRepoImpl
 import com.app.data.repository.SignInRepoImpl
 import com.app.data.repository.UserDataRepoImpl
 import com.app.domain.entity.wrapped.Event
 import com.app.domain.manager.SignInUpdateManager
 import com.app.domain.manager.UserPrefDataManager
+import com.app.domain.repository.LocationDataRepo
 import com.app.domain.repository.SignInRepo
 import com.app.domain.repository.UserDataRepo
+import com.app.domain.usecase.GetLocationUseCase
+import com.app.domain.usecase.GetLocationUseCaseASC
+import com.app.domain.usecase.InsertLocationUseCase
 import com.app.domain.usecase.SignInUseCase
 import com.app.extension.P
 import com.app.vm.SharedVM
+import com.app.vm.location.LocationVM
 import com.app.vm.permission.PermissionVM
 import com.app.vm.signin.SignInVM
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
@@ -30,16 +37,20 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import timber.log.Timber
 
-fun dependency() = listOf(vm, repository, manager, service, useCases, singleInstance)
+fun dependency() = listOf(vm, repository, manager, service, useCases, dataBase, singleInstance)
+
 
 val vm = module {
-//    viewModel { DashboardVM(get()) }
     viewModel { SignInVM(get()) }
     viewModel { PermissionVM() }
+    viewModel { LocationVM(get(), get(), get(),get()) }
     single { SharedVM() }
 }
 val useCases = module {
     factory { SignInUseCase(get()) }
+    factory { InsertLocationUseCase(get()) }
+    factory { GetLocationUseCase(get()) }
+    factory { GetLocationUseCaseASC(get()) }
 }
 val manager = module {
     single { UserPrefDataManager(get()) }
@@ -48,9 +59,14 @@ val manager = module {
 val repository = module {
     single { SignInRepoImpl(get()) as SignInRepo }
     single { UserDataRepoImpl(get(), get()) as UserDataRepo }
+    single { LocationRepoImpl(get()) as LocationDataRepo }
 }
 val service = module {
     single { SighInApi.create(get()) }
+}
+val dataBase = module {
+    single { AppDatabase.getInstance(get()) }
+    single { get<AppDatabase>().appDao() }
 }
 
 val singleInstance = module {

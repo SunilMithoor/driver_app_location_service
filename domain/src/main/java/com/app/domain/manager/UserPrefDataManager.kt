@@ -24,6 +24,12 @@ class UserPrefDataManager(private val userDataRepo: UserDataRepo) : UserDataRepo
             userDataRepo.isUserLoggedIn = value
         }
 
+    override var isDuty: Boolean
+        get() = userDataRepo.isDuty
+        set(value) {
+            userDataRepo.isDuty = value
+        }
+
     override var userId: Int?
         get() = userDataRepo.userId
         set(value) {

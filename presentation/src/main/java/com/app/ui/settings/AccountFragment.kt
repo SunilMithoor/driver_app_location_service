@@ -4,15 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.R
 import com.app.databinding.FragmentAccountBinding
 import com.app.extension.*
+import com.app.ui.base.BaseFragment
+import com.app.ui.settings.adapter.AccountsAdapter
+import com.app.ui.sign_in.SignInActivity
 import com.app.utilities.Logout
 import com.app.utilities.Notification
-import com.app.ui.settings.adapter.AccountsAdapter
-import com.app.ui.base.BaseFragment
-import com.app.ui.sign_in.SignInActivity
 
 
 class AccountFragment : BaseFragment(AppLayout.fragment_account) {
@@ -34,6 +35,10 @@ class AccountFragment : BaseFragment(AppLayout.fragment_account) {
     override fun onCreate(view: View) {
         activityCompat.showSupportActionBar()
         activityCompat.setSupportActionBarTitle(AppString.account)
+        val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
+            onSupportNavigateUp()
+        }
+        callback.isEnabled = true
         initRecyclerView()
     }
 
