@@ -1,4 +1,4 @@
-package com.app.services.locations
+package com.app.helpers
 
 import android.app.Activity
 import android.content.Context
@@ -6,6 +6,7 @@ import android.content.IntentSender
 import android.location.LocationManager
 import android.widget.Toast
 import com.app.interfaces.OnLocationOnListener
+import com.app.services.locations.LocationLiveData
 import com.app.utilities.LOCATION_PERMISSION_REQUEST
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException

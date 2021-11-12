@@ -59,6 +59,8 @@
     <string name="permissions_granted">Permissions granted</string>
     <string name="on_duty">ON Duty</string>
     <string name="off_duty">OFF Duty</string>
+    <string name="app_service">App Service</string>
+    <string name="location_service_running">Location service running</string>
 
     <!-- Messages -->
     <string name="microphone_perm_message">Microphone permission is needed to record audio while recording video</string>

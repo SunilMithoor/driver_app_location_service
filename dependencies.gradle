@@ -74,6 +74,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics-ktx:19.0.2'
     implementation platform('com.google.firebase:firebase-bom:28.4.2')
     implementation 'com.google.firebase:firebase-auth-ktx'
+    implementation 'com.google.firebase:firebase-database:20.0.2'
+    implementation 'com.google.firebase:firebase-dynamic-links:21.0.0'
 
     /*** Location ***/
     implementation 'com.google.android.libraries.places:places:2.5.0'
@@ -109,12 +111,6 @@ dependencies {
     /*** Toggle Switch ***/
     implementation 'com.github.angads25:toggle:1.1.0'
 
-//    // Room
-//    implementation 'androidx.room:room-ktx:2.3.0'
-//    implementation "androidx.room:room-runtime:2.3.0"
-//    annotationProcessor 'androidx.room:room-compiler:2.3.0'
-//    kapt "androidx.room:room-compiler:2.3.0"
-
     /*** Room ***/
     implementation 'androidx.room:room-runtime:2.3.0'
     implementation "androidx.room:room-ktx:2.3.0"
@@ -123,6 +119,9 @@ dependencies {
     /*** Compose ***/
     implementation 'androidx.compose.ui:ui:1.0.5'
     implementation 'androidx.compose.runtime:runtime:1.0.5'
+
+    /*** Work Manager ***/
+    implementation "androidx.work:work-runtime-ktx:2.7.0"
 
 
 }

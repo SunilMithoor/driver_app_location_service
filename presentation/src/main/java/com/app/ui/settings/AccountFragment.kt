@@ -14,6 +14,8 @@ import com.app.ui.settings.adapter.AccountsAdapter
 import com.app.ui.sign_in.SignInActivity
 import com.app.utilities.Logout
 import com.app.utilities.Notification
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 
 class AccountFragment : BaseFragment(AppLayout.fragment_account) {
@@ -86,5 +88,8 @@ class AccountFragment : BaseFragment(AppLayout.fragment_account) {
         super.onDestroyView()
         _binding = null
     }
+
+
+
 
 }

@@ -1,5 +1,8 @@
 package com.app.utilities
 
+import com.app.utilities.Notifications.LOCATION_SERVICE
+import com.app.utilities.Notifications.LOCATION_SERVICE_NOTIFICATION
+
 interface NavigationDrawer {
     val resId: Int
     val stringRes: Int
@@ -31,7 +34,19 @@ const val REQUEST_CHECK_SETTINGS = 103
 const val REQUEST_ENABLE_GPS = 104
 const val LOCATION_PERMISSION_REQUEST = 105
 
-//Room
-const val LOCATION_TABLE = "LocationTable"
+//Notifications
+const val FOREGROUND_SERVICE_ID = 201
+val CHANNEL_ID: String = LOCATION_SERVICE
+val CHANNEL_NOTIFICATION_ID: Int = 1001
+val CHANNEL_NAME: String = LOCATION_SERVICE_NOTIFICATION
+
+object Notifications {
+    const val LOCATION_SERVICE_NOTIFICATION = "LOCATION_SERVICE_NOTIFICATION"
+    const val LOCATION_SERVICE = "LOCATION_SERVICE"
+}
+
+object Locations {
+    var LOCATION_ACCURACY = 30
+}
 
 

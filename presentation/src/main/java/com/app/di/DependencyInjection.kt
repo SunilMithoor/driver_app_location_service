@@ -16,16 +16,14 @@ import com.app.data.datasource.remote.SighInApi
 import com.app.data.repository.LocationRepoImpl
 import com.app.data.repository.SignInRepoImpl
 import com.app.data.repository.UserDataRepoImpl
+import com.app.domain.LocationServiceInteractor
 import com.app.domain.entity.wrapped.Event
 import com.app.domain.manager.SignInUpdateManager
 import com.app.domain.manager.UserPrefDataManager
 import com.app.domain.repository.LocationDataRepo
 import com.app.domain.repository.SignInRepo
 import com.app.domain.repository.UserDataRepo
-import com.app.domain.usecase.GetLocationUseCase
-import com.app.domain.usecase.GetLocationUseCaseASC
-import com.app.domain.usecase.InsertLocationUseCase
-import com.app.domain.usecase.SignInUseCase
+import com.app.domain.usecase.*
 import com.app.extension.P
 import com.app.vm.SharedVM
 import com.app.vm.location.LocationVM
@@ -37,20 +35,25 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import timber.log.Timber
 
-fun dependency() = listOf(vm, repository, manager, service, useCases, dataBase, singleInstance)
+fun dependency() = listOf(
+    vm, repository, manager, service, useCases, dataBase,
+    serviceInteractor, singleInstance
+)
 
 
 val vm = module {
     viewModel { SignInVM(get()) }
     viewModel { PermissionVM() }
-    viewModel { LocationVM(get(), get(), get(),get()) }
+    viewModel { LocationVM(get(), get(), get(), get(), get()) }
     single { SharedVM() }
 }
 val useCases = module {
     factory { SignInUseCase(get()) }
     factory { InsertLocationUseCase(get()) }
-    factory { GetLocationUseCase(get()) }
-    factory { GetLocationUseCaseASC(get()) }
+    factory { GetAllLocationUseCase(get()) }
+    factory { GetLocationByCountUseCase(get()) }
+    factory { DeleteAllLocationUseCase(get()) }
+    factory { DeleteLocationByCountUseCase(get()) }
 }
 val manager = module {
     single { UserPrefDataManager(get()) }
@@ -67,6 +70,10 @@ val service = module {
 val dataBase = module {
     single { AppDatabase.getInstance(get()) }
     single { get<AppDatabase>().appDao() }
+}
+
+val serviceInteractor = module {
+    single { LocationServiceInteractor(get(), get(), get(), get(),get()) }
 }
 
 val singleInstance = module {

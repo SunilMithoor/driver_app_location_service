@@ -14,18 +14,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import com.app.R
-import com.app.data.datasource.db.AppDatabase
-import com.app.data.datasource.db.dao.AppDao
 import com.app.databinding.FragmentDashboardBinding
 import com.app.domain.entity.LocationEntity
+import com.app.domain.extention.parseDate
 import com.app.extension.*
 import com.app.interfaces.OnLocationOnListener
-import com.app.services.locations.LocationUtil
+import com.app.services.locations.LocationService
+import com.app.helpers.LocationUtil
 import com.app.ui.base.BaseFragment
 import com.app.ui.splash.SplashActivity
 import com.app.utilities.APP_OVERLAY_REQUEST_CODE
 import com.app.utilities.PERMISSION_REQUEST_CODE
-import com.app.vm.LocationEvent
+import com.app.model.LocationState
 import com.app.vm.dashboard.DashboardVM
 import com.app.vm.location.LocationVM
 import com.app.vm.permission.PermissionVM
@@ -33,9 +33,6 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.markodevcic.peko.PermissionResult
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
@@ -52,7 +49,6 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard), OnMapReady
     private val dashboardVM by viewModel<DashboardVM>()
 
     //    private var isGPSEnabled = false
-    private var appDao: AppDao? = null
 
 
     override fun onCreate(view: View) {
@@ -85,9 +81,6 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard), OnMapReady
         permissionVM.permissionLiveData.observe(this, {
             setResult(it)
         })
-//        locationVM.getLocationData.observe(this, {
-//            setLocationResult(it)
-//        })
     }
 
     private fun observeLocationUpdates() {
@@ -117,6 +110,7 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard), OnMapReady
     override fun onResume() {
         super.onResume()
         appOverlayPermission()
+        locationData()
     }
 
 
@@ -128,15 +122,18 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard), OnMapReady
                 userDataManager.isDuty = true
                 binding.tvName.snackBar(AppString.background_location_on)
                 binding.tvName.textColor = AppColor.colorGreenLight
+                startService()
+                startWorker()
             } else {
                 binding.tvName.resString = AppString.off_duty
                 userDataManager.isDuty = false
                 binding.tvName.snackBar(AppString.background_location_off)
                 binding.tvName.textColor = AppColor.colorRedLight
+                stopService()
+                stopWorker()
             }
         }
         setData()
-        appDao = AppDatabase.getInstance(requireActivity()).appDao()
     }
 
 
@@ -145,12 +142,36 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard), OnMapReady
             binding.customSwitch.isChecked = true
             binding.tvName.resString = AppString.on_duty
             binding.tvName.textColor = AppColor.colorGreenLight
+            startService()
+            startWorker()
         } else {
             binding.customSwitch.isChecked = false
             binding.tvName.resString = AppString.off_duty
             binding.tvName.snackBar(AppString.off_duty_msg)
             binding.tvName.textColor = AppColor.colorRedLight
+            stopService()
+            stopWorker()
         }
+    }
+
+    private fun startService() {
+        if (userDataManager.isDuty) {
+            context?.startService(LocationService::class.java)
+        }
+    }
+
+    private fun stopService() {
+        context?.stopService(LocationService::class.java)
+    }
+
+    private fun startWorker() {
+        if (userDataManager.isDuty) {
+            context?.startWorker()
+        }
+    }
+
+    private fun stopWorker() {
+        context?.stopWorker()
     }
 
     private fun appOverlayPermission() {
@@ -230,19 +251,34 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard), OnMapReady
 
 
     private fun setLocationResult(location: Location) {
-        Timber.d("Location-->${location.latitude},${location.longitude}")
+        Timber.d(
+            "Dash Location-->${location.latitude},${location.longitude},${
+                location.time.parseDate().toString()
+            }"
+        )
 //        animateCamera(mMap, location.latitude, location.longitude, 14F)
 
-        locationVM.onEvent(LocationEvent.SaveLocation(location))
-
-        GlobalScope.launch(Dispatchers.IO) {
-            val allLocations = appDao?.getAllLocationDatas() //Read data
-            if (allLocations != null) {
-                Timber.d("Location final -->${allLocations.size}")
-            }
-        }
+//        locationVM.onEvent(LocationEvent.SaveLocation(location))
 
     }
+
+    private fun locationData() {
+        val locationState: LocationState = locationVM.locationState.value
+        if (locationState != null) {
+            val datas: List<LocationEntity> = locationState.locations
+            Timber.d("Location data size -->${datas.size}")
+//            locationVM.onEvent(LocationEvent.DeleteLocationByCount(30))
+//            getData()
+        }
+    }
+
+//    private fun getData() {
+//        val locationState: LocationState = locationVM.locationState.value
+//        if (locationState != null) {
+//            val datas: List<LocationEntity> = locationState.locations
+//            Timber.d("Location data after delete size -->${datas.size}")
+//        }
+//    }
 
 
     private fun initMapFragment() {

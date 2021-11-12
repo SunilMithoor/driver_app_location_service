@@ -1,6 +1,5 @@
 package com.app.data.repository
 
-import android.provider.ContactsContract
 import com.app.data.datasource.db.dao.AppDao
 import com.app.domain.entity.LocationEntity
 import com.app.domain.repository.LocationDataRepo
@@ -13,19 +12,24 @@ class LocationRepoImpl(
 
 
     override suspend fun insertLocationData(locationEntity: LocationEntity) {
-        appDao.saveLocationData(locationEntity)
+        appDao.insertLocationData(locationEntity)
     }
 
-    override suspend fun deleteLocationData(locationEntity: LocationEntity) {
-        appDao.deleteLocationData(locationEntity)
-    }
-
-    override fun getLocationData(): Flow<List<LocationEntity>> {
+    override fun getAllLocationData(): Flow<List<LocationEntity>> {
         return appDao.getAllLocationData()
     }
 
-    override fun getAllLocationDataByAsc(): Flow<List<LocationEntity>> {
-        return appDao.getAllLocationDataByAsc()
+    override fun getLocationDataByCount(data: Int): Flow<List<LocationEntity>> {
+        return appDao.getLocationDataByCount(data)
+    }
+
+
+    override suspend fun deleteAllLocationData() {
+        appDao.deleteAllLocationData()
+    }
+
+    override suspend fun deleteLocationDataByCount(data: Int) {
+        appDao.deleteLocationDataByCount(data)
     }
 
 }

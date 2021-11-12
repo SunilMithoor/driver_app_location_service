@@ -90,6 +90,11 @@
             </intent-filter>
         </service>
 
+        <service
+            android:name=".services.locations.LocationService"
+            android:enabled="true"
+            android:exported="true" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="${maps_api_key}" />

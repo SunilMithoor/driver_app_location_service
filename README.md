@@ -14,3 +14,5 @@
 * PageIndicator
 * Material Theme
 * Firebase Authentication
+* Location Service
+* Room

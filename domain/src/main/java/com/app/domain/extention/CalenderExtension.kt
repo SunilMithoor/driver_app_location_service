@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit
 
 object D {
     val FORMAT = "yyyy-MM-dd HH:mm:ss"
+    val FORMAT1 = "yyyy-MM-dd HH:mm:ss"
 }
 
 val now get() = Calendar.getInstance().time

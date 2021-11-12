@@ -1,4 +1,4 @@
-package com.app.utils
+package com.app.model
 
 import android.provider.ContactsContract
 import com.app.domain.entity.LocationEntity

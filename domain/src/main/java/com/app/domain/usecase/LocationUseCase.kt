@@ -17,31 +17,14 @@ class InsertLocationUseCase(
     }
 }
 
-//class GetLocationUseCase(
-//    private val locationDataRepo: LocationDataRepo
-//) {
-//
-//    suspend operator fun invoke() {
-//        return locationDataRepo.getAllLocationData()
-//    }
-//}
 
-class GetLocationUseCaseASC(
-    private val locationDataRepo: LocationDataRepo
-) {
-
-    operator fun invoke(): Flow<List<LocationEntity>> {
-        return locationDataRepo.getAllLocationDataByAsc()
-    }
-}
-
-class GetLocationUseCase(
+class GetAllLocationUseCase(
     private val locationDataRepo: LocationDataRepo
 ) {
     operator fun invoke(
         locationOrder: LocationOrder = LocationOrder.Date(OrderType.Descending)
     ): Flow<List<LocationEntity>> {
-        return locationDataRepo.getLocationData().map { locations ->
+        return locationDataRepo.getAllLocationData().map { locations ->
             when (locationOrder.orderType) {
                 is OrderType.Ascending -> {
                     when (locationOrder) {
@@ -57,3 +40,43 @@ class GetLocationUseCase(
         }
     }
 }
+
+class GetLocationByCountUseCase(
+    private val locationDataRepo: LocationDataRepo
+) {
+    operator fun invoke(
+        locationOrder: LocationOrder = LocationOrder.Date(OrderType.Descending)
+    ): Flow<List<LocationEntity>> {
+        return locationDataRepo.getLocationDataByCount(50).map { locations ->
+            when (locationOrder.orderType) {
+                is OrderType.Ascending -> {
+                    when (locationOrder) {
+                        is LocationOrder.Date -> locations.sortedBy { it.time }
+                    }
+                }
+                is OrderType.Descending -> {
+                    when (locationOrder) {
+                        is LocationOrder.Date -> locations.sortedByDescending { it.time }
+                    }
+                }
+            }
+        }
+    }
+}
+
+class DeleteAllLocationUseCase(
+    private val locationDataRepo: LocationDataRepo
+) {
+    suspend operator fun invoke() {
+        locationDataRepo.deleteAllLocationData()
+    }
+}
+
+class DeleteLocationByCountUseCase(
+    private val locationDataRepo: LocationDataRepo
+) {
+    suspend operator fun invoke(data: Int) {
+        locationDataRepo.deleteLocationDataByCount(data)
+    }
+}
+
