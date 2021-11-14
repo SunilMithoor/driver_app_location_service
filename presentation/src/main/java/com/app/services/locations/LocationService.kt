@@ -8,7 +8,7 @@ import android.os.IBinder
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.lifecycleScope
-import com.app.domain.LocationServiceInteractor
+import com.app.domain.interactor.LocationServiceInteractor
 import com.app.domain.entity.LocationEntity
 import com.app.domain.extention.parseDate
 import com.app.domain.manager.UserPrefDataManager

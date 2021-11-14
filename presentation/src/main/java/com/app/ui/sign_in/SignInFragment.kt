@@ -4,12 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.app.R
 import com.app.databinding.FragmentSignInBinding
 import com.app.domain.extention.isEmail
 import com.app.extension.*
-import com.app.helpers.firebase_api.FireBaseApiManager
-import com.app.helpers.firebase_api.FireBaseApiManager.Companion.instance
 import com.app.ui.base.BaseFragment
 import com.app.ui.base.hideLoader
 import com.app.ui.base.showLoader

@@ -11,17 +11,18 @@ import coil.ImageLoaderBuilder
 import coil.util.Logger
 import com.app.BuildConfig
 import com.app.data.datasource.db.AppDatabase
-import com.app.data.datasource.remote.RetrofitManager
-import com.app.data.datasource.remote.SighInApi
+import com.app.data.datasource.remote.firebase.auth.FirebaseAuthManager
+import com.app.data.datasource.remote.retrofit.RetrofitManager
+import com.app.data.datasource.remote.retrofit.SighInApi
 import com.app.data.repository.LocationRepoImpl
 import com.app.data.repository.SignInRepoImpl
 import com.app.data.repository.UserDataRepoImpl
-import com.app.domain.LocationServiceInteractor
 import com.app.domain.entity.wrapped.Event
-import com.app.domain.manager.SignInUpdateManager
+import com.app.domain.interactor.LocationServiceInteractor
+import com.app.domain.manager.OnBoardingUpdateManager
 import com.app.domain.manager.UserPrefDataManager
 import com.app.domain.repository.LocationDataRepo
-import com.app.domain.repository.SignInRepo
+import com.app.domain.repository.OnBoardingRepo
 import com.app.domain.repository.UserDataRepo
 import com.app.domain.usecase.*
 import com.app.extension.P
@@ -37,7 +38,7 @@ import timber.log.Timber
 
 fun dependency() = listOf(
     vm, repository, manager, service, useCases, dataBase,
-    serviceInteractor, singleInstance
+    serviceInteractor, fireBase, singleInstance
 )
 
 
@@ -57,10 +58,10 @@ val useCases = module {
 }
 val manager = module {
     single { UserPrefDataManager(get()) }
-    single { SignInUpdateManager(get()) }
+    single { OnBoardingUpdateManager(get()) }
 }
 val repository = module {
-    single { SignInRepoImpl(get()) as SignInRepo }
+    single { SignInRepoImpl(get()) as OnBoardingRepo }
     single { UserDataRepoImpl(get(), get()) as UserDataRepo }
     single { LocationRepoImpl(get()) as LocationDataRepo }
 }
@@ -73,7 +74,12 @@ val dataBase = module {
 }
 
 val serviceInteractor = module {
-    single { LocationServiceInteractor(get(), get(), get(), get(),get()) }
+    single { LocationServiceInteractor(get(), get(), get(), get(), get()) }
+}
+
+val fireBase = module {
+//    single { FirebaseAuthHelper() }
+    single { FirebaseAuthManager(get()) }
 }
 
 val singleInstance = module {

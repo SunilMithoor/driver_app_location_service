@@ -4,6 +4,6 @@ import com.app.domain.entity.response.SignInUpdate
 import com.app.domain.entity.wrapped.Response
 
 
-interface SignInRepo {
+interface OnBoardingRepo {
     suspend fun signInUpdate(map: Map<String, String>): Response<SignInUpdate>
 }

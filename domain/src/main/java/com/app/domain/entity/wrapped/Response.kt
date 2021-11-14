@@ -16,6 +16,7 @@ sealed class Response<out T> {
         return when (this) {
             is Success<*> -> "Success[data=$data]"
             is Error -> "Error[exception=$error]"
+            else -> "Something went wrong , please try later"
         }
     }
 }

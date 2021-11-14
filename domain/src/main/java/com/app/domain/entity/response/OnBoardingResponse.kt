@@ -2,13 +2,17 @@ package com.app.domain.entity.response
 
 import kotlinx.serialization.Serializable
 
-class SigInValidateResponse {
-}
-
 /*****************/
 
 @Serializable
-data class SignInValidate(
+data class SignInUpdate(
+
+    val message: String? = null,
+    val success: String? = null,
+)
+
+@Serializable
+data class SignInFirebaseUpdate(
 
     val message: String? = null,
     val success: String? = null,

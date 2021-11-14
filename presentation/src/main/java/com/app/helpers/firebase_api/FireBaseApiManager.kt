@@ -142,7 +142,7 @@ class FireBaseApiManager {
 
     companion object {
         private var apiManager: FireBaseApiManager? = null
-        private var apiWrapper: FireBaseApiWrapper? = null
+        private var apiWrapper: com.app.helpers.firebase_api.FireBaseApiWrapper? = null
 
         @JvmStatic
         val instance: FireBaseApiManager?
@@ -151,7 +151,7 @@ class FireBaseApiManager {
                     apiManager = FireBaseApiManager()
                 }
                 if (apiWrapper == null) {
-                    apiWrapper = FireBaseApiWrapper.instance
+                    apiWrapper = com.app.helpers.firebase_api.FireBaseApiWrapper.instance
                 }
                 return apiManager
             }

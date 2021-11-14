@@ -66,4 +66,11 @@ dependencies {
     implementation 'androidx.room:room-runtime:2.3.0'
     implementation "androidx.room:room-ktx:2.3.0"
     kapt "androidx.room:room-compiler:2.3.0"
+
+    /*** Firebase ***/
+    implementation 'com.google.firebase:firebase-database:20.0.2'
+    implementation platform('com.google.firebase:firebase-bom:28.4.2')
+    implementation 'com.google.firebase:firebase-auth-ktx'
+    implementation 'com.google.firebase:firebase-dynamic-links:21.0.0'
+    implementation 'com.google.firebase:firebase-messaging:23.0.0'
 }

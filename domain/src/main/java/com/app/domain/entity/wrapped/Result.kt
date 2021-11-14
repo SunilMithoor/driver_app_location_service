@@ -18,6 +18,7 @@ sealed class Result<out T> {
             is Success<*> -> "Success[data=$data]"
             is Error -> "Error[exception=$error]"
             is Loading -> "Loading"
+            else -> "Something went wrong , please try later"
         }
     }
 }

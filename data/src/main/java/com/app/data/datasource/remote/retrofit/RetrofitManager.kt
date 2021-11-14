@@ -1,4 +1,4 @@
-package com.app.data.datasource.remote
+package com.app.data.datasource.remote.retrofit
 
 import android.app.Application
 import android.os.Build

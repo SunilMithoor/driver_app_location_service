@@ -10,7 +10,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavGraph
 import androidx.navigation.fragment.NavHostFragment
 import com.app.R
-import com.app.data.datasource.remote.RetrofitManager
+import com.app.data.datasource.remote.retrofit.RetrofitManager
 import com.app.databinding.ActivityBaseBinding
 import com.app.domain.entity.wrapped.Event
 import com.app.domain.extention.collectEvent

@@ -13,6 +13,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData
 
 interface FireBaseApiWrapperInterface {
+
     //    Database read functions
     fun singleValueEventListener(mDatabaseReference: DatabaseReference, singleValueEventListener: ValueEventListener?)
     fun childEventListener(mDatabaseReference: DatabaseReference, childEventListener: ChildEventListener?)

@@ -11,3 +11,8 @@ data class SignUpRequest(
     var password: String,
     var confirmPassword: String
 )
+
+data class SignInFirebaseRequest(
+    var email: String,
+    var password: String,
+)

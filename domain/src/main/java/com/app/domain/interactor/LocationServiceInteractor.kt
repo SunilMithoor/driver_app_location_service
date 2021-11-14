@@ -1,4 +1,4 @@
-package com.app.domain
+package com.app.domain.interactor
 
 import com.app.domain.entity.LocationEntity
 import com.app.domain.usecase.*
