@@ -22,20 +22,19 @@ class FireBaseDatabaseHelper {
     }
 
 
- //todo Uncomment code to use Classes
     private var mDatabase: FirebaseDatabase? = null
     private var mDatabaseReference: DatabaseReference? = null
 
 
     init {
         mDatabase = FirebaseDatabase.getInstance()
-        mDatabaseReference = mDatabase!!.getReference()
+        mDatabaseReference = mDatabase!!.reference
     }
 
 
     fun getDataBaseReference(): DatabaseReference? {
         mDatabase = FirebaseDatabase.getInstance()
-        mDatabaseReference = mDatabase!!.getReference()
+        mDatabaseReference = mDatabase!!.reference
         return mDatabaseReference
     }
 
@@ -43,7 +42,7 @@ class FireBaseDatabaseHelper {
     fun <T> readSnapShot(dataSnapshot: DataSnapshot, clazz: Class<T>): ArrayList<T> {
         //         ArrayList<Clazz> tempArray=new ArrayList<>();
         val arrayList = ArrayList<T>()
-        for (childSnapshot in dataSnapshot.getChildren()) {
+        for (childSnapshot in dataSnapshot.children) {
             // key for node .!
             // String key = childSnapshot.getKey();
             val `object` = childSnapshot.getValue(clazz) as T
@@ -55,8 +54,8 @@ class FireBaseDatabaseHelper {
 
     fun <T> readSnapShotKey(dataSnapshot: DataSnapshot,
                             arrayList: ArrayList<T>, clazz: Class<*>): ArrayList<T> {
-        for (childSnapshot in dataSnapshot.getChildren()) {
-            val key = childSnapshot.getKey()
+        for (childSnapshot in dataSnapshot.children) {
+            val key = childSnapshot.key
             val `object` = childSnapshot.getValue(clazz) as T
             arrayList.add(`object`)
         }
