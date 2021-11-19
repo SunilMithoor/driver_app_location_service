@@ -13,6 +13,7 @@ import com.app.domain.entity.db.LocationEntity
 import com.app.domain.extention.parseDate
 import com.app.domain.manager.UserPrefDataManager
 import com.app.extension.AppString
+import com.app.extension.getNotification
 import com.app.extension.isLocationPermissionsGranted
 import com.app.extension.resString
 import com.app.interfaces.OnLocationOnListener
@@ -21,6 +22,7 @@ import com.app.utilities.CHANNEL_ID
 import com.app.utilities.CHANNEL_NAME
 import com.app.utilities.FOREGROUND_SERVICE_ID
 import com.app.helpers.LocationUtil
+import com.app.utilities.CHANNEL_NOTIFICATION_ID
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import timber.log.Timber
@@ -69,14 +71,23 @@ class LocationService : LifecycleService() {
 
     override fun onBind(intent: Intent): IBinder {
         super.onBind(intent)
+        Timber.d("onBind called")
         return mBinder
     }
 
-
-    override fun onUnbind(intent: Intent?): Boolean {
-        Timber.d("onUnbind called")
-        return super.onUnbind(intent)
+    override fun onRebind(intent: Intent) {
+        Timber.d("onRebind called")
+//        stopForeground(true)
+        super.onRebind(intent)
     }
+
+
+    override fun onUnbind(intent: Intent): Boolean {
+        Timber.d("onUnbind called")
+//        startForeground(CHANNEL_NOTIFICATION_ID, getNotification())
+        return true // Ensures onRebind() is called when a client re-binds.
+    }
+
 
 
     private fun checkLocationOn() {

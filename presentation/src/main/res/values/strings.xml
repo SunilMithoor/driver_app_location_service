@@ -111,5 +111,12 @@
     <string name="error_firebase_token">Firebase message token id cannot be generated</string>
     <string name="error_user_register">Unable to register user</string>
 
+    <string name="notification_content_title">Track</string>
+    <string name="notification_content_text">App is running</string>
+    <string name="notification_action_launch">Launch app</string>
+    <string name="notification_action_stop">Stop</string>
+    <string name="service_state_started">Stop</string>
+    <string name="service_state_stopped">Start</string>
+
 
 </resources>
