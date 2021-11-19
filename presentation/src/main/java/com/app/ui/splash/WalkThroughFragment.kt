@@ -14,7 +14,7 @@ import com.app.extension.*
 import com.app.ui.base.BaseFragment
 import com.app.ui.base.BaseFragmentStateAdapter
 import com.app.ui.dashboard.DashboardActivity
-import com.app.ui.sign_in.SignInActivity
+import com.app.ui.onBoarding.SignInActivity
 import timber.log.Timber
 
 

@@ -6,7 +6,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import com.app.domain.entity.LocationEntity
+import com.app.domain.entity.db.LocationEntity
 import com.app.domain.extention.parseDate
 import com.app.domain.usecase.DeleteAllLocationUseCase
 import com.app.domain.usecase.DeleteLocationByCountUseCase
@@ -17,7 +17,7 @@ import com.app.exception.InvalidLocationException
 import com.app.services.locations.LocationLiveData
 import com.app.model.LocationState
 import com.app.vm.BaseVM
-import com.app.vm.LocationEvent
+import com.app.vm.events.LocationEvent
 import com.app.vm.UserEvent
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.launchIn

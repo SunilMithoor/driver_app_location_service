@@ -15,19 +15,22 @@ import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
 import com.app.R
 import com.app.databinding.FragmentDashboardBinding
-import com.app.domain.entity.LocationEntity
+import com.app.domain.entity.FirebaseCallResponse
+import com.app.domain.entity.db.LocationEntity
 import com.app.domain.extention.parseDate
 import com.app.extension.*
-import com.app.interfaces.OnLocationOnListener
-import com.app.services.locations.LocationService
 import com.app.helpers.LocationUtil
+import com.app.interfaces.OnLocationOnListener
+import com.app.model.LocationState
+import com.app.services.locations.LocationService
 import com.app.ui.base.BaseFragment
+import com.app.ui.base.hideLoader
 import com.app.ui.splash.SplashActivity
 import com.app.utilities.APP_OVERLAY_REQUEST_CODE
 import com.app.utilities.PERMISSION_REQUEST_CODE
-import com.app.model.LocationState
 import com.app.vm.dashboard.DashboardVM
 import com.app.vm.location.LocationVM
+import com.app.vm.onboarding.OnBoardingVM
 import com.app.vm.permission.PermissionVM
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -47,6 +50,8 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard), OnMapReady
     private val permissionVM by viewModel<PermissionVM>()
     private val locationVM by viewModel<LocationVM>()
     private val dashboardVM by viewModel<DashboardVM>()
+    private val onBoardingVM by viewModel<OnBoardingVM>()
+
 
     //    private var isGPSEnabled = false
 
@@ -80,6 +85,42 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard), OnMapReady
     override fun observeLiveData() {
         permissionVM.permissionLiveData.observe(this, {
             setResult(it)
+        })
+        onBoardingVM.firebaseMessageTokenResponse.observe(viewLifecycleOwner, {
+            fragmentActivity?.hideLoader()
+            Timber.d("FirebaseTokenResponse-->${it}")
+            when (it) {
+                is FirebaseCallResponse.Success -> {
+                    it.data.let { data ->
+                        Timber.d("message token-->${data.token}")
+                        userDataManager.fireBaseToken = data.token
+                    }
+                }
+                is FirebaseCallResponse.Failure -> {
+                    binding.constraintLayout.snackBar(it.throwable.message)
+                }
+                else -> {
+                    binding.constraintLayout.snackBar(AppString.error_message)
+                }
+            }
+        })
+        onBoardingVM.firebaseDeviceIdResponse.observe(viewLifecycleOwner, {
+            fragmentActivity?.hideLoader()
+            Timber.d("FirebaseDeviceidResponse-->${it}")
+            when (it) {
+                is FirebaseCallResponse.Success -> {
+                    it.data.let { data ->
+                        Timber.d("device id-->${data.deviceId}")
+                        userDataManager.deviceToken = data.deviceId
+                    }
+                }
+                is FirebaseCallResponse.Failure -> {
+                    binding.constraintLayout.snackBar(it.throwable.message)
+                }
+                else -> {
+                    binding.constraintLayout.snackBar(AppString.error_message)
+                }
+            }
         })
     }
 
@@ -137,6 +178,20 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard), OnMapReady
     }
 
 
+//     private fun call() {
+//        lifecycleScope.launch {
+//            flow {
+//                delay(5000)
+//                emit(true)
+//            }.collect {
+//                fragmentActivity?.showLoader()
+////                onBoardingVM.getMessageToken()
+//                onBoardingVM.getDeviceId()
+//            }
+//        }
+//    }
+
+
     private fun setData() {
         if (userDataManager.isDuty) {
             binding.customSwitch.isChecked = true
@@ -152,6 +207,8 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard), OnMapReady
             stopService()
             stopWorker()
         }
+        onBoardingVM.getMessageToken()
+        onBoardingVM.getDeviceId()
     }
 
     private fun startService() {

@@ -14,7 +14,7 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.app.domain.entity.wrapped.Event
 import com.app.extension.*
-import com.app.ui.sign_in.SignInActivity
+import com.app.ui.onBoarding.SignInActivity
 import org.koin.android.ext.android.inject
 import timber.log.Timber
 

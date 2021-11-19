@@ -8,20 +8,26 @@ import androidx.activity.addCallback
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.app.R
 import com.app.databinding.FragmentAccountBinding
+import com.app.domain.entity.FirebaseAuthResponse
 import com.app.extension.*
+import com.app.services.locations.LocationService
 import com.app.ui.base.BaseFragment
+import com.app.ui.base.hideLoader
+import com.app.ui.onBoarding.SignInActivity
 import com.app.ui.settings.adapter.AccountsAdapter
-import com.app.ui.sign_in.SignInActivity
 import com.app.utilities.Logout
 import com.app.utilities.Notification
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.app.vm.onboarding.OnBoardingVM
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
 
 class AccountFragment : BaseFragment(AppLayout.fragment_account) {
 
     private var _binding: FragmentAccountBinding? = null
     private val binding get() = _binding!!
+    private val onBoardingVM by viewModel<OnBoardingVM>()
+
 
     private val adapter by lazy {
         AccountsAdapter()
@@ -69,6 +75,7 @@ class AccountFragment : BaseFragment(AppLayout.fragment_account) {
 
 
     private fun setData() {
+        onBoardingVM.getUser()
         adapter.submitList(list)
         adapter.click { _, navigationDrawer ->
             when (navigationDrawer) {
@@ -76,9 +83,7 @@ class AccountFragment : BaseFragment(AppLayout.fragment_account) {
 
                 }
                 is Logout -> {
-                    userDataManager.logOut()
-                    startActivity<SignInActivity>()
-                    requireActivity().finishAffinity()
+                    onBoardingVM.signOut()
                 }
             }
         }
@@ -90,6 +95,49 @@ class AccountFragment : BaseFragment(AppLayout.fragment_account) {
     }
 
 
+    override fun observeLiveData() {
+        onBoardingVM.firebaseSignOutResponse.observe(viewLifecycleOwner, {
+            fragmentActivity?.hideLoader()
+            when (it) {
+                is FirebaseAuthResponse.Success -> {
+                    it.data.let { user ->
+                        Timber.d("signout message-->${user.signOut}")
+                        if (user.signOut == true) {
+                            stopService()
+                            userDataManager.logOut()
+                            startActivity<SignInActivity>()
+                            requireActivity().finishAffinity()
+                        }
+                    }
+                }
+                is FirebaseAuthResponse.Failure -> {
+                    binding.constraintLayout.snackBar(it.throwable.message)
+                }
+                else -> {
+                    binding.constraintLayout.snackBar(AppString.error_message)
+                }
+            }
+        })
 
+        onBoardingVM.firebaseGetUserResponse.observe(viewLifecycleOwner, {
+            fragmentActivity?.hideLoader()
+            when (it) {
+                is FirebaseAuthResponse.Success -> {
+                    it.data.let { user ->
+                        Timber.d("get user details-->${user.email}")
+                    }
+                }
+                is FirebaseAuthResponse.Failure -> {
+                    binding.constraintLayout.snackBar(it.throwable.message)
+                }
+                else -> {
+                    binding.constraintLayout.snackBar(AppString.error_message)
+                }
+            }
+        })
+    }
 
+    private fun stopService() {
+        context?.stopService(LocationService::class.java)
+    }
 }

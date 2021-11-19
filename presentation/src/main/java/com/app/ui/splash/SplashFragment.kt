@@ -10,7 +10,7 @@ import com.app.extension.AppLayout
 import com.app.extension.startActivity
 import com.app.ui.base.BaseFragment
 import com.app.ui.dashboard.DashboardActivity
-import com.app.ui.sign_in.SignInActivity
+import com.app.ui.onBoarding.SignInActivity
 import com.app.vm.splash.SplashVM
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect

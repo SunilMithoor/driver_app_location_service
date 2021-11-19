@@ -1,17 +1,17 @@
-package com.app.ui.splash
+package com.app.ui.onBoarding
 
 import android.os.Bundle
-import com.app.databinding.ActivitySplashBinding
+import com.app.databinding.ActivitySignUpBinding
 import com.app.extension.viewBinding
 import com.app.ui.base.BaseAppCompatActivity
-import com.app.vm.splash.SplashVM
+import com.app.vm.onboarding.OnBoardingVM
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class SplashActivity : BaseAppCompatActivity() {
-    private val binding by viewBinding(ActivitySplashBinding::inflate)
+class SignUpActivity : BaseAppCompatActivity() {
+    private val binding by viewBinding(ActivitySignUpBinding::inflate)
 
-    private val splashVM by viewModel<SplashVM>()
+    private val onBoardingVM by viewModel<OnBoardingVM>()
 
     override fun layout() = binding.root
 
