@@ -64,8 +64,8 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.0-RC2")
 
     /*** Coroutines ***/
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.1'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.4.1"
 
     /*** Logging ***/

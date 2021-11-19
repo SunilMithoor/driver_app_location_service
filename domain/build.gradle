@@ -57,7 +57,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.0-RC2")
 
     /*** Coroutines ***/
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2'
 
     /*** Logging ***/
     implementation 'com.jakewharton.timber:timber:4.7.1'
