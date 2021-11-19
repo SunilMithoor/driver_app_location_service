@@ -1,8 +1,8 @@
 package com.app.domain.interactor
 
-import com.app.domain.entity.LocationEntity
+
+import com.app.domain.entity.db.LocationEntity
 import com.app.domain.usecase.*
-import com.app.domain.util.OrderType
 
 class LocationServiceInteractor(
     private val insertLocationUseCase: InsertLocationUseCase,
@@ -20,7 +20,7 @@ class LocationServiceInteractor(
         getAllLocationUseCase.invoke()
     }
 
-    fun getLocationDataByCount(data:Int) {
+    fun getLocationDataByCount(data: Int) {
         getLocationByCountUseCase.invoke()
     }
 

@@ -1,9 +1,7 @@
 package com.app.domain.usecase
 
-import com.app.domain.entity.request.SignInRequest
 import com.app.domain.entity.response.base.Failure
 import com.app.domain.entity.wrapped.*
-import com.app.domain.entity.wrapped.EventResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -23,6 +21,8 @@ interface UseCase<P, R> : BaseUseCase<P, R> {
 interface BaseUseCase<P, R> {
 
     suspend fun onExecute(parameter: P?): Result<R>
+
+
     fun execute(
         scope: CoroutineScope,
         parameter: P? = null
@@ -35,6 +35,7 @@ interface BaseUseCase<P, R> {
             emit(Event(ResultError(Failure(e.getHTTPError()))))
         }
     }
+
 
     suspend fun executes(parameter: P? = null): Result<R> {
         return try {

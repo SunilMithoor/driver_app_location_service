@@ -9,13 +9,15 @@ import com.app.domain.extention.toJson
 import com.app.domain.manager.OnBoardingUpdateManager
 
 
-class SignInUseCase(private val signInUpdateManager: OnBoardingUpdateManager) :
+class SignInUseCase(private val onBoardingUpdateManager: OnBoardingUpdateManager) :
     UseCase<SignInRequest, SignInUpdate> {
 
     override suspend fun onExecute(parameter: SignInRequest?): Result<SignInUpdate> {
-        return signInUpdateManager.signInUpdate(parameter!!.toJson().fromJson()).toResult()
+        return onBoardingUpdateManager.signInUpdate(parameter!!.toJson().fromJson()).toResult()
     }
+
 }
+
 
 
 

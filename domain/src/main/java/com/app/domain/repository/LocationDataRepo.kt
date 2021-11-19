@@ -1,6 +1,6 @@
 package com.app.domain.repository
 
-import com.app.domain.entity.LocationEntity
+import com.app.domain.entity.db.LocationEntity
 import kotlinx.coroutines.flow.Flow
 
 

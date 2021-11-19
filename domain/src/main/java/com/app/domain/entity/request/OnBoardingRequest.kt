@@ -12,7 +12,7 @@ data class SignUpRequest(
     var confirmPassword: String
 )
 
-data class SignInFirebaseRequest(
+data class FirebaseRequest(
     var email: String,
     var password: String,
 )

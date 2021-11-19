@@ -1,6 +1,6 @@
 package com.app.domain.usecase
 
-import com.app.domain.entity.LocationEntity
+import com.app.domain.entity.db.LocationEntity
 import com.app.domain.repository.LocationDataRepo
 import com.app.domain.util.LocationOrder
 import com.app.domain.util.OrderType
