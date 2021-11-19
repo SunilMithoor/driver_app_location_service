@@ -55,11 +55,11 @@
         </activity>
 
         <activity
-            android:name="com.app.ui.sign_in.SignInActivity"
+            android:name=".ui.onBoarding.SignInActivity"
             android:exported="true" />
 
         <activity
-            android:name="com.app.ui.sign_up.SignUpActivity"
+            android:name=".ui.onBoarding.SignUpActivity"
             android:exported="true" />
 
         <activity
@@ -99,9 +99,9 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="${maps_api_key}" />
 
-<!--        <meta-data-->
-<!--            android:name="com.google.android.maps.v2.API_KEY"-->
-<!--            android:value="${maps_api_key}" />-->
+        <!--        <meta-data-->
+        <!--            android:name="com.google.android.maps.v2.API_KEY"-->
+        <!--            android:value="${maps_api_key}" />-->
 
         <meta-data
             android:name="com.google.android.gms.version"

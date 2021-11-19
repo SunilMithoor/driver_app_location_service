@@ -65,6 +65,8 @@ dependencies {
 
     /*** Coroutines ***/
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2'
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.4.1"
 
     /*** Logging ***/
     implementation 'com.jakewharton.timber:timber:4.7.1'
@@ -80,4 +82,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-dynamic-links:21.0.0'
     implementation 'com.google.firebase:firebase-messaging:23.0.0'
+    implementation 'com.google.firebase:firebase-firestore-ktx:24.0.0'
+
+
 }

@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/navSignIn"
-        android:name="com.app.ui.sign_in.SignInFragment"
+        android:name="com.app.ui.onBoarding.SignInFragment"
         android:label="SignInFragment"
         tools:layout="@layout/fragment_sign_in">
 
@@ -18,7 +18,7 @@
 
     <fragment
         android:id="@+id/forgotPasswordFragment"
-        android:name="com.app.ui.sign_in.ForgotPasswordFragment"
+        android:name="com.app.ui.onBoarding.ForgotPasswordFragment"
         android:label="ForgotPasswordFragment"
         tools:layout="@layout/fragment_forgot_password">
 

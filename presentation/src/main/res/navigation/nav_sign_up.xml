@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/navSignUp"
-        android:name="com.app.ui.sign_up.SignUpFragment"
+        android:name="com.app.ui.onBoarding.SignUpFragment"
         android:label="SignInFragment"
         tools:layout="@layout/fragment_sign_up" />
 
