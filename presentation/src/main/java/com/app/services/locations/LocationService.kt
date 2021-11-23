@@ -10,7 +10,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.lifecycleScope
 import com.app.domain.interactor.LocationServiceInteractor
 import com.app.domain.entity.db.LocationEntity
+import com.app.domain.entity.request.FirebaseDatabaseRequest
 import com.app.domain.extention.parseDate
+import com.app.domain.interactor.FirebaseDatabaseInteractor
 import com.app.domain.manager.UserPrefDataManager
 import com.app.extension.AppString
 import com.app.extension.getNotification
@@ -24,6 +26,8 @@ import com.app.utilities.FOREGROUND_SERVICE_ID
 import com.app.helpers.LocationUtil
 import com.app.utilities.CHANNEL_NOTIFICATION_ID
 import kotlinx.coroutines.launch
+import org.json.JSONArray
+import org.json.JSONObject
 import org.koin.android.ext.android.inject
 import timber.log.Timber
 
@@ -33,6 +37,7 @@ class LocationService : LifecycleService() {
     private val mBinder: IBinder = LocalBinder()
     private val userDataManager by inject<UserPrefDataManager>()
     private val locationServiceInteractor by inject<LocationServiceInteractor>()
+    private val firebaseDatabaseInteractor by inject<FirebaseDatabaseInteractor>()
     private var locationData: LiveData<Location>? = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -148,7 +153,10 @@ class LocationService : LifecycleService() {
                     )
                 )
             }
+            sendDataToDb(location)
         }
+
+
     }
 
     private fun getAllLocationData()
@@ -159,4 +167,24 @@ class LocationService : LifecycleService() {
     }
 
 
+    private fun sendDataToDb(location: Location)
+    {
+        val jsonArray=JSONArray()
+        val jsonObject=JSONObject()
+        jsonObject.put("latitude",location.latitude)
+        jsonObject.put("longitude",location.longitude)
+        jsonObject.put("speed",location.speed)
+        jsonObject.put("altitude",location.altitude)
+        jsonObject.put("accuracy",location.accuracy)
+        jsonObject.put("time",location.time.parseDate().toString())
+        jsonArray.put(jsonObject)
+        Timber.d("json location-->$jsonArray")
+        lifecycleScope.launch {
+            firebaseDatabaseInteractor.setDatabaseData(
+                FirebaseDatabaseRequest(
+                    jsonArray
+                )
+            )
+        }
+    }
 }

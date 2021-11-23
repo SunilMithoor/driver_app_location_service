@@ -13,3 +13,8 @@ sealed class FirebaseCallResponse<out T> {
     data class Failure<out T>(val throwable: Throwable) : FirebaseCallResponse<T>()
 }
 
+sealed class FirebaseDatabaseCallResponse<out T> {
+    data class Success<out T>(val data: T) : FirebaseDatabaseCallResponse<T>()
+    data class Failure<out T>(val throwable: Throwable) : FirebaseDatabaseCallResponse<T>()
+}
+

@@ -1,10 +1,12 @@
 package com.app.domain.usecase
 
 import com.app.domain.entity.FirebaseAuthResponse
+import com.app.domain.entity.request.FirebaseDatabaseRequest
 import com.app.domain.entity.request.FirebaseRequest
 import com.app.domain.entity.response.FireBaseAuthUser
 import com.app.domain.entity.response.FireBaseMessage
 import com.app.domain.manager.FirebaseUpdateManager
+import com.google.firebase.database.FirebaseDatabase
 
 
 class SignInFirebaseUseCase(
@@ -57,4 +59,12 @@ class DeviceIdFirebaseUseCase(
     private val firebaseUpdateManager: FirebaseUpdateManager
 ) {
     suspend operator fun invoke() = firebaseUpdateManager.getDeviceId()
+}
+
+
+class DatabaseFirebaseUseCase(
+    private val firebaseUpdateManager: FirebaseUpdateManager
+) {
+    suspend operator fun invoke(firebaseDatabaseRequest: FirebaseDatabaseRequest) =
+        firebaseUpdateManager.setDatabaseValue(firebaseDatabaseRequest)
 }

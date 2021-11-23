@@ -3,11 +3,10 @@ package com.app.data.repository
 import com.app.data.datasource.remote.firebase.auth.FirebaseAuthenticator
 import com.app.domain.entity.FirebaseAuthResponse
 import com.app.domain.entity.FirebaseCallResponse
+import com.app.domain.entity.FirebaseDatabaseCallResponse
+import com.app.domain.entity.request.FirebaseDatabaseRequest
 import com.app.domain.entity.request.FirebaseRequest
-import com.app.domain.entity.response.FireBaseAuthUser
-import com.app.domain.entity.response.FireBaseDeviceId
-import com.app.domain.entity.response.FireBaseMessage
-import com.app.domain.entity.response.FireBaseMessageToken
+import com.app.domain.entity.response.*
 import com.app.domain.repository.FirebaseDataRepo
 
 
@@ -38,6 +37,10 @@ class FirebaseRepoImpl(
 
     override suspend fun getMessageToken(): FirebaseCallResponse<FireBaseMessageToken>? =
         firebaseAuthenticator.getMessageToken()
+
+    override suspend fun setDatabaseValue(firebaseDatabaseRequest: FirebaseDatabaseRequest):
+            FirebaseDatabaseCallResponse<FireBaseDatabase>? =
+        firebaseAuthenticator.setDatabaseValue(firebaseDatabaseRequest)
 
 
 }

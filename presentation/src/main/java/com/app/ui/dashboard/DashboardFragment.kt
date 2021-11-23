@@ -16,7 +16,9 @@ import androidx.core.app.ActivityCompat
 import com.app.R
 import com.app.databinding.FragmentDashboardBinding
 import com.app.domain.entity.FirebaseCallResponse
+import com.app.domain.entity.FirebaseDatabaseCallResponse
 import com.app.domain.entity.db.LocationEntity
+import com.app.domain.entity.request.FirebaseDatabaseRequest
 import com.app.domain.extention.parseDate
 import com.app.extension.*
 import com.app.helpers.LocationUtil
@@ -35,13 +37,19 @@ import com.app.vm.permission.PermissionVM
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.mapbox.geojson.Point
+import com.mapbox.mapboxsdk.Mapbox
+import com.mapbox.mapboxsdk.maps.MapView
+import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.markodevcic.peko.PermissionResult
+import org.json.JSONArray
+import org.json.JSONObject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 
 class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard), OnMapReadyCallback,
-    GoogleMap.OnMapLoadedCallback {
+    GoogleMap.OnMapLoadedCallback{
 
     private var _binding: FragmentDashboardBinding? = null
     private val binding get() = _binding!!
@@ -115,6 +123,24 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard), OnMapReady
                     }
                 }
                 is FirebaseCallResponse.Failure -> {
+                    binding.constraintLayout.snackBar(it.throwable.message)
+                }
+                else -> {
+                    binding.constraintLayout.snackBar(AppString.error_message)
+                }
+            }
+        })
+
+        onBoardingVM.firebaseDatabaseResponse.observe(viewLifecycleOwner, {
+            fragmentActivity?.hideLoader()
+            Timber.d("FirebaseDatabaseResponse-->${it}")
+            when (it) {
+                is FirebaseDatabaseCallResponse.Success -> {
+                    it.data.let { data ->
+                        Timber.d("data sent-->${data.data}")
+                    }
+                }
+                is FirebaseDatabaseCallResponse.Failure -> {
                     binding.constraintLayout.snackBar(it.throwable.message)
                 }
                 else -> {
@@ -209,6 +235,7 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard), OnMapReady
         }
         onBoardingVM.getMessageToken()
         onBoardingVM.getDeviceId()
+
     }
 
     private fun startService() {
@@ -315,8 +342,25 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard), OnMapReady
         )
 //        animateCamera(mMap, location.latitude, location.longitude, 14F)
 
-//        locationVM.onEvent(LocationEvent.SaveLocation(location))
+        if (location != null) {
+//            sendDataToDb(location)
+        }
+    }
 
+
+
+    private fun sendDataToDb(location: Location) {
+        val jsonArray = JSONArray()
+        val jsonObject = JSONObject()
+        jsonObject.put("latitude", location.latitude)
+        jsonObject.put("longitude", location.longitude)
+        jsonObject.put("speed", location.speed)
+        jsonObject.put("altitude", location.altitude)
+        jsonObject.put("accuracy", location.accuracy)
+        jsonObject.put("time", location.time.parseDate().toString())
+        jsonArray.put(jsonObject)
+        Timber.d("json location-->$jsonArray")
+        onBoardingVM.setDatabaseData(FirebaseDatabaseRequest(jsonArray))
     }
 
     private fun locationData() {
@@ -402,5 +446,6 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard), OnMapReady
 //            setLocationResult(it)
 //        })
 //    }
+
 
 }

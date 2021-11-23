@@ -2,7 +2,10 @@ package com.app.domain.manager
 
 import com.app.domain.entity.FirebaseAuthResponse
 import com.app.domain.entity.FirebaseCallResponse
+import com.app.domain.entity.FirebaseDatabaseCallResponse
+import com.app.domain.entity.request.FirebaseDatabaseRequest
 import com.app.domain.entity.request.FirebaseRequest
+import com.app.domain.entity.response.FireBaseDatabase
 import com.app.domain.entity.response.FireBaseDeviceId
 import com.app.domain.entity.response.FireBaseMessageToken
 import com.app.domain.repository.FirebaseDataRepo
@@ -35,5 +38,9 @@ class FirebaseUpdateManager(
 
     override suspend fun getMessageToken(): FirebaseCallResponse<FireBaseMessageToken>? =
         firebaseDataRepo.getMessageToken()
+
+    override suspend fun setDatabaseValue(firebaseDatabaseRequest: FirebaseDatabaseRequest):
+            FirebaseDatabaseCallResponse<FireBaseDatabase>? =
+        firebaseDataRepo.setDatabaseValue(firebaseDatabaseRequest)
 }
 

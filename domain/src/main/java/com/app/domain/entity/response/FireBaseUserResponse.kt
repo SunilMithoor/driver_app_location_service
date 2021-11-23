@@ -31,3 +31,9 @@ data class FireBaseDeviceId(
 data class FireBaseMessage(
     val signOut: Boolean?,
 ) : Parcelable
+
+
+@Parcelize
+data class FireBaseDatabase(
+    val data: String?,
+) : Parcelable

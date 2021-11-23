@@ -5,12 +5,11 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
 import com.app.domain.entity.FirebaseAuthResponse
 import com.app.domain.entity.FirebaseCallResponse
+import com.app.domain.entity.FirebaseDatabaseCallResponse
+import com.app.domain.entity.request.FirebaseDatabaseRequest
 import com.app.domain.entity.request.FirebaseRequest
 import com.app.domain.entity.request.SignInRequest
-import com.app.domain.entity.response.FireBaseAuthUser
-import com.app.domain.entity.response.FireBaseDeviceId
-import com.app.domain.entity.response.FireBaseMessage
-import com.app.domain.entity.response.FireBaseMessageToken
+import com.app.domain.entity.response.*
 import com.app.domain.usecase.*
 import com.app.vm.BaseVM
 import com.app.vm.OnSignInUpdateEvent
@@ -26,7 +25,8 @@ class OnBoardingVM(
     private val signOutFirebaseUseCase: SignOutFirebaseUseCase,
     private val resetPasswordFirebaseUseCase: ResetPasswordFirebaseUseCase,
     private val messageTokenFirebaseUseCase: MessageTokenFirebaseUseCase,
-    private val deviceIdFirebaseUseCase: DeviceIdFirebaseUseCase
+    private val deviceIdFirebaseUseCase: DeviceIdFirebaseUseCase,
+    private val databaseFirebaseUseCase: DatabaseFirebaseUseCase
 
 ) : BaseVM() {
 
@@ -58,6 +58,10 @@ class OnBoardingVM(
     private val _firebaseDeviceIdResponse =
         MutableLiveData<FirebaseCallResponse<FireBaseDeviceId>?>()
     val firebaseDeviceIdResponse get() = _firebaseDeviceIdResponse
+
+    private val _firebaseDatabaseResponse =
+        MutableLiveData<FirebaseDatabaseCallResponse<FireBaseDatabase>?>()
+    val firebaseDatabaseResponse get() = _firebaseDatabaseResponse
 
 
     override fun onAction(event: UserEvent) {
@@ -194,6 +198,11 @@ class OnBoardingVM(
     fun getDeviceId() =
         viewModelScope.launch {
             _firebaseDeviceIdResponse.postValue(deviceIdFirebaseUseCase.invoke())
+        }
+
+    fun setDatabaseData(firebaseDatabaseRequest: FirebaseDatabaseRequest) =
+        viewModelScope.launch {
+            _firebaseDatabaseResponse.postValue(databaseFirebaseUseCase.invoke(firebaseDatabaseRequest))
         }
 
 }

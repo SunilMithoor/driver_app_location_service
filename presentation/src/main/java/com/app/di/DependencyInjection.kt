@@ -13,6 +13,7 @@ import com.app.BuildConfig
 import com.app.data.datasource.db.AppDatabase
 import com.app.data.datasource.remote.firebase.auth.FirebaseAuthCall
 import com.app.data.datasource.remote.firebase.auth.FirebaseAuthenticator
+import com.app.data.datasource.remote.firebase.database.FireBaseDatabaseCall
 import com.app.data.datasource.remote.firebase.deviceid.FirebaseDeviceIdCall
 import com.app.data.datasource.remote.firebase.message.FirebaseMessageCall
 import com.app.data.datasource.remote.retrofit.OnBoardingApi
@@ -22,6 +23,7 @@ import com.app.data.repository.LocationRepoImpl
 import com.app.data.repository.OnBoardingRepoImpl
 import com.app.data.repository.UserDataRepoImpl
 import com.app.domain.entity.wrapped.Event
+import com.app.domain.interactor.FirebaseDatabaseInteractor
 import com.app.domain.interactor.LocationServiceInteractor
 import com.app.domain.manager.FirebaseUpdateManager
 import com.app.domain.manager.OnBoardingUpdateManager
@@ -48,7 +50,7 @@ fun dependency() = listOf(
 )
 
 val vm = module {
-    viewModel { OnBoardingVM(get(), get(), get(), get(), get(), get(), get(), get()) }
+    viewModel { OnBoardingVM(get(), get(), get(), get(), get(), get(), get(), get(),get()) }
     viewModel { PermissionVM() }
     viewModel { LocationVM(get(), get(), get(), get(), get()) }
     single { SharedVM() }
@@ -67,6 +69,7 @@ val useCases = module {
     factory { GetLocationByCountUseCase(get()) }
     factory { DeleteAllLocationUseCase(get()) }
     factory { DeleteLocationByCountUseCase(get()) }
+    factory { DatabaseFirebaseUseCase(get()) }
 }
 val manager = module {
     single { UserPrefDataManager(get()) }
@@ -88,13 +91,15 @@ val dataBase = module {
 }
 val serviceInteractor = module {
     single { LocationServiceInteractor(get(), get(), get(), get(), get()) }
+    single { FirebaseDatabaseInteractor(get()) }
 }
 
 val fireBase = module {
     single { FirebaseAuthCall() }
     single { FirebaseMessageCall() }
     single { FirebaseDeviceIdCall() }
-    single { FirebaseAuthenticator(get(), get(), get()) }
+    single { FireBaseDatabaseCall() }
+    single { FirebaseAuthenticator(get(), get(), get(), get()) }
 }
 
 val singleInstance = module {
