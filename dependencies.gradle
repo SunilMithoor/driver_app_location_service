@@ -123,5 +123,9 @@ dependencies {
     /*** Work Manager ***/
     implementation "androidx.work:work-runtime-ktx:2.7.1"
 
+    /*** Map Box ***/
+//    implementation 'com.mapbox.maps:android:10.1.0'
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:8.3.0'
+
 
 }

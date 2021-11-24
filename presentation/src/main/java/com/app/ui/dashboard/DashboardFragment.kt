@@ -13,7 +13,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
-import com.app.R
 import com.app.databinding.FragmentDashboardBinding
 import com.app.domain.entity.FirebaseCallResponse
 import com.app.domain.entity.FirebaseDatabaseCallResponse
@@ -37,10 +36,11 @@ import com.app.vm.permission.PermissionVM
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.mapbox.geojson.Point
-import com.mapbox.mapboxsdk.Mapbox
+import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
+import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.maps.MapView
 import com.mapbox.mapboxsdk.maps.MapboxMap
+import com.mapbox.mapboxsdk.maps.Style
 import com.markodevcic.peko.PermissionResult
 import org.json.JSONArray
 import org.json.JSONObject
@@ -49,7 +49,7 @@ import timber.log.Timber
 
 
 class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard), OnMapReadyCallback,
-    GoogleMap.OnMapLoadedCallback{
+    GoogleMap.OnMapLoadedCallback {
 
     private var _binding: FragmentDashboardBinding? = null
     private val binding get() = _binding!!
@@ -59,13 +59,15 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard), OnMapReady
     private val locationVM by viewModel<LocationVM>()
     private val dashboardVM by viewModel<DashboardVM>()
     private val onBoardingVM by viewModel<OnBoardingVM>()
-
+    var mapView: MapView? = null
+    var mapboxMap: MapboxMap? = null
 
     //    private var isGPSEnabled = false
 
 
     override fun onCreate(view: View) {
         activityCompat.hideSupportActionBar()
+//        Mapbox.getInstance(requireActivity(), getString(AppString.access_token))
     }
 
 
@@ -74,14 +76,18 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard), OnMapReady
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        context?.getToken()
         super.onCreateView(inflater, container, savedInstanceState)
         _binding = _binding ?: FragmentDashboardBinding.inflate(inflater, container, false)
+        mapView = binding.mapbox
+        mapView?.onCreate(savedInstanceState)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initMapFragment()
+        initMapBox()
         initialize()
     }
 
@@ -89,6 +95,7 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard), OnMapReady
         super.onDestroyView()
         _binding = null
     }
+
 
     override fun observeLiveData() {
         permissionVM.permissionLiveData.observe(this, {
@@ -178,6 +185,7 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard), OnMapReady
         super.onResume()
         appOverlayPermission()
         locationData()
+        mapView?.onResume()
     }
 
 
@@ -279,7 +287,7 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard), OnMapReady
                     Manifest.permission.ACCESS_BACKGROUND_LOCATION
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
-                context?.alert(R.style.Dialog_Alert) {
+                context?.alert(com.app.R.style.Dialog_Alert) {
                     setCancelable(false)
                     setTitle(AppString.permissions_required)
                     setMessage(AppString.background_location_msg_alert)
@@ -344,9 +352,9 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard), OnMapReady
 
         if (location != null) {
 //            sendDataToDb(location)
+            moveCamera(location)
         }
     }
-
 
 
     private fun sendDataToDb(location: Location) {
@@ -387,14 +395,25 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard), OnMapReady
             mapFragment = SupportMapFragment.newInstance()
             mapFragment!!.getMapAsync(this)
         }
-        childFragmentManager.beginTransaction().replace(R.id.map, mapFragment!!).commit()
+        childFragmentManager.beginTransaction().replace(com.app.R.id.map, mapFragment!!).commit()
+    }
+
+    private fun initMapBox() {
+        mapView?.getMapAsync { map ->
+            // Set one of the many styles available
+            mapboxMap = map
+            mapboxMap?.setStyle(Style.OUTDOORS) { style ->
+                // Style.MAPBOX_STREETS | Style.SATELLITE etc...
+            }
+            setMapBox(mapboxMap)
+        }
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
         Timber.d("onMapReady called")
         mMap = googleMap
         fragmentActivity?.setMapStyle(mMap)
-        setGoogleMap(mMap!!)
+        setGoogleMap(mMap)
         mMap!!.setOnMapLoadedCallback(this)
     }
 
@@ -447,5 +466,44 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard), OnMapReady
 //        })
 //    }
 
+    override fun onStart() {
+        super.onStart()
+        mapView?.onStart()
+    }
 
+    override fun onPause() {
+        super.onPause()
+        mapView?.onPause()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        mapView?.onStop()
+    }
+
+    override fun onLowMemory() {
+        super.onLowMemory()
+        mapView?.onLowMemory()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mapView?.onDestroy()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        mapView?.onSaveInstanceState(outState)
+    }
+
+
+//    private fun getToken() {
+//        Mapbox.getInstance(requireActivity(), getString(AppString.access_token))
+//    }
+
+    private fun moveCamera(location: Location) {
+        mapboxMap?.moveCamera(
+            CameraUpdateFactory.newLatLngZoom(LatLng(location.latitude, location.longitude), 12.0)
+        )
+    }
 }

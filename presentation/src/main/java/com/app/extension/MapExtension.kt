@@ -35,17 +35,17 @@ fun zoomRoute(googleMap: GoogleMap?, lstLatLngRoute: List<LatLng?>?, padding: In
 }
 
 
-fun setGoogleMap(googleMap: GoogleMap): GoogleMap {
-    googleMap.mapType = GoogleMap.MAP_TYPE_NORMAL
+fun setGoogleMap(googleMap: GoogleMap?): GoogleMap? {
+    googleMap?.mapType = GoogleMap.MAP_TYPE_NORMAL
     // Enable / Disable zooming controls
-    googleMap.uiSettings.isMyLocationButtonEnabled = true
-    googleMap.uiSettings.isMapToolbarEnabled = false
-    googleMap.uiSettings.isCompassEnabled = true
-    googleMap.uiSettings.isTiltGesturesEnabled = true
-    googleMap.uiSettings.isRotateGesturesEnabled = true
-    googleMap.uiSettings.isScrollGesturesEnabled = true
-    googleMap.uiSettings.isZoomControlsEnabled = false
-    googleMap.uiSettings.isZoomGesturesEnabled = true
+    googleMap?.uiSettings?.isMyLocationButtonEnabled = true
+    googleMap?.uiSettings?.isMapToolbarEnabled = false
+    googleMap?.uiSettings?.isCompassEnabled = true
+    googleMap?.uiSettings?.isTiltGesturesEnabled = true
+    googleMap?.uiSettings?.isRotateGesturesEnabled = true
+    googleMap?.uiSettings?.isScrollGesturesEnabled = true
+    googleMap?.uiSettings?.isZoomControlsEnabled = false
+    googleMap?.uiSettings?.isZoomGesturesEnabled = true
     return googleMap
 }
 

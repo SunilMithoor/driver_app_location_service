@@ -27,23 +27,36 @@ allprojects {
         jcenter()
         mavenCentral()
         maven { url "https://jitpack.io" }
+        maven {
+            url 'https://api.mapbox.com/downloads/v2/releases/maven'
+//            authentication {
+//                basic(BasicAuthentication)
+            }
+//            credentials {
+//                // Do not change the username below.
+//                // This should always be `mapbox` (not your username).
+//                username = 'mapbox'
+//                // Use the secret token you stored in gradle.properties as the password
+//                password = project.properties[localProperties.getProperty("map_box_api_key")] ?: ""
+//            }
+        }
     }
-}
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
-}
+    task clean(type: Delete) {
+        delete rootProject.buildDir
+    }
 
-ext {
-    /** Change once per release cycle **/
-    versionMajor = 1 // increase in case of very significant features/design/concept is introduced
-    versionMinor = 0 // increase in case of new features/screens introduced
-    versionPatch = 0 // increase in case of  bug fixes and very minor change
-    versionCode = 1 // increase in case of all above scenarios(i.e. next version changes)
-    buildNum = 1 // increase in case of improvised QA drop for same set of changes
+    ext {
+        /** Change once per release cycle **/
+        versionMajor = 1
+        // increase in case of very significant features/design/concept is introduced
+        versionMinor = 0 // increase in case of new features/screens introduced
+        versionPatch = 0 // increase in case of  bug fixes and very minor change
+        versionCode = 1 // increase in case of all above scenarios(i.e. next version changes)
+        buildNum = 1 // increase in case of improvised QA drop for same set of changes
 
-    /** Change once per QA cycle **/
-    versionName = "${rootProject.ext.versionMajor}.${rootProject.ext.versionMinor}.${rootProject.ext.versionPatch}"
-    releaseNoteLink = ""
+        /** Change once per QA cycle **/
+        versionName = "${rootProject.ext.versionMajor}.${rootProject.ext.versionMinor}.${rootProject.ext.versionPatch}"
+        releaseNoteLink = ""
 
-}
+    }

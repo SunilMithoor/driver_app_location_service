@@ -119,4 +119,6 @@
     <string name="service_state_stopped">Start</string>
 
 
+    <string name="access_token">sk.eyJ1Ijoic3VuaWwtbWl0aG9vciIsImEiOiJja3dhbTBoN3kxM2E3Mm5xbWh0Y2poa2U2In0.lF28c8mBdgvfs06ram8sog</string>
+
 </resources>
