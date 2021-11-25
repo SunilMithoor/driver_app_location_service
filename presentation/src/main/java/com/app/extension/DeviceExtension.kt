@@ -1,12 +1,23 @@
 package com.app.extension
 
 import android.content.Context
+import android.content.Context.CONNECTIVITY_SERVICE
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.os.BatteryManager
 import android.os.Build
 import android.text.TextUtils
+import android.net.NetworkInfo
+
+import androidx.core.content.ContextCompat.getSystemService
+
+import android.net.ConnectivityManager
+import android.widget.Toast
+
+import android.R
+import android.net.Network
+
 
 fun Context.restartApplication(myClass: Class<*>?) {
     try {
@@ -144,4 +155,16 @@ fun Context.batteryLevel(): Int {
         return level * 100 / scale
     }
     return 0
+}
+
+
+
+fun Context.isNetworkConnected(): Boolean {
+    val manager = getSystemService(CONNECTIVITY_SERVICE) as? ConnectivityManager
+    val allNetworks = manager?.allNetworks ?: return false
+    allNetworks.forEach { network ->
+        val info = manager.getNetworkInfo(network)
+        if (info?.state == NetworkInfo.State.CONNECTED) return true
+    }
+    return false
 }

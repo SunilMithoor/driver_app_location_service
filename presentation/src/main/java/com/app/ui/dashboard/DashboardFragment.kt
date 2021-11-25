@@ -28,19 +28,18 @@ import com.app.ui.base.BaseFragment
 import com.app.ui.base.hideLoader
 import com.app.ui.splash.SplashActivity
 import com.app.utilities.APP_OVERLAY_REQUEST_CODE
+import com.app.utilities.CAMERA_ZOOM_4
+import com.app.utilities.Locations
 import com.app.utilities.PERMISSION_REQUEST_CODE
 import com.app.vm.dashboard.DashboardVM
 import com.app.vm.location.LocationVM
 import com.app.vm.onboarding.OnBoardingVM
 import com.app.vm.permission.PermissionVM
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
-import com.mapbox.mapboxsdk.camera.CameraUpdateFactory
-import com.mapbox.mapboxsdk.geometry.LatLng
-import com.mapbox.mapboxsdk.maps.MapView
-import com.mapbox.mapboxsdk.maps.MapboxMap
-import com.mapbox.mapboxsdk.maps.Style
+import com.mapbox.maps.MapView
+import com.mapbox.maps.MapboxMap
+import com.mapbox.maps.Style
+import com.mapbox.maps.plugin.gestures.gestures
+import com.mapbox.maps.plugin.locationcomponent.location
 import com.markodevcic.peko.PermissionResult
 import org.json.JSONArray
 import org.json.JSONObject
@@ -48,26 +47,23 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 
-class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard), OnMapReadyCallback,
-    GoogleMap.OnMapLoadedCallback {
+class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard) {
 
     private var _binding: FragmentDashboardBinding? = null
     private val binding get() = _binding!!
-    private var mapFragment: SupportMapFragment? = null
-    private var mMap: GoogleMap? = null
     private val permissionVM by viewModel<PermissionVM>()
     private val locationVM by viewModel<LocationVM>()
     private val dashboardVM by viewModel<DashboardVM>()
     private val onBoardingVM by viewModel<OnBoardingVM>()
-    var mapView: MapView? = null
-    var mapboxMap: MapboxMap? = null
+    private var mapView: MapView? = null
+    private var mapboxMap: MapboxMap? = null
 
     //    private var isGPSEnabled = false
+    var prevLocation: Location? = null
 
 
     override fun onCreate(view: View) {
         activityCompat.hideSupportActionBar()
-//        Mapbox.getInstance(requireActivity(), getString(AppString.access_token))
     }
 
 
@@ -76,18 +72,26 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard), OnMapReady
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        context?.getToken()
         super.onCreateView(inflater, container, savedInstanceState)
         _binding = _binding ?: FragmentDashboardBinding.inflate(inflater, container, false)
         mapView = binding.mapbox
-        mapView?.onCreate(savedInstanceState)
+        mapboxMap = binding.mapbox.getMapboxMap()
+
+        mapboxMap?.loadStyleUri(
+            Style.MAPBOX_STREETS
+        ) {
+            context?.initLocationComponent(mapView)
+//            context?.updateSettings(mapView)
+            mapView?.location?.updateSettings {
+                enabled = true
+                pulsingEnabled = true
+            }
+        }
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initMapFragment()
-        initMapBox()
         initialize()
     }
 
@@ -158,11 +162,9 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard), OnMapReady
     }
 
     private fun observeLocationUpdates() {
-        if (userDataManager.isDuty) {
-            locationVM.getLocationData.observe(this, {
-                setLocationResult(it)
-            })
-        }
+        locationVM.getLocationData.observe(this, {
+            setLocationResult(it)
+        })
     }
 
     private fun checkLocationOn() {
@@ -185,7 +187,6 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard), OnMapReady
         super.onResume()
         appOverlayPermission()
         locationData()
-        mapView?.onResume()
     }
 
 
@@ -209,21 +210,9 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard), OnMapReady
             }
         }
         setData()
+
+//        addAnnotationToMap()
     }
-
-
-//     private fun call() {
-//        lifecycleScope.launch {
-//            flow {
-//                delay(5000)
-//                emit(true)
-//            }.collect {
-//                fragmentActivity?.showLoader()
-////                onBoardingVM.getMessageToken()
-//                onBoardingVM.getDeviceId()
-//            }
-//        }
-//    }
 
 
     private fun setData() {
@@ -346,13 +335,18 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard), OnMapReady
         Timber.d(
             "Dash Location-->${location.latitude},${location.longitude},${
                 location.time.parseDate().toString()
-            }"
+            },${location.accuracy},${location.altitude}"
         )
-//        animateCamera(mMap, location.latitude, location.longitude, 14F)
 
         if (location != null) {
 //            sendDataToDb(location)
-            moveCamera(location)
+            if (isValidLocation(location)) {
+                Timber.d("valid location")
+                animateCamera(location)
+                prevLocation = location
+            } else {
+                Timber.d("invalid location")
+            }
         }
     }
 
@@ -389,38 +383,6 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard), OnMapReady
 //        }
 //    }
 
-
-    private fun initMapFragment() {
-        if (mapFragment == null) {
-            mapFragment = SupportMapFragment.newInstance()
-            mapFragment!!.getMapAsync(this)
-        }
-        childFragmentManager.beginTransaction().replace(com.app.R.id.map, mapFragment!!).commit()
-    }
-
-    private fun initMapBox() {
-        mapView?.getMapAsync { map ->
-            // Set one of the many styles available
-            mapboxMap = map
-            mapboxMap?.setStyle(Style.OUTDOORS) { style ->
-                // Style.MAPBOX_STREETS | Style.SATELLITE etc...
-            }
-            setMapBox(mapboxMap)
-        }
-    }
-
-    override fun onMapReady(googleMap: GoogleMap) {
-        Timber.d("onMapReady called")
-        mMap = googleMap
-        fragmentActivity?.setMapStyle(mMap)
-        setGoogleMap(mMap)
-        mMap!!.setOnMapLoadedCallback(this)
-    }
-
-    override fun onMapLoaded() {
-        Timber.d("onMapLoaded called")
-        setDefaultMap(mMap)
-    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -466,44 +428,37 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard), OnMapReady
 //        })
 //    }
 
-    override fun onStart() {
-        super.onStart()
-        mapView?.onStart()
-    }
 
-    override fun onPause() {
-        super.onPause()
-        mapView?.onPause()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        mapView?.onStop()
-    }
-
-    override fun onLowMemory() {
-        super.onLowMemory()
-        mapView?.onLowMemory()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        mapView?.onDestroy()
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        mapView?.onSaveInstanceState(outState)
+    private fun animateCamera(location: Location) {
+        animateCamera(mapboxMap, location, CAMERA_ZOOM_4)
+        mapView?.gestures?.focalPoint = getPixelForCoordinate(mapboxMap, location)
     }
 
 
-//    private fun getToken() {
-//        Mapbox.getInstance(requireActivity(), getString(AppString.access_token))
+//    private fun isValidLocation(prevLocation: Location?,curLocation: Location?): Boolean {
+//        return if (curLocation?.accuracy!! <= Locations.LOCATION_ACCURACY) {
+//            if (prevLocation != null) {
+//                val locationAccuracy = prevLocation?.accuracy + curLocation?.accuracy
+//                locationAccuracy < prevLocation?.distanceTo(curLocation)
+//            } else {
+//                true
+//            }
+//        } else {
+//            false
+//        }
 //    }
 
-    private fun moveCamera(location: Location) {
-        mapboxMap?.moveCamera(
-            CameraUpdateFactory.newLatLngZoom(LatLng(location.latitude, location.longitude), 12.0)
-        )
+
+    private fun isValidLocation(location: Location?): Boolean {
+        return if (location?.accuracy!! <= Locations.LOCATION_ACCURACY) {
+            if (prevLocation != null) {
+                val locationAccuracy = prevLocation?.accuracy!! + location.accuracy
+                locationAccuracy < prevLocation?.distanceTo(location)!!
+            } else {
+                true
+            }
+        } else {
+            false
+        }
     }
 }

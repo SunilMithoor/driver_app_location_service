@@ -2,7 +2,6 @@ package com.app.ui.base
 
 import androidx.multidex.MultiDexApplication
 import com.app.BuildConfig
-import com.google.android.libraries.places.api.Places
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import timber.log.Timber
 

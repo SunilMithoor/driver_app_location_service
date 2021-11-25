@@ -19,6 +19,8 @@ const val URL_GOOGLE_API =
 //Map Zoom,Padding
 const val CAMERA_ZOOM_1 = 14F
 const val CAMERA_ZOOM_2 = 17F
+const val CAMERA_ZOOM_3 = 12.0
+const val CAMERA_ZOOM_4 = 16.0
 const val CLUSTER_ZOOM_1 = 17F
 const val CLUSTER_ZOOM_2 = 20F
 const val MAP_PADDING = 100
@@ -46,6 +48,9 @@ object Notifications {
     const val LOCATION_SERVICE_NOTIFICATION = "LOCATION_SERVICE_NOTIFICATION"
     const val LOCATION_SERVICE = "LOCATION_SERVICE"
 }
+
+const val DEFAULT_LAT = 12.97194
+const val DEFAULT_LNG = 77.59369
 
 object Locations {
     var LOCATION_ACCURACY = 30

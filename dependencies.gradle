@@ -78,9 +78,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-dynamic-links:21.0.0'
 
     /*** Location ***/
-    implementation 'com.google.android.libraries.places:places:2.5.0'
-    implementation 'com.patloew.colocation:colocation:1.1.0'
-    implementation 'com.google.android.libraries.places:places:2.5.0'
     implementation 'com.google.android.gms:play-services-location:18.0.0'
 
     /*** Paging ***/
@@ -106,7 +103,7 @@ dependencies {
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
 
     /*** Bottom Navigation ***/
-    implementation  'io.ak1:bubbletabbar:1.0.8'
+    implementation 'io.ak1:bubbletabbar:1.0.8'
 
     /*** Toggle Switch ***/
     implementation 'com.github.angads25:toggle:1.1.0'
@@ -124,8 +121,11 @@ dependencies {
     implementation "androidx.work:work-runtime-ktx:2.7.1"
 
     /*** Map Box ***/
+//    implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:8.3.0'
 //    implementation 'com.mapbox.maps:android:10.1.0'
-    implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:8.3.0'
 
+    implementation ('com.mapbox.maps:android:10.1.0'){
+        exclude group: 'group_name', module: 'module_name'
+    }
 
 }

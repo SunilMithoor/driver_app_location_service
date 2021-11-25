@@ -17,9 +17,9 @@ fun Context.isNetworkAvailable(): Boolean {
                 actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
                 actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
                 //for other device how are able to connect with Ethernet
-                //            actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+//                actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
                 //for check internet over Bluetooth
-                //            actNw.hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH) -> true
+//                actNw.hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH) -> true
                 else -> false
             }
         } else {

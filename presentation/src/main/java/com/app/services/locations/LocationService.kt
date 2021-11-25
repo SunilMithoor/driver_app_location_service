@@ -8,23 +8,17 @@ import android.os.IBinder
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.lifecycleScope
-import com.app.domain.interactor.LocationServiceInteractor
 import com.app.domain.entity.db.LocationEntity
 import com.app.domain.entity.request.FirebaseDatabaseRequest
 import com.app.domain.extention.parseDate
 import com.app.domain.interactor.FirebaseDatabaseInteractor
+import com.app.domain.interactor.LocationServiceInteractor
 import com.app.domain.manager.UserPrefDataManager
-import com.app.extension.AppString
-import com.app.extension.getNotification
-import com.app.extension.isLocationPermissionsGranted
-import com.app.extension.resString
+import com.app.extension.*
+import com.app.helpers.LocationUtil
 import com.app.interfaces.OnLocationOnListener
 import com.app.notifications.NotificationHelper
-import com.app.utilities.CHANNEL_ID
-import com.app.utilities.CHANNEL_NAME
-import com.app.utilities.FOREGROUND_SERVICE_ID
-import com.app.helpers.LocationUtil
-import com.app.utilities.CHANNEL_NOTIFICATION_ID
+import com.app.utilities.*
 import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONObject
@@ -39,6 +33,10 @@ class LocationService : LifecycleService() {
     private val locationServiceInteractor by inject<LocationServiceInteractor>()
     private val firebaseDatabaseInteractor by inject<FirebaseDatabaseInteractor>()
     private var locationData: LiveData<Location>? = null
+    private var prevLocation: Location? = null
+    private var signalStrengthService: SignalStrengthService? = null
+    private var signalStrength = 0
+    private var batteryStrength = 0
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
@@ -51,6 +49,13 @@ class LocationService : LifecycleService() {
         super.onCreate()
         locationData = LocationLiveData(this)
         checkLocationOn()
+        if (signalStrengthService == null) {
+            signalStrengthService = SignalStrengthService(this)
+        }
+        signalStrengthService?.listenToSignalStrengthChanges()
+        signalStrengthService?.listenSignalStrengths {
+            signalStrength = it
+        }
     }
 
 
@@ -92,7 +97,6 @@ class LocationService : LifecycleService() {
 //        startForeground(CHANNEL_NOTIFICATION_ID, getNotification())
         return true // Ensures onRebind() is called when a client re-binds.
     }
-
 
 
     private fun checkLocationOn() {
@@ -138,45 +142,53 @@ class LocationService : LifecycleService() {
         )
 
         if (location != null) {
-            lifecycleScope.launch {
-                locationServiceInteractor.insertLocationData(
-                    LocationEntity(
-                        null,
-                        time = location.time.parseDate().toString(),
-                        latitude = location.latitude,
-                        longitude = location.longitude,
-                        accuracy = location.accuracy,
-                        altitude = location.altitude,
-                        speed = location.speed,
-                        bearing = location.bearing,
-                        provider = location.provider
+
+            if (isValidLocation(location)) {
+                batteryStrength = this.batteryLevel()
+                Timber.d("Distance betw-->${prevLocation?.distanceTo(location)}")
+                Timber.d("Battery -->${batteryStrength}")
+                Timber.d("Signal -->${signalStrength}")
+
+                lifecycleScope.launch {
+                    locationServiceInteractor.insertLocationData(
+                        LocationEntity(
+                            null,
+                            time = location.time.parseDate().toString(),
+                            latitude = location.latitude,
+                            longitude = location.longitude,
+                            accuracy = location.accuracy,
+                            altitude = location.altitude,
+                            speed = location.speed,
+                            bearing = location.bearing,
+                            provider = location.provider
+                        )
                     )
-                )
+                }
+
+                prevLocation = location
+                sendDataToDb(location)
+
+
             }
-            sendDataToDb(location)
         }
-
-
     }
 
-    private fun getAllLocationData()
-    {
+    private fun getAllLocationData() {
         lifecycleScope.launch {
             locationServiceInteractor.getAllLocationData()
         }
     }
 
 
-    private fun sendDataToDb(location: Location)
-    {
-        val jsonArray=JSONArray()
-        val jsonObject=JSONObject()
-        jsonObject.put("latitude",location.latitude)
-        jsonObject.put("longitude",location.longitude)
-        jsonObject.put("speed",location.speed)
-        jsonObject.put("altitude",location.altitude)
-        jsonObject.put("accuracy",location.accuracy)
-        jsonObject.put("time",location.time.parseDate().toString())
+    private fun sendDataToDb(location: Location) {
+        val jsonArray = JSONArray()
+        val jsonObject = JSONObject()
+        jsonObject.put("latitude", location.latitude)
+        jsonObject.put("longitude", location.longitude)
+        jsonObject.put("speed", location.speed)
+        jsonObject.put("altitude", location.altitude)
+        jsonObject.put("accuracy", location.accuracy)
+        jsonObject.put("time", location.time.parseDate().toString())
         jsonArray.put(jsonObject)
         Timber.d("json location-->$jsonArray")
         lifecycleScope.launch {
@@ -186,5 +198,23 @@ class LocationService : LifecycleService() {
                 )
             )
         }
+    }
+
+    private fun isValidLocation(location: Location?): Boolean {
+        return if (location?.accuracy!! <= Locations.LOCATION_ACCURACY) {
+            if (prevLocation != null) {
+                val locationAccuracy = prevLocation?.accuracy!! + location.accuracy
+                locationAccuracy < prevLocation?.distanceTo(location)!!
+            } else {
+                true
+            }
+        } else {
+            false
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        signalStrengthService = null
     }
 }
