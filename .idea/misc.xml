@@ -95,9 +95,11 @@
         <entry key="..\:/Gitlab Projects/Github/app/presentation/src/main/res/menu/bubble_menu_list.xml" value="0.25416666666666665" />
         <entry key="..\:/Gitlab Projects/Github/app/presentation/src/main/res/mipmap-anydpi-v26/ic_launcher_icon.xml" value="0.2703125" />
         <entry key="..\:/Gitlab Projects/Github/app/src/main/res/layout/activity_dashboard.xml" value="0.12360688956433637" />
+        <entry key="..\:/Gitlab Projects/Github/apps/driver_app_location_service/presentation/src/main/res/layout/activity_dashboard.xml" value="0.25416666666666665" />
         <entry key="..\:/Gitlab Projects/Github/apps/driver_app_location_service/presentation/src/main/res/layout/fragment_account.xml" value="0.13020833333333334" />
         <entry key="..\:/Gitlab Projects/Github/apps/driver_app_location_service/presentation/src/main/res/layout/fragment_dash.xml" value="0.25416666666666665" />
         <entry key="..\:/Gitlab Projects/Github/apps/driver_app_location_service/presentation/src/main/res/layout/fragment_dashboard.xml" value="0.11458333333333333" />
+        <entry key="..\:/Gitlab Projects/Github/apps/driver_app_location_service/presentation/src/main/res/layout/fragment_pip_mode.xml" value="0.12360688956433637" />
       </map>
     </option>
   </component>

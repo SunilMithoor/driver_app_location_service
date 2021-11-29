@@ -22,6 +22,12 @@ buildscript {
 
 
 allprojects {
+
+    Properties localProperties = new Properties()
+    if (rootProject.file("local.properties").exists()) {
+        localProperties.load(rootProject.file("local.properties").newDataInputStream())
+    }
+
     repositories {
         google()
         jcenter()
@@ -37,7 +43,8 @@ allprojects {
                 // This should always be `mapbox` (not your username).
                 username = 'mapbox'
                 // Use the secret token you stored in gradle.properties as the password
-                password = "sk.eyJ1Ijoic3VuaWwtbWl0aG9vciIsImEiOiJja3dhbTBoN3kxM2E3Mm5xbWh0Y2poa2U2In0.lF28c8mBdgvfs06ram8sog"
+                password = localProperties.getProperty('map_box_api_key', "")
+
             }
         }
     }
