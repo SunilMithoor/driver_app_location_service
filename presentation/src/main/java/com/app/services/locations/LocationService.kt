@@ -145,10 +145,6 @@ class LocationService : LifecycleService() {
 
             if (isValidLocation(location)) {
                 batteryStrength = this.batteryLevel()
-                Timber.d("Distance betw-->${prevLocation?.distanceTo(location)}")
-                Timber.d("Battery -->${batteryStrength}")
-                Timber.d("Signal -->${signalStrength}")
-
                 lifecycleScope.launch {
                     locationServiceInteractor.insertLocationData(
                         LocationEntity(
@@ -160,7 +156,10 @@ class LocationService : LifecycleService() {
                             altitude = location.altitude,
                             speed = location.speed,
                             bearing = location.bearing,
-                            provider = location.provider
+                            provider = location.provider,
+                            signalStrength = signalStrength,
+                            batteryStrength = batteryStrength,
+                            distance = prevLocation?.distanceTo(location)
                         )
                     )
                 }

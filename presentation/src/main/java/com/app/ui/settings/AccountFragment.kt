@@ -103,7 +103,7 @@ class AccountFragment : BaseFragment(AppLayout.fragment_account) {
                     it.data.let { user ->
                         Timber.d("signout message-->${user.signOut}")
                         if (user.signOut == true) {
-                            stopService()
+                            stopServices()
                             userDataManager.logOut()
                             startActivity<SignInActivity>()
                             requireActivity().finishAffinity()
@@ -137,7 +137,7 @@ class AccountFragment : BaseFragment(AppLayout.fragment_account) {
         })
     }
 
-    private fun stopService() {
-        context?.stopService(LocationService::class.java)
+    private fun stopServices() {
+        activity?.stopService(LocationService::class.java)
     }
 }

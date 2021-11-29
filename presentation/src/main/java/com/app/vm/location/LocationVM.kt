@@ -53,55 +53,55 @@ class LocationVM(
         }
     }
 
-    fun onEvent(event: LocationEvent) {
-        when (event) {
-            is LocationEvent.SaveLocation -> {
-                viewModelScope.launch {
-                    try {
-                        insertLocationUseCase.invoke(
-                            LocationEntity(
-                                null,
-                                time = event.location.time.parseDate().toString(),
-                                latitude = event.location.latitude,
-                                longitude = event.location.longitude,
-                                accuracy = event.location.accuracy,
-                                altitude = event.location.altitude,
-                                speed = event.location.speed,
-                                bearing = event.location.bearing,
-                                provider = event.location.provider
-                            )
-                        )
-                    } catch (e: InvalidLocationException) {
-                        e.printStackTrace()
-                    }
-                }
-            }
-            is LocationEvent.Order -> {
-                getLocation(event.locationOrder)
-            }
-            is LocationEvent.GetAllLocation -> {
-                getLocation()
-            }
-            is LocationEvent.DeleteAllLocation -> {
-                viewModelScope.launch {
-                    try {
-                        deleteAllLocationUseCase.invoke()
-                    } catch (e: InvalidLocationException) {
-                        e.printStackTrace()
-                    }
-                }
-            }
-            is LocationEvent.DeleteLocationByCount -> {
-                viewModelScope.launch {
-                    try {
-                        deleteLocationByCountUseCase.invoke(event.count)
-                    } catch (e: InvalidLocationException) {
-                        e.printStackTrace()
-                    }
-                }
-            }
-        }
-    }
+//    fun onEvent(event: LocationEvent) {
+//        when (event) {
+//            is LocationEvent.SaveLocation -> {
+//                viewModelScope.launch {
+//                    try {
+//                        insertLocationUseCase.invoke(
+//                            LocationEntity(
+//                                null,
+//                                time = event.location.time.parseDate().toString(),
+//                                latitude = event.location.latitude,
+//                                longitude = event.location.longitude,
+//                                accuracy = event.location.accuracy,
+//                                altitude = event.location.altitude,
+//                                speed = event.location.speed,
+//                                bearing = event.location.bearing,
+//                                provider = event.location.provider
+//                            )
+//                        )
+//                    } catch (e: InvalidLocationException) {
+//                        e.printStackTrace()
+//                    }
+//                }
+//            }
+//            is LocationEvent.Order -> {
+//                getLocation(event.locationOrder)
+//            }
+//            is LocationEvent.GetAllLocation -> {
+//                getLocation()
+//            }
+//            is LocationEvent.DeleteAllLocation -> {
+//                viewModelScope.launch {
+//                    try {
+//                        deleteAllLocationUseCase.invoke()
+//                    } catch (e: InvalidLocationException) {
+//                        e.printStackTrace()
+//                    }
+//                }
+//            }
+//            is LocationEvent.DeleteLocationByCount -> {
+//                viewModelScope.launch {
+//                    try {
+//                        deleteLocationByCountUseCase.invoke(event.count)
+//                    } catch (e: InvalidLocationException) {
+//                        e.printStackTrace()
+//                    }
+//                }
+//            }
+//        }
+//    }
 
 
     private fun getLocation(locationOrder: LocationOrder) {

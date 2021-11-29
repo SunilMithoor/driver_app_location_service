@@ -32,4 +32,11 @@
         android:label="AccountFragment"
         tools:layout="@layout/fragment_account" />
 
+    <fragment
+        android:id="@+id/pipModeFragment"
+        android:name="com.app.ui.dashboard.PipModeFragment"
+        android:label="PipModeFragment"
+        tools:layout="@layout/fragment_pip_mode" />
+
+
 </navigation>

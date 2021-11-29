@@ -1,15 +1,13 @@
 package com.app.ui.dashboard
 
-import android.app.AppOpsManager
+import android.content.Intent
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
-import android.os.Process
+import android.view.View
 import com.app.R
 import com.app.databinding.ActivityDashboardBinding
-import com.app.extension.hideSupportActionBar
-import com.app.extension.initBackToolbar
-import com.app.extension.viewBinding
+import com.app.extension.*
 import com.app.ui.base.BaseAppCompatActivity
 import com.app.vm.dashboard.DashboardVM
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -21,7 +19,6 @@ class DashboardActivity : BaseAppCompatActivity() {
     private val dashboardVM by viewModel<DashboardVM>()
     override fun layout() = binding.root
 
-    private var appOpsManager: AppOpsManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +27,7 @@ class DashboardActivity : BaseAppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        if (disablePermissionPiPMode()) {
+        if (this.checkPiPModePermission()) {
             Timber.d("Enable Pip")
         }
     }
@@ -67,41 +64,52 @@ class DashboardActivity : BaseAppCompatActivity() {
         }
     }
 
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        adjustFullScreen(newConfig, window)
+    }
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if (hasFocus) {
+            adjustFullScreen(resources.configuration, window)
+        }
+    }
+
+
+    override fun onUserLeaveHint() {
+        super.onUserLeaveHint()
+        minimize()
+    }
+
+    private fun minimize() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val d = windowManager.defaultDisplay
+            enterPictureInPictureMode(pictureInPictureParamsBuilder(d)?.build()!!)
+        }
+    }
+
+
     override fun onPictureInPictureModeChanged(
         isInPictureInPictureMode: Boolean, configuration: Configuration?
     ) {
         super.onPictureInPictureModeChanged(isInPictureInPictureMode, configuration)
         if (isInPictureInPictureMode) {
             Timber.d("PIP mode")
+            binding.bubbleTabBar.visibility = View.GONE
+            binding.appBarLayout.visibility = View.GONE
+            navController.navigate(R.id.pipModeFragment)
         } else {
             Timber.d("NO PIP mode")
+            binding.bubbleTabBar.visibility = View.VISIBLE
+            binding.appBarLayout.visibility = View.VISIBLE
+            navController.navigate(R.id.homeFragment)
         }
     }
 
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
 
-    private fun disablePermissionPiPMode(): Boolean {
-        try {
-            appOpsManager = getSystemService(APP_OPS_SERVICE) as AppOpsManager
-            if (appOpsManager != null) {
-                return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                        AppOpsManager.MODE_ERRORED == appOpsManager?.unsafeCheckOpNoThrow(
-                            AppOpsManager.OPSTR_PICTURE_IN_PICTURE,
-                            Process.myUid(), packageName
-                        )
-                    } else {
-                        AppOpsManager.MODE_ERRORED == appOpsManager?.checkOpNoThrow(
-                            AppOpsManager.OPSTR_PICTURE_IN_PICTURE,
-                            Process.myUid(), packageName
-                        )
-                    }
-                } else false
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-            return false
-        }
-        return false
     }
-
 }

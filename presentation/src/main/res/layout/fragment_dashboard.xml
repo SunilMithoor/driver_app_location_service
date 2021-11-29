@@ -18,7 +18,7 @@
             android:layout_marginTop="@dimen/margin_small"
             android:minWidth="150dp"
             android:minHeight="50dp"
-            app:cardBackgroundColor="@color/colorBlue"
+            app:cardBackgroundColor="@color/colorCardBack"
             app:cardCornerRadius="25dp"
             app:cardElevation="3dp">
 
@@ -58,7 +58,7 @@
             android:id="@+id/mapbox"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            mapbox:mapbox_resourcesAccessToken="@string/access_token"/>
+            mapbox:mapbox_resourcesAccessToken="@string/map_box_api_key" />
 
 
     </RelativeLayout>

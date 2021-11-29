@@ -17,6 +17,11 @@ fun setMapBoxStyle(mapView: MapView?) {
     mapView?.getMapboxMap()?.loadStyleUri(Style.OUTDOORS)
 }
 
+fun getMapView(mapView: MapView): MapView? {
+    return mapView
+}
+
+
 
 fun Context.initLocationComponent(mapView: MapView?) {
     val locationComponentPlugin = mapView?.location

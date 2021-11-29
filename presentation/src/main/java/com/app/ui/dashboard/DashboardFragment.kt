@@ -59,7 +59,7 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard) {
     private var mapboxMap: MapboxMap? = null
 
     //    private var isGPSEnabled = false
-    var prevLocation: Location? = null
+    private var prevLocation: Location? = null
 
 
     override fun onCreate(view: View) {
@@ -76,17 +76,7 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard) {
         _binding = _binding ?: FragmentDashboardBinding.inflate(inflater, container, false)
         mapView = binding.mapbox
         mapboxMap = binding.mapbox.getMapboxMap()
-
-        mapboxMap?.loadStyleUri(
-            Style.MAPBOX_STREETS
-        ) {
-            context?.initLocationComponent(mapView)
-//            context?.updateSettings(mapView)
-            mapView?.location?.updateSettings {
-                enabled = true
-                pulsingEnabled = true
-            }
-        }
+        initMapbox()
         return binding.root
     }
 
@@ -98,6 +88,18 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard) {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun initMapbox() {
+        mapboxMap?.loadStyleUri(
+            Style.MAPBOX_STREETS
+        ) {
+            context?.initLocationComponent(mapView)
+            mapView?.location?.updateSettings {
+                enabled = true
+                pulsingEnabled = true
+            }
+        }
     }
 
 
@@ -168,25 +170,27 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard) {
     }
 
     private fun checkLocationOn() {
-        if (userDataManager.isDuty) {
-            LocationUtil(requireActivity()).turnGPSOn(object : OnLocationOnListener {
-                override fun locationStatus(isLocationOn: Boolean) {
-                    Timber.d("Location Status-->$isLocationOn")
-                    if (isLocationOn) {
+        LocationUtil(requireActivity()).turnGPSOn(object : OnLocationOnListener {
+            override fun locationStatus(isLocationOn: Boolean) {
+                Timber.d("Location Status-->$isLocationOn")
+                if (isLocationOn) {
 //                        isGPSEnabled = isLocationOn
-                        startLocationUpdates()
+                    startLocationUpdates()
+                    if (userDataManager.isDuty) {
+                        startServices()
                     } else {
-                        Timber.d("Enable location provider")
+                        stopServices()
                     }
+                } else {
+                    Timber.d("Enable location provider")
                 }
-            })
-        }
+            }
+        })
     }
 
     override fun onResume() {
         super.onResume()
         appOverlayPermission()
-        locationData()
     }
 
 
@@ -198,14 +202,14 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard) {
                 userDataManager.isDuty = true
                 binding.tvName.snackBar(AppString.background_location_on)
                 binding.tvName.textColor = AppColor.colorGreenLight
-                startService()
+                startServices()
                 startWorker()
             } else {
                 binding.tvName.resString = AppString.off_duty
                 userDataManager.isDuty = false
                 binding.tvName.snackBar(AppString.background_location_off)
                 binding.tvName.textColor = AppColor.colorRedLight
-                stopService()
+                stopServices()
                 stopWorker()
             }
         }
@@ -220,14 +224,11 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard) {
             binding.customSwitch.isChecked = true
             binding.tvName.resString = AppString.on_duty
             binding.tvName.textColor = AppColor.colorGreenLight
-            startService()
-            startWorker()
         } else {
             binding.customSwitch.isChecked = false
             binding.tvName.resString = AppString.off_duty
             binding.tvName.snackBar(AppString.off_duty_msg)
             binding.tvName.textColor = AppColor.colorRedLight
-            stopService()
             stopWorker()
         }
         onBoardingVM.getMessageToken()
@@ -235,13 +236,13 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard) {
 
     }
 
-    private fun startService() {
+    private fun startServices() {
         if (userDataManager.isDuty) {
             context?.startService(LocationService::class.java)
         }
     }
 
-    private fun stopService() {
+    private fun stopServices() {
         context?.stopService(LocationService::class.java)
     }
 
@@ -461,4 +462,5 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard) {
             false
         }
     }
+
 }

@@ -25,5 +25,11 @@ data class LocationEntity(
     @ColumnInfo(name = "bearing")
     val bearing: Float?,
     @ColumnInfo(name = "provider")
-    val provider: String?
+    val provider: String?,
+    @ColumnInfo(name = "signalStrength")
+    val signalStrength: Int?,
+    @ColumnInfo(name = "batteryStrength")
+    val batteryStrength: Int?,
+    @ColumnInfo(name = "distance")
+    val distance: Float?
 )

@@ -3,6 +3,7 @@ package com.app.ui.base
 import androidx.multidex.MultiDexApplication
 import com.app.BuildConfig
 import com.google.firebase.crashlytics.FirebaseCrashlytics
+import com.mapbox.maps.plugin.Plugin
 import timber.log.Timber
 
 
@@ -17,7 +18,6 @@ class AppApplication : MultiDexApplication() {
         } else {
             FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(true)
         }
-//        Places.initialize(this, "") // add google api key
     }
 
 

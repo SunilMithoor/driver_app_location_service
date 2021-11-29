@@ -29,6 +29,13 @@ android {
     compileSdkVersion 31
     buildToolsVersion "30.0.3"
 
+
+    Properties properties = new Properties()
+    if (rootProject.file("local.properties").exists()) {
+        properties.load(rootProject.file("local.properties").newDataInputStream())
+    }
+
+
     defaultConfig {
         applicationId "com.app"
         minSdkVersion 21
@@ -41,6 +48,7 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
+        resValue "string", "map_box_api_key", properties.getProperty("map_box_api_key", "")
     }
 
     buildTypes {
@@ -48,6 +56,7 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8

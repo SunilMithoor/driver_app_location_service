@@ -128,7 +128,7 @@ class PermissionFragment : BaseFragment(AppLayout.fragment_permission) {
         when (r) {
             is PermissionResult.Granted -> {
                 Timber.d("GRANTED-->$pos")
-                context?.toast(AppString.permissions_granted)
+                activity?.toast(AppString.permissions_granted)
                 moveNext(pos)
             }
             is PermissionResult.Denied.NeedsRationale -> {
@@ -174,12 +174,12 @@ class PermissionFragment : BaseFragment(AppLayout.fragment_permission) {
                 msg = resString(AppString.location_disable_perm_message)
             }
         }
-        context?.alert(R.style.Dialog_Alert) {
+        activity?.alert(R.style.Dialog_Alert) {
             setCancelable(false)
             setTitle(AppString.permissions_required)
             setMessage(msg)
             setPositiveButton(AppString.settings) { _, _ ->
-                val intent = context.createAppSettingsIntent()
+                val intent = activity?.createAppSettingsIntent()
 //                startActivityForResult(intent, PERMISSION_REQUEST_CODE)
                 startActivity(intent)
             }

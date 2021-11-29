@@ -43,6 +43,6 @@
     <color name="colorOutlineBorder">#29314b</color>
     <color name="colorRedLight">#F51720</color>
     <color name="colorGreenLight">#76B947</color>
-    <color name="colorBlue">#005ce6</color>
+    <color name="colorCardBack">#f5f5f5</color>
 
 </resources>
