@@ -57,6 +57,8 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard) {
     private val onBoardingVM by viewModel<OnBoardingVM>()
     private var mapView: MapView? = null
     private var mapboxMap: MapboxMap? = null
+    private var latitude: Double? = null
+    private var longitude: Double? = null
 
     //    private var isGPSEnabled = false
     private var prevLocation: Location? = null
@@ -94,10 +96,12 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard) {
         mapboxMap?.loadStyleUri(
             Style.MAPBOX_STREETS
         ) {
-            context?.initLocationComponent(mapView)
-            mapView?.location?.updateSettings {
-                enabled = true
-                pulsingEnabled = true
+            if (mapboxMap?.isFullyLoaded() == true) {
+                context?.initLocationComponent(mapView)
+                mapView?.location?.updateSettings {
+                    enabled = true
+                    pulsingEnabled = true
+                }
             }
         }
     }
@@ -212,6 +216,9 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard) {
                 stopServices()
                 stopWorker()
             }
+        }
+        binding.fab.click {
+            animateCamera(latitude, longitude)
         }
         setData()
 
@@ -341,6 +348,8 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard) {
 
         if (location != null) {
 //            sendDataToDb(location)
+            latitude = location.latitude
+            longitude = location.longitude
             if (isValidLocation(location)) {
                 Timber.d("valid location")
                 animateCamera(location)
@@ -433,6 +442,13 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard) {
     private fun animateCamera(location: Location) {
         animateCamera(mapboxMap, location, CAMERA_ZOOM_4)
         mapView?.gestures?.focalPoint = getPixelForCoordinate(mapboxMap, location)
+    }
+
+    private fun animateCamera(latitude: Double?, longitude: Double?) {
+        if (latitude != null && longitude != null) {
+            animateCamera(mapboxMap, latitude, longitude, CAMERA_ZOOM_4)
+            mapView?.gestures?.focalPoint = getPixelForCoordinate(mapboxMap, latitude, longitude)
+        }
     }
 
 

@@ -11,6 +11,7 @@ import com.mapbox.maps.extension.style.expressions.dsl.generated.interpolate
 import com.mapbox.maps.plugin.LocationPuck2D
 import com.mapbox.maps.plugin.animation.MapAnimationOptions.Companion.mapAnimationOptions
 import com.mapbox.maps.plugin.animation.flyTo
+import com.mapbox.maps.plugin.gestures.getGesturesSettings
 import com.mapbox.maps.plugin.locationcomponent.location
 
 fun setMapBoxStyle(mapView: MapView?) {
@@ -20,7 +21,6 @@ fun setMapBoxStyle(mapView: MapView?) {
 fun getMapView(mapView: MapView): MapView? {
     return mapView
 }
-
 
 
 fun Context.initLocationComponent(mapView: MapView?) {
@@ -79,21 +79,37 @@ fun animateCamera(mapboxMap: MapboxMap?, location: Location, zoom: Double) {
     )
 }
 
-fun animateCameras(mapboxMap: MapboxMap?, location: Location, zoom: Double) {
-    mapboxMap
-        ?.setCamera(
-            CameraOptions
-                .Builder()
-                .zoom(zoom)
-                .center(Point.fromLngLat(location.longitude, location.latitude))
-                .bearing(location.bearing.toDouble())
-                .build()
+fun animateCamera(mapboxMap: MapboxMap?, latitude: Double?, longitude: Double?, zoom: Double) {
+    if (latitude != null && longitude != null) {
+        mapboxMap?.flyTo(
+            cameraOptions {
+                center(
+                    Point.fromLngLat(
+                        longitude,
+                        latitude
+                    )
+                ) // Sets the new camera position on click point
+                zoom(zoom) // Sets the zoom
+                pitch(10.0) // Set the camera pitch
+            },
+            mapAnimationOptions {
+                duration(1000)
+            }
         )
-
+    }
 }
 
 
 fun getPixelForCoordinate(mapboxMap: MapboxMap?, location: Location): ScreenCoordinate? {
     return mapboxMap
         ?.pixelForCoordinate(Point.fromLngLat(location.longitude, location.latitude))
+}
+
+fun getPixelForCoordinate(
+    mapboxMap: MapboxMap?,
+    latitude: Double,
+    longitude: Double
+): ScreenCoordinate? {
+    return mapboxMap
+        ?.pixelForCoordinate(Point.fromLngLat(longitude, latitude))
 }

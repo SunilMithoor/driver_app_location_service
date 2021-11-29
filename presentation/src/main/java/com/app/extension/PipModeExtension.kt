@@ -52,6 +52,9 @@ fun pictureInPictureParamsBuilder(d: Display): PictureInPictureParams.Builder? {
         // Calculate the aspect ratio of the PiP screen.
         val aspectRatio = Rational(width, height)
         mPictureInPictureParamsBuilder.setAspectRatio(aspectRatio)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            mPictureInPictureParamsBuilder.setAutoEnterEnabled(true)
+        }
     }
     return mPictureInPictureParamsBuilder
 }

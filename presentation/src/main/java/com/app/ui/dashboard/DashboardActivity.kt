@@ -1,14 +1,19 @@
 package com.app.ui.dashboard
 
+import android.app.Activity
 import android.content.Intent
 import android.content.res.Configuration
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.view.View
 import com.app.R
 import com.app.databinding.ActivityDashboardBinding
 import com.app.extension.*
 import com.app.ui.base.BaseAppCompatActivity
+import com.app.ui.splash.SplashActivity
+import com.app.utilities.PERMISSION_REQUEST_CODE
 import com.app.vm.dashboard.DashboardVM
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -28,9 +33,31 @@ class DashboardActivity : BaseAppCompatActivity() {
     override fun onResume() {
         super.onResume()
         if (this.checkPiPModePermission()) {
-            Timber.d("Enable Pip")
+            pipPermissionDialog()
         }
     }
+
+    private fun pipPermissionDialog() {
+        alert(R.style.Dialog_Alert) {
+            setCancelable(false)
+            setTitle(AppString.permissions_required)
+            setMessage(AppString.pip_perm_msg_alert)
+            setPositiveButton(AppString.label_ok) { _, _ ->
+                val i = Intent(
+                    Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.fromParts(
+                        "package",
+                        packageName, null
+                    )
+                )
+                startActivityForResult(i, PERMISSION_REQUEST_CODE)
+            }
+            setNegativeButton(AppString.label_cancel) { dialog, _ ->
+                dialog.dismiss()
+            }
+        }
+
+    }
+
 
     private fun initialize() {
         initToolBar()
@@ -112,4 +139,17 @@ class DashboardActivity : BaseAppCompatActivity() {
         super.onNewIntent(intent)
 
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (Activity.RESULT_OK == resultCode) {
+            when (requestCode) {
+                PERMISSION_REQUEST_CODE -> {
+                    restartApplication(SplashActivity::class.java)
+                }
+
+            }
+        }
+    }
+
 }

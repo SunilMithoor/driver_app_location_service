@@ -70,4 +70,12 @@ class LocationUtil(private val context: Context) {
         }
     }
 
+    fun checkGPSOn(OnGpsListener: OnLocationOnListener?) {
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            OnGpsListener?.locationStatus(true)
+        } else {
+            OnGpsListener?.locationStatus(false)
+        }
+    }
+
 }

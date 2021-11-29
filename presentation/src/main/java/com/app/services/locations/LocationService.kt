@@ -101,7 +101,7 @@ class LocationService : LifecycleService() {
 
     private fun checkLocationOn() {
         if (userDataManager.isDuty) {
-            LocationUtil(this).turnGPSOn(object : OnLocationOnListener {
+            LocationUtil(this).checkGPSOn(object : OnLocationOnListener {
                 override fun locationStatus(isLocationOn: Boolean) {
                     Timber.d("Location Status-->$isLocationOn")
                     if (isLocationOn) {
@@ -165,8 +165,12 @@ class LocationService : LifecycleService() {
                 }
 
                 prevLocation = location
-                sendDataToDb(location)
-
+                sendDataToDb(
+                    location,
+                    signalStrength,
+                    batteryStrength,
+                    prevLocation?.distanceTo(location)
+                )
 
             }
         }
@@ -179,7 +183,11 @@ class LocationService : LifecycleService() {
     }
 
 
-    private fun sendDataToDb(location: Location) {
+    private fun sendDataToDb(
+        location: Location, signalStrength: Int,
+        batteryStrength: Int,
+        distance: Float?
+    ) {
         val jsonArray = JSONArray()
         val jsonObject = JSONObject()
         jsonObject.put("latitude", location.latitude)
@@ -188,6 +196,9 @@ class LocationService : LifecycleService() {
         jsonObject.put("altitude", location.altitude)
         jsonObject.put("accuracy", location.accuracy)
         jsonObject.put("time", location.time.parseDate().toString())
+        jsonObject.put("signalStrength", signalStrength)
+        jsonObject.put("batteryStrength", batteryStrength)
+        jsonObject.put("distance", distance)
         jsonArray.put(jsonObject)
         Timber.d("json location-->$jsonArray")
         lifecycleScope.launch {
