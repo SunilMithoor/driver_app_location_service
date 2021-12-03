@@ -8,7 +8,7 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.app.R
 import com.app.services.locations.LocationService
-import com.app.ui.onBoarding.SignInActivity
+import com.app.ui.splash.SplashActivity
 import com.app.utilities.CHANNEL_ID
 import com.app.utilities.EXTRA_STARTED_FROM_NOTIFICATION
 
@@ -22,7 +22,7 @@ fun Context.getNotification(): Notification {
     )
     // The PendingIntent to launch activity.
     val activityPendingIntent = PendingIntent.getActivity(
-        this, 0, Intent(this, SignInActivity::class.java), 0
+        this, 0, Intent(this, SplashActivity::class.java), 0
     )
 
     val builder = NotificationCompat.Builder(this, CHANNEL_ID)

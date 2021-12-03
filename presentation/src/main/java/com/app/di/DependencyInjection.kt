@@ -16,26 +16,24 @@ import com.app.data.datasource.remote.firebase.auth.FirebaseAuthenticator
 import com.app.data.datasource.remote.firebase.database.FireBaseDatabaseCall
 import com.app.data.datasource.remote.firebase.deviceid.FirebaseDeviceIdCall
 import com.app.data.datasource.remote.firebase.message.FirebaseMessageCall
+import com.app.data.datasource.remote.mqtt.MQTTCall
+import com.app.data.datasource.remote.mqtt.MQTTConnector
 import com.app.data.datasource.remote.retrofit.OnBoardingApi
 import com.app.data.datasource.remote.retrofit.RetrofitManager
-import com.app.data.repository.FirebaseRepoImpl
-import com.app.data.repository.LocationRepoImpl
-import com.app.data.repository.OnBoardingRepoImpl
-import com.app.data.repository.UserDataRepoImpl
+import com.app.data.repository.*
 import com.app.domain.entity.wrapped.Event
 import com.app.domain.interactor.FirebaseDatabaseInteractor
 import com.app.domain.interactor.LocationServiceInteractor
 import com.app.domain.manager.FirebaseUpdateManager
+import com.app.domain.manager.MQTTUpdateManager
 import com.app.domain.manager.OnBoardingUpdateManager
 import com.app.domain.manager.UserPrefDataManager
-import com.app.domain.repository.FirebaseDataRepo
-import com.app.domain.repository.LocationDataRepo
-import com.app.domain.repository.OnBoardingRepo
-import com.app.domain.repository.UserDataRepo
+import com.app.domain.repository.*
 import com.app.domain.usecase.*
 import com.app.extension.P
 import com.app.vm.SharedVM
 import com.app.vm.location.LocationVM
+import com.app.vm.mqtt.MQTTVM
 import com.app.vm.onboarding.OnBoardingVM
 import com.app.vm.permission.PermissionVM
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
@@ -46,13 +44,14 @@ import timber.log.Timber
 
 fun dependency() = listOf(
     vm, repository, manager, service, useCases, dataBase,
-    serviceInteractor, fireBase, singleInstance
+    serviceInteractor, fireBase, mqtt, singleInstance
 )
 
 val vm = module {
-    viewModel { OnBoardingVM(get(), get(), get(), get(), get(), get(), get(), get(),get()) }
+    viewModel { OnBoardingVM(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
     viewModel { PermissionVM() }
     viewModel { LocationVM(get(), get(), get(), get(), get()) }
+    viewModel { MQTTVM(get(), get(),get()) }
     single { SharedVM() }
 }
 val useCases = module {
@@ -70,17 +69,25 @@ val useCases = module {
     factory { DeleteAllLocationUseCase(get()) }
     factory { DeleteLocationByCountUseCase(get()) }
     factory { DatabaseFirebaseUseCase(get()) }
+    factory { MQTTGenerateClientIdUseCase(get()) }
+    factory { MQTTConnectUseCase(get()) }
+    factory { MQTTDisConnectUseCase(get()) }
+    factory { MQTTSubscribeUseCase(get()) }
+    factory { MQTTUnsubscribeUseCase(get()) }
+    factory { MQTTPublishUseCase(get()) }
 }
 val manager = module {
     single { UserPrefDataManager(get()) }
     single { OnBoardingUpdateManager(get(), get()) }
     single { FirebaseUpdateManager(get(), get()) }
+    single { MQTTUpdateManager(get(), get()) }
 }
 val repository = module {
     single { OnBoardingRepoImpl(get()) as OnBoardingRepo }
     single { UserDataRepoImpl(get(), get()) as UserDataRepo }
     single { LocationRepoImpl(get()) as LocationDataRepo }
     single { FirebaseRepoImpl(get()) as FirebaseDataRepo }
+    single { MQTTRepoImpl(get()) as MQTTDataRepo }
 }
 val service = module {
     single { OnBoardingApi.create(get()) }
@@ -100,6 +107,11 @@ val fireBase = module {
     single { FirebaseDeviceIdCall() }
     single { FireBaseDatabaseCall() }
     single { FirebaseAuthenticator(get(), get(), get(), get()) }
+}
+
+val mqtt = module {
+    single { MQTTCall(get()) }
+    single { MQTTConnector(get()) }
 }
 
 val singleInstance = module {

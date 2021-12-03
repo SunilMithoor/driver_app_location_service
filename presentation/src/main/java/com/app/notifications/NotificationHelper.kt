@@ -13,6 +13,8 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.app.R
 import com.app.ui.dashboard.DashboardActivity
+import com.app.ui.onBoarding.SignInActivity
+import com.app.ui.splash.SplashActivity
 
 //class NotificationHelper constructor(base: Context?) : ContextWrapper(base) {
 //
@@ -224,7 +226,7 @@ class NotificationHelper constructor(base: Context?) : ContextWrapper(base) {
     }
 
     private fun getPendingIntent(context: Context): PendingIntent? {
-        val notificationIntent = Intent(context, DashboardActivity::class.java)
+        val notificationIntent = Intent(context, SplashActivity::class.java)
         return PendingIntent.getActivity(
             context, 0,
             notificationIntent, 0

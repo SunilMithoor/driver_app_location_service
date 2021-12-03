@@ -16,6 +16,7 @@ import androidx.core.app.ActivityCompat
 import com.app.databinding.FragmentDashboardBinding
 import com.app.domain.entity.FirebaseCallResponse
 import com.app.domain.entity.FirebaseDatabaseCallResponse
+import com.app.domain.entity.MQTTCallResponse
 import com.app.domain.entity.db.LocationEntity
 import com.app.domain.entity.request.FirebaseDatabaseRequest
 import com.app.domain.extention.parseDate
@@ -33,6 +34,7 @@ import com.app.utilities.Locations
 import com.app.utilities.PERMISSION_REQUEST_CODE
 import com.app.vm.dashboard.DashboardVM
 import com.app.vm.location.LocationVM
+import com.app.vm.mqtt.MQTTVM
 import com.app.vm.onboarding.OnBoardingVM
 import com.app.vm.permission.PermissionVM
 import com.mapbox.maps.MapView
@@ -55,6 +57,7 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard) {
     private val locationVM by viewModel<LocationVM>()
     private val dashboardVM by viewModel<DashboardVM>()
     private val onBoardingVM by viewModel<OnBoardingVM>()
+    private val mqttVM by viewModel<MQTTVM>()
     private var mapView: MapView? = null
     private var mapboxMap: MapboxMap? = null
     private var latitude: Double? = null
@@ -165,6 +168,43 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard) {
                 }
             }
         })
+
+
+        mqttVM.mqttGenerateClientIdResponse.observe(viewLifecycleOwner, {
+            fragmentActivity?.hideLoader()
+            Timber.d("MQTTCallResponse-->${it}")
+            when (it) {
+                is MQTTCallResponse.Success -> {
+                    it.data.let { data ->
+                        Timber.d("mqtt client id-->${data.data}")
+                    }
+                }
+                is MQTTCallResponse.Failure -> {
+                    binding.constraintLayout.snackBar(it.throwable.message)
+                }
+                else -> {
+                    binding.constraintLayout.snackBar(AppString.error_message)
+                }
+            }
+        })
+
+        mqttVM.mqttConnectResponse.observe(viewLifecycleOwner, {
+            fragmentActivity?.hideLoader()
+            Timber.d("mqttConnectResponse-->${it}")
+            when (it) {
+                is MQTTCallResponse.Success -> {
+                    it.data.let { data ->
+                        Timber.d("mqtt client id-->${data.data}")
+                    }
+                }
+                is MQTTCallResponse.Failure -> {
+                    binding.constraintLayout.snackBar(it.throwable.message)
+                }
+                else -> {
+                    binding.constraintLayout.snackBar(AppString.error_message)
+                }
+            }
+        })
     }
 
     private fun observeLocationUpdates() {
@@ -223,6 +263,9 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard) {
         setData()
 
 //        addAnnotationToMap()
+
+//        mqttVM.getMQTTClientId()
+        mqttVM.connectMQTT("", "")
     }
 
 
@@ -244,7 +287,7 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard) {
     }
 
     private fun startServices() {
-        if (userDataManager.isDuty) {
+        if (userDataManager.isUserLoggedIn && userDataManager.isDuty) {
             context?.startService(LocationService::class.java)
         }
     }
@@ -254,7 +297,7 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard) {
     }
 
     private fun startWorker() {
-        if (userDataManager.isDuty) {
+        if (userDataManager.isUserLoggedIn && userDataManager.isDuty) {
             context?.startWorker()
         }
     }
