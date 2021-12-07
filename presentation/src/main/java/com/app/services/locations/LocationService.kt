@@ -47,6 +47,7 @@ class LocationService : LifecycleService() {
     //onCreate
     override fun onCreate() {
         super.onCreate()
+        Timber.d("Service started regu")
         locationData = LocationLiveData(this)
         checkLocationOn()
         if (signalStrengthService == null) {
@@ -56,8 +57,14 @@ class LocationService : LifecycleService() {
         signalStrengthService?.listenSignalStrengths {
             signalStrength = it
         }
+        stopService()
     }
 
+    private fun stopService() {
+        if (!userDataManager.isUserLoggedIn) {
+            stopSelf()
+        }
+    }
 
     private fun buildNotification() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

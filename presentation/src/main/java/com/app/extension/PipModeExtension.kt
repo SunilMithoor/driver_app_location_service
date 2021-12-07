@@ -12,6 +12,9 @@ import android.view.Display
 import android.view.View
 import android.view.Window
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 
 
 fun Context.checkPiPModePermission(): Boolean {
@@ -60,16 +63,28 @@ fun pictureInPictureParamsBuilder(d: Display): PictureInPictureParams.Builder? {
 }
 
 
+//fun adjustFullScreen(config: Configuration, window: Window) {
+//    val decorView = window.decorView
+//    if (config.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+//        decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+//                or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+//                or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+//                or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+//                or View.SYSTEM_UI_FLAG_FULLSCREEN
+//                or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY)
+//    } else {
+//        decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+//    }
+//}
+
+
 fun adjustFullScreen(config: Configuration, window: Window) {
-    val decorView = window.decorView
+    val insetsController = ViewCompat.getWindowInsetsController(window.decorView)
+    insetsController?.systemBarsBehavior =
+        WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
     if (config.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-        decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                or View.SYSTEM_UI_FLAG_FULLSCREEN
-                or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY)
+        insetsController?.hide(WindowInsetsCompat.Type.systemBars())
     } else {
-        decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+        insetsController?.show(WindowInsetsCompat.Type.systemBars())
     }
 }

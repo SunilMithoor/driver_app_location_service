@@ -99,6 +99,7 @@ abstract class BaseAppCompatActivity : AppCompatActivity() {
     override fun onSupportNavigateUp() = navController.navigateUp()
 
     override fun onBackPressed() {
+        Timber.d("back count-->${supportFragmentManager.backStackEntryCount}")
         if (supportFragmentManager.backStackEntryCount > 1) {
             navController.navigateUp()
         } else {

@@ -3,6 +3,8 @@ package com.app.data.datasource.remote.mqtt
 import android.content.Context
 import com.app.domain.entity.MQTTCallResponse
 import com.app.domain.entity.response.MQTTClientId
+import com.app.domain.entity.response.MQTTConnect
+import com.app.domain.entity.response.MQTTData
 import org.eclipse.paho.android.service.MqttAndroidClient
 import org.eclipse.paho.client.mqttv3.*
 import timber.log.Timber
@@ -14,12 +16,17 @@ class MQTTCall(context: Context) {
     val MQTT_CLIENT_ID_KEY = "MQTT_CLIENT_ID"
     val MQTT_USERNAME_KEY = "MQTT_USERNAME"
     val MQTT_PWD_KEY = "MQTT_PWD"
-    val MQTT_SERVER_URI = "tcp://broker.hivemq.com:1883"
-    val MQTT_CLIENT_ID = ""
-    val MQTT_USERNAME = ""
-    val MQTT_PWD = ""
-    val MQTT_TEST_TOPIC = "test/topic"
+
+    //    val MQTT_SERVER_URI = "tcp://broker.hivemq.com:1883"
+    val MQTT_SERVER_URI = "cd8bfcbefc0344e2ab3325a2ebd28194.s2.eu.hivemq.cloud:8884"
+
+    //    val MQTT_SERVER_PORT = 8884
+    val MQTT_CLIENT_ID = "clientId-br2xyGADsj"
+    val MQTT_USERNAME = "sunilmg"
+    val MQTT_PWD = "Sunil@135"
+    val MQTT_TEST_TOPIC = "test_topic_2"
     val MQTT_TEST_MSG = "Hello!"
+    val QOS = 2
 
 
     private var mqttClient: MqttAndroidClient? = null
@@ -27,7 +34,8 @@ class MQTTCall(context: Context) {
     init {
         if (mqttClient == null) {
             val clientId = MqttClient.generateClientId()
-            mqttClient = MqttAndroidClient(context, MQTT_SERVER_URI, clientId)
+//            mqttClient = MqttAndroidClient(context, MQTT_SERVER_URI, clientId)
+            mqttClient = MqttAndroidClient(context, MQTT_SERVER_URI, MQTT_CLIENT_ID)
         }
     }
 
@@ -40,94 +48,113 @@ class MQTTCall(context: Context) {
         }
     }
 
-    fun isConnected(): Boolean {
-        return mqttClient?.isConnected == true
+    fun isConnected(): MQTTCallResponse<MQTTConnect>? {
+        return try {
+            MQTTCallResponse.Success(MQTTConnect(mqttClient?.isConnected))
+        } catch (exception: Exception) {
+            MQTTCallResponse.Failure(exception)
+        }
     }
 
 
-//    fun connect(
-//        username: String = "",
-//        password: String = "",
-//        cbConnect: IMqttActionListener = defaultCbConnect,
-//        cbClient: MqttCallback = defaultCbClient
-//    ): MQTTCallResponse<MQTTClientId>? {
-//        return try {
-////            mqttClient?.setCallback(cbClient)
-//            val options = MqttConnectOptions()
-//            options.userName = username
-//            options.password = password.toCharArray()
-//            val connected = mqttClient?.connect(options, null, cbConnect)
-//            MQTTCallResponse.Success(MQTTClientId(connected.toString()))
-//        } catch (exception: Exception) {
-//            MQTTCallResponse.Failure(exception)
-//        }
-//    }
+    fun connects(
+        username: String? = MQTT_USERNAME,
+        password: String? = MQTT_PWD
+    ) {
+        try {
+            mqttClient?.connect(getMqttConnectOptions(username, password),defaultCbConnect)
 
-    fun connect(): MQTTCallResponse<MQTTClientId>? {
-        return try {
-            var tokens: IMqttToken? = null
-            val token = mqttClient?.connect()
-            token?.actionCallback = object : IMqttActionListener {
-                override fun onSuccess(asyncActionToken: IMqttToken) {
-                    // We are connected
-                    Timber.d("onSuccess")
-                    val options = MqttConnectOptions()
-                    options.mqttVersion = MqttConnectOptions.MQTT_VERSION_3_1
-                    tokens = mqttClient?.connect(options)
-                    Timber.d("Token-->${tokens?.client}")
-                    Timber.d("Token-->${tokens?.messageId}")
-                }
-
-                override fun onFailure(asyncActionToken: IMqttToken, exception: Throwable) {
-                    // Something went wrong e.g. connection timeout or firewall problems
-                    Timber.d("onFailure")
-                }
-            }
-            return MQTTCallResponse.Success(MQTTClientId(tokens.toString()))
+//            mqttClient?.setCallback(defaultCbClient)
         } catch (e: MqttException) {
             e.printStackTrace()
+        }
+    }
+
+    fun connect(
+        username: String? = MQTT_USERNAME,
+        password: String? = MQTT_PWD
+    ): MQTTCallResponse<MQTTData>? {
+        return try {
+            val data =
+                mqttClient?.connect(getMqttConnectOptions(username, password))
+            MQTTCallResponse.Success(
+                MQTTData(
+                    data?.client?.clientId,
+                    data?.client?.isConnected,
+                    data?.client?.serverURI
+                )
+            )
+        } catch (e: MqttException) {
             MQTTCallResponse.Failure(e)
         }
     }
 
-
-    fun disConnect(): MQTTCallResponse<MQTTClientId>? {
+    fun disConnect(): MQTTCallResponse<MQTTConnect>? {
         return try {
-            val clientId = MqttClient.generateClientId()
-            MQTTCallResponse.Success(MQTTClientId(clientId))
+            mqttClient?.disconnect()
+            MQTTCallResponse.Success(MQTTConnect(true))
         } catch (exception: Exception) {
             MQTTCallResponse.Failure(exception)
         }
     }
 
-
-    fun subscribe(): MQTTCallResponse<MQTTClientId>? {
+    fun subscribeTopic(): MQTTCallResponse<MQTTData>? {
         return try {
-            val clientId = MqttClient.generateClientId()
-            MQTTCallResponse.Success(MQTTClientId(clientId))
+            val data =
+                mqttClient?.subscribe(MQTT_TEST_TOPIC, QOS)
+            MQTTCallResponse.Success(
+                MQTTData(
+                    data?.client?.clientId,
+                    data?.client?.isConnected,
+                    data?.client?.serverURI
+                )
+            )
         } catch (exception: Exception) {
             MQTTCallResponse.Failure(exception)
         }
     }
 
-    fun unsubscribe(): MQTTCallResponse<MQTTClientId>? {
+    fun unsubscribeTopic(): MQTTCallResponse<MQTTData>? {
         return try {
-            val clientId = MqttClient.generateClientId()
-            MQTTCallResponse.Success(MQTTClientId(clientId))
+            val data =
+                mqttClient?.unsubscribe(MQTT_TEST_TOPIC)
+            MQTTCallResponse.Success(
+                MQTTData(
+                    data?.client?.clientId,
+                    data?.client?.isConnected,
+                    data?.client?.serverURI
+                )
+            )
         } catch (exception: Exception) {
             MQTTCallResponse.Failure(exception)
         }
     }
 
-    fun publish(): MQTTCallResponse<MQTTClientId>? {
+    fun publishMessage(data: String?): MQTTCallResponse<MQTTData>? {
         return try {
-            val clientId = MqttClient.generateClientId()
-            MQTTCallResponse.Success(MQTTClientId(clientId))
+            val message = MqttMessage()
+            message.payload = data?.toByteArray()
+            val datas = mqttClient?.publish(MQTT_TEST_TOPIC, message)
+            MQTTCallResponse.Success(
+                MQTTData(
+                    datas?.client?.clientId,
+                    datas?.client?.isConnected,
+                    datas?.client?.serverURI
+                )
+            )
         } catch (exception: Exception) {
             MQTTCallResponse.Failure(exception)
         }
     }
 
+    private fun getMqttConnectOptions(username: String?, password: String?): MqttConnectOptions {
+        val mqttConnectOptions = MqttConnectOptions()
+        mqttConnectOptions.userName = username
+        mqttConnectOptions.password = password?.toCharArray()
+        mqttConnectOptions.isAutomaticReconnect = true
+        mqttConnectOptions.isCleanSession = false
+        return mqttConnectOptions
+    }
 
     private val defaultCbConnect = object : IMqttActionListener {
         override fun onSuccess(asyncActionToken: IMqttToken?) {

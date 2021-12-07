@@ -1,6 +1,5 @@
 package com.app.domain.manager
 
-import com.app.domain.entity.FirebaseAuthResponse
 import com.app.domain.entity.FirebaseCallResponse
 import com.app.domain.entity.FirebaseDatabaseCallResponse
 import com.app.domain.entity.request.FirebaseDatabaseRequest
@@ -23,7 +22,6 @@ class FirebaseUpdateManager(
 
     override suspend fun signInWithEmailPassword(firebaseRequest: FirebaseRequest) =
         firebaseDataRepo.signInWithEmailPassword(firebaseRequest)
-
 
     override suspend fun signOut() = firebaseDataRepo.signOut()
 

@@ -51,7 +51,7 @@ val vm = module {
     viewModel { OnBoardingVM(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
     viewModel { PermissionVM() }
     viewModel { LocationVM(get(), get(), get(), get(), get()) }
-    viewModel { MQTTVM(get(), get(),get()) }
+    viewModel { MQTTVM(get(), get(), get(), get(),get(), get(), get(), get()) }
     single { SharedVM() }
 }
 val useCases = module {
@@ -70,6 +70,7 @@ val useCases = module {
     factory { DeleteLocationByCountUseCase(get()) }
     factory { DatabaseFirebaseUseCase(get()) }
     factory { MQTTGenerateClientIdUseCase(get()) }
+    factory { MQTTConnectedUseCase(get()) }
     factory { MQTTConnectUseCase(get()) }
     factory { MQTTDisConnectUseCase(get()) }
     factory { MQTTSubscribeUseCase(get()) }

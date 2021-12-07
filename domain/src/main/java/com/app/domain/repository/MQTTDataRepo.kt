@@ -2,20 +2,24 @@ package com.app.domain.repository
 
 import com.app.domain.entity.MQTTCallResponse
 import com.app.domain.entity.response.MQTTClientId
+import com.app.domain.entity.response.MQTTConnect
+import com.app.domain.entity.response.MQTTData
 
 
 interface MQTTDataRepo {
 
     suspend fun generateClientId(): MQTTCallResponse<MQTTClientId>?
 
-    suspend fun connect(): MQTTCallResponse<MQTTClientId>?
+    suspend fun isConnected(): MQTTCallResponse<MQTTConnect>?
 
-    suspend fun disConnect(): MQTTCallResponse<MQTTClientId>?
+    suspend fun connect(username: String?, password: String?): MQTTCallResponse<MQTTData>?
 
-    suspend fun subscribe(): MQTTCallResponse<MQTTClientId>?
+    suspend fun disConnect(): MQTTCallResponse<MQTTConnect>?
 
-    suspend fun unsubscribe(): MQTTCallResponse<MQTTClientId>?
+    suspend fun subscribe(): MQTTCallResponse<MQTTData>?
 
-    suspend fun publish(): MQTTCallResponse<MQTTClientId>?
+    suspend fun unsubscribe(): MQTTCallResponse<MQTTData>?
+
+    suspend fun publish(data:String?): MQTTCallResponse<MQTTData>?
 
 }

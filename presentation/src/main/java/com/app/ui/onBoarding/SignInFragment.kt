@@ -44,8 +44,8 @@ class SignInFragment : BaseFragment(AppLayout.fragment_sign_in) {
     }
 
     private fun initialize() {
-        getFireBaseDeviceToken()
-        getFireBaseMessagingToken()
+//        getFireBaseDeviceToken()
+//        getFireBaseMessagingToken()
         binding.btnSubmit.click {
             hideKeyboard()
             validateData()
@@ -168,43 +168,43 @@ class SignInFragment : BaseFragment(AppLayout.fragment_sign_in) {
         })
     }
 
-    private fun getFireBaseDeviceToken() {
-        try {
-            if (fragmentActivity?.isNetworkAvailable() == true) {
-                FirebaseInstallations
-                    .getInstance()
-                    .getToken(false)
-                    .addOnSuccessListener {
-                        Timber.d("Firebase Device token-->${it.token}")
-                        deviceToken = it.token
-                        userDataManager.deviceToken = deviceToken
-                    }
-                    .addOnFailureListener {
-                        binding.constraintLayout.snackBar(AppString.error_firebase_id)
-                    }
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
+//    private fun getFireBaseDeviceToken() {
+//        try {
+//            if (fragmentActivity?.isNetworkAvailable() == true) {
+//                FirebaseInstallations
+//                    .getInstance()
+//                    .getToken(false)
+//                    .addOnSuccessListener {
+//                        Timber.d("Firebase Device token-->${it.token}")
+//                        deviceToken = it.token
+//                        userDataManager.deviceToken = deviceToken
+//                    }
+//                    .addOnFailureListener {
+//                        binding.constraintLayout.snackBar(AppString.error_firebase_id)
+//                    }
+//            }
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//        }
+//    }
 
-    private fun getFireBaseMessagingToken() {
-        try {
-            if (fragmentActivity?.isNetworkAvailable() == true) {
-                FirebaseMessaging
-                    .getInstance()
-                    .token
-                    .addOnSuccessListener { s: String ->
-                        Timber.d("Firebase Message token-->$s")
-                        messageToken = s
-                        userDataManager.fireBaseToken = s
-                    }
-                    .addOnFailureListener {
-                        binding.constraintLayout.snackBar(AppString.error_firebase_token)
-                    }
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
+//    private fun getFireBaseMessagingToken() {
+//        try {
+//            if (fragmentActivity?.isNetworkAvailable() == true) {
+//                FirebaseMessaging
+//                    .getInstance()
+//                    .token
+//                    .addOnSuccessListener { s: String ->
+//                        Timber.d("Firebase Message token-->$s")
+//                        messageToken = s
+//                        userDataManager.fireBaseToken = s
+//                    }
+//                    .addOnFailureListener {
+//                        binding.constraintLayout.snackBar(AppString.error_firebase_token)
+//                    }
+//            }
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//        }
+//    }
 }

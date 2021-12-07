@@ -13,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.app.ActivityCompat
+import com.app.data.datasource.remote.mqtt.MQTTCall
 import com.app.databinding.FragmentDashboardBinding
 import com.app.domain.entity.FirebaseCallResponse
 import com.app.domain.entity.FirebaseDatabaseCallResponse
@@ -20,6 +21,7 @@ import com.app.domain.entity.MQTTCallResponse
 import com.app.domain.entity.db.LocationEntity
 import com.app.domain.entity.request.FirebaseDatabaseRequest
 import com.app.domain.extention.parseDate
+import com.app.domain.interactor.FirebaseDatabaseInteractor
 import com.app.extension.*
 import com.app.helpers.LocationUtil
 import com.app.interfaces.OnLocationOnListener
@@ -45,6 +47,7 @@ import com.mapbox.maps.plugin.locationcomponent.location
 import com.markodevcic.peko.PermissionResult
 import org.json.JSONArray
 import org.json.JSONObject
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
@@ -62,9 +65,10 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard) {
     private var mapboxMap: MapboxMap? = null
     private var latitude: Double? = null
     private var longitude: Double? = null
-
     //    private var isGPSEnabled = false
     private var prevLocation: Location? = null
+
+    private val mqttCall by inject<MQTTCall>()
 
 
     override fun onCreate(view: View) {
@@ -95,6 +99,45 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard) {
         _binding = null
     }
 
+
+    override fun onResume() {
+        super.onResume()
+        appOverlayPermission()
+        val MQTT_USERNAME = "sunilmg"
+        val MQTT_PWD = "Sunil@135"
+//        mqttVM.connectMQTT(MQTT_USERNAME,MQTT_PWD)
+    }
+
+
+    private fun initialize() {
+        binding.customSwitch.bringToFront()
+        binding.customSwitch.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                binding.tvName.resString = AppString.on_duty
+                userDataManager.isDuty = true
+//                binding.tvName.snackBar(AppString.background_location_on)
+                binding.tvName.textColor = AppColor.colorGreenLight
+                startServices()
+                startWorker()
+            } else {
+                binding.tvName.resString = AppString.off_duty
+                userDataManager.isDuty = false
+//                binding.tvName.snackBar(AppString.background_location_off)
+                binding.tvName.textColor = AppColor.colorRedLight
+                stopServices()
+                stopWorker()
+            }
+        }
+        binding.fab.click {
+            animateCamera(latitude, longitude)
+        }
+        setData()
+
+//        mqttVM.getMQTTClientId()
+//        mqttVM.isConnected()
+        mqttCall.connects()
+    }
+
     private fun initMapbox() {
         mapboxMap?.loadStyleUri(
             Style.MAPBOX_STREETS
@@ -107,6 +150,26 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard) {
                 }
             }
         }
+    }
+
+
+    private fun checkLocationOn() {
+        LocationUtil(requireActivity()).turnGPSOn(object : OnLocationOnListener {
+            override fun locationStatus(isLocationOn: Boolean) {
+                Timber.d("Location Status-->$isLocationOn")
+                if (isLocationOn) {
+//                        isGPSEnabled = isLocationOn
+                    startLocationUpdates()
+                    if (userDataManager.isDuty) {
+                        startServices()
+                    } else {
+                        stopServices()
+                    }
+                } else {
+                    Timber.d("Enable location provider")
+                }
+            }
+        })
     }
 
 
@@ -132,6 +195,7 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard) {
                 }
             }
         })
+
         onBoardingVM.firebaseDeviceIdResponse.observe(viewLifecycleOwner, {
             fragmentActivity?.hideLoader()
             Timber.d("FirebaseDeviceidResponse-->${it}")
@@ -170,17 +234,41 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard) {
         })
 
 
-        mqttVM.mqttGenerateClientIdResponse.observe(viewLifecycleOwner, {
+//        mqttVM.mqttGenerateClientIdResponse.observe(viewLifecycleOwner, {
+//            fragmentActivity?.hideLoader()
+//            Timber.d("MQTTCallResponse-->${it}")
+//            when (it) {
+//                is MQTTCallResponse.Success -> {
+//                    it.data.let { data ->
+//                        Timber.d("mqtt client id-->${data?.data}")
+//                    }
+//                }
+//                is MQTTCallResponse.Failure -> {
+//                    binding.constraintLayout.snackBar(it.throwable?.message)
+//                }
+//                else -> {
+//                    binding.constraintLayout.snackBar(AppString.error_message)
+//                }
+//            }
+//        })
+
+        mqttVM.mqttConnectedResponse.observe(viewLifecycleOwner, {
             fragmentActivity?.hideLoader()
-            Timber.d("MQTTCallResponse-->${it}")
+            Timber.d("MQTT Connected Response-->${it}")
             when (it) {
                 is MQTTCallResponse.Success -> {
                     it.data.let { data ->
-                        Timber.d("mqtt client id-->${data.data}")
+                        Timber.d("MQTT Connected Response-->${data?.data}")
+                        if (data?.data == false) {
+                            mqttVM.connectMQTT("", "")
+                        } else {
+//                            push data
+                            mqttVM.publishMQTT("data is pushed")
+                        }
                     }
                 }
                 is MQTTCallResponse.Failure -> {
-                    binding.constraintLayout.snackBar(it.throwable.message)
+                    binding.constraintLayout.snackBar(it.throwable?.message)
                 }
                 else -> {
                     binding.constraintLayout.snackBar(AppString.error_message)
@@ -188,17 +276,116 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard) {
             }
         })
 
+
         mqttVM.mqttConnectResponse.observe(viewLifecycleOwner, {
             fragmentActivity?.hideLoader()
-            Timber.d("mqttConnectResponse-->${it}")
+            Timber.d("MQTT Connect Response-->${it}")
             when (it) {
                 is MQTTCallResponse.Success -> {
                     it.data.let { data ->
-                        Timber.d("mqtt client id-->${data.data}")
+                        Timber.d("mqtt connected-->${data?.isConnected}")
+                        Timber.d("mqtt client id-->${data?.clientId}")
+                        Timber.d("mqtt serverURI-->${data?.serverURI}")
+                        if (data?.isConnected == true) {
+                            //send data
+                        }
+
                     }
                 }
                 is MQTTCallResponse.Failure -> {
-                    binding.constraintLayout.snackBar(it.throwable.message)
+                    binding.constraintLayout.snackBar(it.throwable?.message)
+                }
+                else -> {
+                    binding.constraintLayout.snackBar(AppString.error_message)
+                }
+            }
+        })
+
+        mqttVM.mqttSubscribeResponse.observe(viewLifecycleOwner, {
+            fragmentActivity?.hideLoader()
+            Timber.d("MQTT Subscribe Response-->${it}")
+            when (it) {
+                is MQTTCallResponse.Success -> {
+                    it.data.let { data ->
+                        Timber.d("mqtt connected-->${data?.isConnected}")
+                        Timber.d("mqtt client id-->${data?.clientId}")
+                        Timber.d("mqtt serverURI-->${data?.serverURI}")
+                        if (data?.isConnected == true) {
+                            //send data
+                        }
+
+                    }
+                }
+                is MQTTCallResponse.Failure -> {
+                    binding.constraintLayout.snackBar(it.throwable?.message)
+                }
+                else -> {
+                    binding.constraintLayout.snackBar(AppString.error_message)
+                }
+            }
+        })
+
+        mqttVM.mqttUnSubscribeResponse.observe(viewLifecycleOwner, {
+            fragmentActivity?.hideLoader()
+            Timber.d("MQTT UnSubscribe Response-->${it}")
+            when (it) {
+                is MQTTCallResponse.Success -> {
+                    it.data.let { data ->
+                        Timber.d("mqtt connected-->${data?.isConnected}")
+                        Timber.d("mqtt client id-->${data?.clientId}")
+                        Timber.d("mqtt serverURI-->${data?.serverURI}")
+                        if (data?.isConnected == true) {
+                            //send data
+                        }
+
+                    }
+                }
+                is MQTTCallResponse.Failure -> {
+                    binding.constraintLayout.snackBar(it.throwable?.message)
+                }
+                else -> {
+                    binding.constraintLayout.snackBar(AppString.error_message)
+                }
+            }
+        })
+        mqttVM.mqttPublishResponse.observe(viewLifecycleOwner, {
+            fragmentActivity?.hideLoader()
+            Timber.d("MQTT Publish Response-->${it}")
+            when (it) {
+                is MQTTCallResponse.Success -> {
+                    it.data.let { data ->
+                        Timber.d("mqtt connected-->${data?.isConnected}")
+                        Timber.d("mqtt client id-->${data?.clientId}")
+                        Timber.d("mqtt serverURI-->${data?.serverURI}")
+                        if (data?.isConnected == true) {
+                            //send data
+                        }
+
+                    }
+                }
+                is MQTTCallResponse.Failure -> {
+                    binding.constraintLayout.snackBar(it.throwable?.message)
+                }
+                else -> {
+                    binding.constraintLayout.snackBar(AppString.error_message)
+                }
+            }
+        })
+
+        mqttVM.mqttDisConnectResponse.observe(viewLifecycleOwner, {
+            fragmentActivity?.hideLoader()
+            Timber.d("MQTT Disconnect Response-->${it}")
+            when (it) {
+                is MQTTCallResponse.Success -> {
+                    it.data.let { data ->
+                        if (data?.data == true) {
+                            Timber.d("MQTT Disconnect")
+                        }
+
+                    }
+                }
+                is MQTTCallResponse.Failure -> {
+                    binding.constraintLayout.snackBar(it.throwable?.message)
                 }
                 else -> {
                     binding.constraintLayout.snackBar(AppString.error_message)
@@ -212,62 +399,6 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard) {
             setLocationResult(it)
         })
     }
-
-    private fun checkLocationOn() {
-        LocationUtil(requireActivity()).turnGPSOn(object : OnLocationOnListener {
-            override fun locationStatus(isLocationOn: Boolean) {
-                Timber.d("Location Status-->$isLocationOn")
-                if (isLocationOn) {
-//                        isGPSEnabled = isLocationOn
-                    startLocationUpdates()
-                    if (userDataManager.isDuty) {
-                        startServices()
-                    } else {
-                        stopServices()
-                    }
-                } else {
-                    Timber.d("Enable location provider")
-                }
-            }
-        })
-    }
-
-    override fun onResume() {
-        super.onResume()
-        appOverlayPermission()
-    }
-
-
-    private fun initialize() {
-        binding.customSwitch.bringToFront()
-        binding.customSwitch.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                binding.tvName.resString = AppString.on_duty
-                userDataManager.isDuty = true
-                binding.tvName.snackBar(AppString.background_location_on)
-                binding.tvName.textColor = AppColor.colorGreenLight
-                startServices()
-                startWorker()
-            } else {
-                binding.tvName.resString = AppString.off_duty
-                userDataManager.isDuty = false
-                binding.tvName.snackBar(AppString.background_location_off)
-                binding.tvName.textColor = AppColor.colorRedLight
-                stopServices()
-                stopWorker()
-            }
-        }
-        binding.fab.click {
-            animateCamera(latitude, longitude)
-        }
-        setData()
-
-//        addAnnotationToMap()
-
-//        mqttVM.getMQTTClientId()
-        mqttVM.connectMQTT("", "")
-    }
-
 
     private fun setData() {
         if (userDataManager.isDuty) {
@@ -388,7 +519,7 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard) {
                 location.time.parseDate().toString()
             },${location.accuracy},${location.altitude}"
         )
-
+//        mqttVM.publishMQTT("hello 1")
         if (location != null) {
 //            sendDataToDb(location)
             latitude = location.latitude

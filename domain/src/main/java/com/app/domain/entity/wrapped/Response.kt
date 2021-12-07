@@ -50,3 +50,4 @@ fun <T> retrofit2.Response<T>.toResponseBody(): Response<T> {
         ResponseError(failure)
     }
 }
+

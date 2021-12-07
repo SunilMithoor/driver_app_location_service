@@ -58,7 +58,6 @@ class DashboardActivity : BaseAppCompatActivity() {
 
     }
 
-
     private fun initialize() {
         initToolBar()
         initBubbleTabBar()

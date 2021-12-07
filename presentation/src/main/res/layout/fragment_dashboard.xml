@@ -60,6 +60,9 @@
             android:layout_height="match_parent"
             app:mapbox_attributionEnabled="false"
             app:mapbox_logoEnabled="true"
+            mapbox:mapbox_cameraTargetLat="20.593684"
+            mapbox:mapbox_cameraTargetLng="78.96288"
+            mapbox:mapbox_cameraZoom="6"
             mapbox:mapbox_resourcesAccessToken="@string/map_box_api_key" />
 
 
