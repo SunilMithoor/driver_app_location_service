@@ -41,13 +41,17 @@ class LocationService : LifecycleService() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
         buildNotification()
+//        if (isServiceRunningInForeground(LocationService::class.java)) {
+//            getManager()?.notify(CHANNEL_NOTIFICATION_ID, getNotification())
+//        }
         return START_STICKY
     }
 
     //onCreate
     override fun onCreate() {
         super.onCreate()
-        Timber.d("Service started regu")
+        Timber.d("Service created")
+//        createNotification()
         locationData = LocationLiveData(this)
         checkLocationOn()
         if (signalStrengthService == null) {
@@ -66,6 +70,7 @@ class LocationService : LifecycleService() {
         }
     }
 
+
     private fun buildNotification() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             startForeground(
@@ -80,6 +85,7 @@ class LocationService : LifecycleService() {
         }
     }
 
+
     inner class LocalBinder : Binder() {
         // Return this instance of MyService so clients can call public methods
         val service: LocationService
@@ -89,19 +95,20 @@ class LocationService : LifecycleService() {
     override fun onBind(intent: Intent): IBinder {
         super.onBind(intent)
         Timber.d("onBind called")
+        stopForeground(true)
         return mBinder
     }
 
     override fun onRebind(intent: Intent) {
         Timber.d("onRebind called")
-//        stopForeground(true)
+        stopForeground(true)
         super.onRebind(intent)
     }
 
 
     override fun onUnbind(intent: Intent): Boolean {
         Timber.d("onUnbind called")
-//        startForeground(CHANNEL_NOTIFICATION_ID, getNotification())
+        startForeground(CHANNEL_NOTIFICATION_ID, getNotification())
         return true // Ensures onRebind() is called when a client re-binds.
     }
 
@@ -233,5 +240,6 @@ class LocationService : LifecycleService() {
     override fun onDestroy() {
         super.onDestroy()
         signalStrengthService = null
+        cancelNotification()
     }
 }

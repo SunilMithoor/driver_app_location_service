@@ -247,7 +247,7 @@ class NotificationHelper constructor(base: Context?) : ContextWrapper(base) {
         val channel = NotificationChannel(
             channelId,
             channelName,
-            NotificationManager.IMPORTANCE_LOW
+            NotificationManager.IMPORTANCE_HIGH
         )
         channel.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
         channel.description = "no sound"

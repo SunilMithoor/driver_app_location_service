@@ -26,6 +26,23 @@ fun Context.isServiceRunning(serviceClass: Class<*>): Boolean {
     return false
 }
 
+fun Context.isServiceRunningInForeground(serviceClass: Class<*>): Boolean {
+    try {
+        val manager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        for (service in manager.getRunningServices(Int.MAX_VALUE)) {
+            if (serviceClass.name == service.service.className) {
+                if (service.foreground) {
+                    return true
+                }
+            }
+        }
+    } catch (e: SecurityException) {
+        e.printStackTrace()
+    }
+    return false
+}
+
+
 @SuppressLint("BatteryLife")
 fun Context.startService(serviceClass: Class<*>) {
     try {

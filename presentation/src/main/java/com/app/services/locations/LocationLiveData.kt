@@ -9,13 +9,16 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 
 
 /**
  * Constants Values
  */
-const val INTERVAL = 10000L
-const val FASTEST_INTERVAL = 5000L
+private const val INTERVAL = 10000L //10 seconds
+private const val FASTEST_INTERVAL = 5000L //5 seconds
+private const val SMALLEST_DISPLACEMENT_METERS = 10F //10 metres
+
 
 class LocationLiveData(context: Context) : MutableLiveData<Location>() {
 
@@ -43,6 +46,7 @@ class LocationLiveData(context: Context) : MutableLiveData<Location>() {
                 interval = INTERVAL
                 fastestInterval = FASTEST_INTERVAL
                 priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+                smallestDisplacement = SMALLEST_DISPLACEMENT_METERS
             }
     }
 

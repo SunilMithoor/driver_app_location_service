@@ -1,8 +1,11 @@
 package com.app.extension
 
 import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
@@ -10,7 +13,35 @@ import com.app.R
 import com.app.services.locations.LocationService
 import com.app.ui.splash.SplashActivity
 import com.app.utilities.CHANNEL_ID
+import com.app.utilities.CHANNEL_NAME
+import com.app.utilities.CHANNEL_NOTIFICATION_ID
 import com.app.utilities.EXTRA_STARTED_FROM_NOTIFICATION
+
+
+private var notificationManager: NotificationManager? = null
+
+fun Context.getManager(): NotificationManager? {
+    if (notificationManager == null) {
+        notificationManager =
+            getSystemService(ContextWrapper.NOTIFICATION_SERVICE) as NotificationManager
+    }
+    return notificationManager
+}
+
+fun Context.createNotification() {
+
+    // Android O requires a Notification Channel.
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        // Create the channel for the notification
+        val mChannel = NotificationChannel(
+            CHANNEL_ID,
+            CHANNEL_NAME,
+            NotificationManager.IMPORTANCE_HIGH
+        )
+        // Set the Notification Channel for the Notification Manager.
+        getManager()?.createNotificationChannel(mChannel)
+    }
+}
 
 fun Context.getNotification(): Notification {
     val intent = Intent(this, LocationService::class.java)
@@ -41,3 +72,13 @@ fun Context.getNotification(): Notification {
     }
     return builder.build()
 }
+
+
+private fun getSmallIcon(): Int {
+    return R.drawable.ic_notifications
+}
+
+fun Context.cancelNotification() {
+    getManager()?.cancel(CHANNEL_NOTIFICATION_ID)
+}
+
