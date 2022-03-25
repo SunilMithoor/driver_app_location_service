@@ -11,16 +11,16 @@ dependencies {
 
     /*** Android Native ***/
     implementation 'androidx.multidex:multidex:2.0.1'
-    implementation 'androidx.appcompat:appcompat:1.3.1'
-    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'com.google.android.material:material:1.5.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
-    implementation 'androidx.fragment:fragment:1.4.0'
-    implementation 'androidx.fragment:fragment-ktx:1.4.0'
-    implementation 'androidx.startup:startup-runtime:1.1.0'
-    implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
+    implementation 'androidx.fragment:fragment:1.4.1'
+    implementation 'androidx.fragment:fragment-ktx:1.4.1'
+    implementation 'androidx.startup:startup-runtime:1.1.1'
+    implementation 'androidx.coordinatorlayout:coordinatorlayout:1.2.0'
 
-    // Fragment Navigation
+    /*** Fragment Navigation ***/
     implementation 'androidx.navigation:navigation-fragment:2.3.5'
     implementation 'androidx.navigation:navigation-ui:2.3.5'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
@@ -28,9 +28,9 @@ dependencies {
 
     /*** lifecycle ***/
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0'
-    implementation 'androidx.lifecycle:lifecycle-common-java8:2.4.0'
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1'
+    implementation 'androidx.lifecycle:lifecycle-common-java8:2.4.1'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.4.1'
 
     /*** Coroutines ***/
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2'
@@ -40,7 +40,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0'
     implementation 'com.squareup.retrofit2:converter-scalars:2.9.0'
-    implementation 'com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.7.0'
+    implementation 'com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0'
 
     /*** Image Loading ***/
     implementation 'io.coil-kt:coil:0.11.0'
@@ -50,8 +50,8 @@ dependencies {
     implementation 'com.airbnb.android:lottie:3.6.1'
 
     /*** Parsing ***/
-    implementation 'com.google.code.gson:gson:2.8.6'
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.0-RC")
+    implementation 'com.google.code.gson:gson:2.9.0'
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
 
     /*** OTP View ***/
     implementation 'com.github.mukeshsolanki:android-otpview-pinview:2.0.3'
@@ -60,7 +60,7 @@ dependencies {
     implementation 'com.markodevcic:peko:2.1.4'
 
     /*** Logging ***/
-    implementation 'com.jakewharton.timber:timber:4.7.1'
+    implementation 'com.jakewharton.timber:timber:5.0.1'
 
     /*** Koin ***/
     implementation 'org.koin:koin-androidx-viewmodel:2.1.6'
@@ -69,29 +69,29 @@ dependencies {
     implementation 'com.ryanjeffreybrooks:indefinitepagerindicator:1.0.10'
 
     /*** Firebase ***/
-    implementation 'com.google.firebase:firebase-messaging:23.0.0'
-    implementation 'com.google.firebase:firebase-crashlytics:18.2.4'
-    implementation 'com.google.firebase:firebase-analytics-ktx:20.0.0'
+    implementation 'com.google.firebase:firebase-messaging:23.0.2'
+    implementation 'com.google.firebase:firebase-crashlytics:18.2.9'
+    implementation 'com.google.firebase:firebase-analytics-ktx:20.1.1'
     implementation platform('com.google.firebase:firebase-bom:28.4.2')
     implementation 'com.google.firebase:firebase-auth-ktx'
-    implementation 'com.google.firebase:firebase-database:20.0.2'
-    implementation 'com.google.firebase:firebase-dynamic-links:21.0.0'
+    implementation 'com.google.firebase:firebase-database:20.0.4'
+    implementation 'com.google.firebase:firebase-dynamic-links:21.0.1'
 
     /*** Location ***/
     implementation 'com.google.android.gms:play-services-location:18.0.0'
 
     /*** Paging ***/
-    implementation 'androidx.paging:paging-runtime:3.1.0'
+    implementation 'androidx.paging:paging-runtime:3.1.1'
 
     /*** App Update ***/
-    implementation 'com.google.android.play:core:1.10.2'
+    implementation 'com.google.android.play:core:1.10.3'
 
     /*** ViewPager Indicator ***/
     implementation 'me.relex:circleindicator:2.1.4'
 
     /*** Auto read otp ***/
-    implementation 'com.google.android.gms:play-services-auth-api-phone:17.5.1'
-    implementation 'com.google.android.gms:play-services-auth:19.2.0'
+    implementation 'com.google.android.gms:play-services-auth-api-phone:18.0.1'
+    implementation 'com.google.android.gms:play-services-auth:20.1.0'
 
     /*** Cpbar Progress bar  ***/
     implementation 'io.github.cliffgr:cpbar:1.1.2'
@@ -109,24 +109,24 @@ dependencies {
     implementation 'com.github.angads25:toggle:1.1.0'
 
     /*** Room ***/
-    implementation 'androidx.room:room-runtime:2.3.0'
-    implementation "androidx.room:room-ktx:2.3.0"
-    kapt "androidx.room:room-compiler:2.3.0"
+    implementation 'androidx.room:room-runtime:2.4.2'
+    implementation "androidx.room:room-ktx:2.4.2"
+    kapt "androidx.room:room-compiler:2.4.2"
 
     /*** Compose ***/
-    implementation 'androidx.compose.ui:ui:1.0.5'
-    implementation 'androidx.compose.runtime:runtime:1.0.5'
+    implementation 'androidx.compose.ui:ui:1.1.1'
+    implementation 'androidx.compose.runtime:runtime:1.1.1'
 
     /*** Work Manager ***/
     implementation "androidx.work:work-runtime-ktx:2.7.1"
 
     /*** Map Box ***/
-    implementation ('com.mapbox.maps:android:10.1.0'){
+    implementation ('com.mapbox.maps:android:10.3.0'){
         exclude group: 'group_name', module: 'module_name'
     }
 
     /*** MQTT ***/
-    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.4'
+    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.5'
     implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
 
     /*** leakcanary ***/
