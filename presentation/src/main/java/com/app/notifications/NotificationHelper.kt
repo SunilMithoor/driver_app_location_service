@@ -233,10 +233,18 @@ class NotificationHelper constructor(base: Context?) : ContextWrapper(base) {
         notificationIntent.clearTask()
         notificationIntent.clearTop()
         notificationIntent.newTask()
-        return PendingIntent.getActivity(
-            context, 0,
-            notificationIntent, 0
-        )
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            PendingIntent.getActivity(
+                context, 0,
+                notificationIntent, PendingIntent.FLAG_IMMUTABLE
+            )
+        } else {
+            PendingIntent.getActivity(
+                context, 0,
+                notificationIntent, 0
+            )
+        }
+
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

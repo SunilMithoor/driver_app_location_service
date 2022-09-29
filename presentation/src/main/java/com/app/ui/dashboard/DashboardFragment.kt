@@ -177,7 +177,7 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard) {
         permissionVM.permissionLiveData.observe(this, {
             setResult(it)
         })
-        onBoardingVM.firebaseMessageTokenResponse.observe(viewLifecycleOwner, {
+        onBoardingVM.firebaseMessageTokenResponse.observe(viewLifecycleOwner) {
             fragmentActivity?.hideLoader()
             Timber.d("FirebaseTokenResponse-->${it}")
             when (it) {
@@ -194,9 +194,9 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard) {
                     binding.constraintLayout.snackBar(AppString.error_message)
                 }
             }
-        })
+        }
 
-        onBoardingVM.firebaseDeviceIdResponse.observe(viewLifecycleOwner, {
+        onBoardingVM.firebaseDeviceIdResponse.observe(viewLifecycleOwner) {
             fragmentActivity?.hideLoader()
             Timber.d("FirebaseDeviceidResponse-->${it}")
             when (it) {
@@ -213,7 +213,7 @@ class DashboardFragment : BaseFragment(AppLayout.fragment_dashboard) {
                     binding.constraintLayout.snackBar(AppString.error_message)
                 }
             }
-        })
+        }
 
         onBoardingVM.firebaseDatabaseResponse.observe(viewLifecycleOwner, {
             fragmentActivity?.hideLoader()

@@ -7,36 +7,21 @@ plugins {
     id 'androidx.navigation.safeargs.kotlin'
     id 'com.google.firebase.crashlytics'
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
+    id 'kotlinx-serialization'
 
 }
-//apply plugin: 'com.google.firebase.appdistribution'
 
 apply from: '../sourcesets.gradle'
 apply from: '../flavors.gradle'
 apply from: '../dependencies.gradle'
 apply from: '../buildtypes.gradle'
-//apply from: '../signing.gradle'
-//apply from: '../reports.gradle'
-
 
 android {
 
     buildFeatures {
         viewBinding true
-        compose = true
     }
-
-//    compileSdkVersion 31
-//    buildToolsVersion "30.0.3"
-
     compileSdk 32
-
-
-    Properties properties = new Properties()
-    if (rootProject.file("local.properties").exists()) {
-        properties.load(rootProject.file("local.properties").newDataInputStream())
-    }
-
 
     defaultConfig {
         applicationId "com.app"
@@ -50,23 +35,12 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        resValue "string", "map_box_api_key", properties.getProperty("map_box_api_key", "")
+        resValue "string", "map_box_api_key", "mapbox key"//replace your token
     }
 
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-
-    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.0.5"
     }
 
     packagingOptions {
@@ -83,7 +57,7 @@ android {
 
 dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation project(':domain')
     implementation project(':data')
 

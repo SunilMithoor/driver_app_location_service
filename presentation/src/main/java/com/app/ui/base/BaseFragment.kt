@@ -42,7 +42,7 @@ abstract class BaseFragment(layoutId: Int) : Fragment(layoutId) {
 
     @SuppressLint("RestrictedApi")
     open fun onSupportNavigateUp() {
-        if (navController.backStack.size > 2) {
+        if (navController.backQueue.size > 2) {
             navController.navigateUp()
         } else {
             finish()

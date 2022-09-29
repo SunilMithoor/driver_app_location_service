@@ -8,7 +8,6 @@ data class Failure(
     var statusCode: Int = 0
 )
 
-@Serializable
 open class Success {
     var message: String = ""
     var statusCode: Int = 0
