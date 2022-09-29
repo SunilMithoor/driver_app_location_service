@@ -145,7 +145,7 @@ class SignInFragment : BaseFragment(AppLayout.fragment_sign_in) {
 //            Timber.d("Response : $it")
 //        })
 
-        onBoardingVM.firebaseSignInResponse.observe(viewLifecycleOwner, {
+        onBoardingVM.firebaseSignInResponse.observe(viewLifecycleOwner) {
             fragmentActivity?.hideLoader()
             when (it) {
                 is FirebaseAuthResponse.Success -> {
@@ -165,7 +165,7 @@ class SignInFragment : BaseFragment(AppLayout.fragment_sign_in) {
                     binding.btnSubmit.snackBar(AppString.error_message)
                 }
             }
-        })
+        }
     }
 
 //    private fun getFireBaseDeviceToken() {

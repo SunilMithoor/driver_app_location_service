@@ -1,44 +1,27 @@
 android {
-    flavorDimensions 'env', 'audience'
-//    def propsFile = file("../firebase.properties")
+    flavorDimensions 'env'
+
     productFlavors {
-        dev {
-            dimension = 'audience'
-//            firebaseAppDistribution {
-//                if (propsFile.exists()) {
-//                    def props = new Properties()
-//                    props.load(new FileInputStream(propsFile))
-//                    serviceCredentialsFile = file(props['appDistributionFile'])
-//                    releaseNotesFile = file(props['releaseNotes'])
-//                    groups = "dev"
-//                }
-//            }
-        }
-
-        qa {
-            dimension = 'audience'
-        }
-
-        store {
-            dimension = 'audience'
-        }
-
         stage {
             dimension = 'env'
+            versionCode rootProject.ext.versionCode
+            versionName "Stage V" + rootProject.ext.versionName
             applicationId "com.sunil.app.driver.dev"
             buildConfigField "String", "BASE_URL", "\"https://poc.sunil.in\""
         }
-        preprod {
-            dimension = 'env'
-            applicationId "com.sunil.app.driver.qa"
-            buildConfigField "String", "BASE_URL", "\"https://poc.sunil.in\""
-        }
+
         prod {
             dimension = 'env'
+            versionCode rootProject.ext.versionCode
+            versionName "Prod V" + rootProject.ext.versionName
             applicationId "com.sunil.app.driver"
             buildConfigField "String", "BASE_URL", "\"https://poc.sunil.in\""
         }
     }
+
 }
+
+
+
 
 

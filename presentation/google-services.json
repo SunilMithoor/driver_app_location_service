@@ -8,6 +8,64 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:12609194830:android:42bbee984f7e4ea7d76c1f",
+        "android_client_info": {
+          "package_name": "com.app.user.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "12609194830-72qn2chdoim63jbtijeea822uj2ukrfa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBIe8upfixe4i37jHWoRyfdBnCpRn7bKA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "12609194830-72qn2chdoim63jbtijeea822uj2ukrfa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:12609194830:android:dc7d42c0eead5368d76c1f",
+        "android_client_info": {
+          "package_name": "com.sunil.app.driver.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "12609194830-72qn2chdoim63jbtijeea822uj2ukrfa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBIe8upfixe4i37jHWoRyfdBnCpRn7bKA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "12609194830-72qn2chdoim63jbtijeea822uj2ukrfa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:12609194830:android:9e282050e0094b32d76c1f",
         "android_client_info": {
           "package_name": "com.sunil.app.driver.qa"

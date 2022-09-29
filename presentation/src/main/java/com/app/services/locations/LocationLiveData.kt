@@ -89,7 +89,7 @@ class LocationLiveData(context: Context) : MutableLiveData<Location>() {
      * Callback that triggers on location updates available
      */
     private val locationCallback = object : LocationCallback() {
-        override fun onLocationResult(locationResult: LocationResult?) {
+        override fun onLocationResult(locationResult: LocationResult) {
             locationResult ?: return
             for (location in locationResult.locations) {
                 postValue(location)

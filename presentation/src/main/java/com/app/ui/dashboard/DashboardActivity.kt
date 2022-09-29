@@ -117,27 +117,27 @@ class DashboardActivity : BaseAppCompatActivity() {
     }
 
 
-    override fun onPictureInPictureModeChanged(
-        isInPictureInPictureMode: Boolean, configuration: Configuration?
-    ) {
-        super.onPictureInPictureModeChanged(isInPictureInPictureMode, configuration)
-        if (isInPictureInPictureMode) {
-            Timber.d("PIP mode")
-            binding.bubbleTabBar.visibility = View.GONE
-            binding.appBarLayout.visibility = View.GONE
-            navController.navigate(R.id.pipModeFragment)
-        } else {
-            Timber.d("NO PIP mode")
-            binding.bubbleTabBar.visibility = View.VISIBLE
-            binding.appBarLayout.visibility = View.VISIBLE
-            navController.navigate(R.id.homeFragment)
-        }
-    }
+//    override fun onPictureInPictureModeChanged(
+//        isInPictureInPictureMode: Boolean, configuration: Configuration?
+//    ) {
+//        super.onPictureInPictureModeChanged(isInPictureInPictureMode, configuration)
+//        if (isInPictureInPictureMode) {
+//            Timber.d("PIP mode")
+//            binding.bubbleTabBar.visibility = View.GONE
+//            binding.appBarLayout.visibility = View.GONE
+//            navController.navigate(R.id.pipModeFragment)
+//        } else {
+//            Timber.d("NO PIP mode")
+//            binding.bubbleTabBar.visibility = View.VISIBLE
+//            binding.appBarLayout.visibility = View.VISIBLE
+//            navController.navigate(R.id.homeFragment)
+//        }
+//    }
 
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-
-    }
+//    override fun onNewIntent(intent: Intent?) {
+//        super.onNewIntent(intent)
+//
+//    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
